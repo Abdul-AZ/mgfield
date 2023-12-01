@@ -11,10 +11,12 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    perspectivecamera.cpp \
     viewport3d.cpp
 
 HEADERS += \
     mainwindow.h \
+    perspectivecamera.h \
     viewport3d.h
 
 FORMS += \
