@@ -7,6 +7,7 @@
 #include <QElapsedTimer>
 
 #include "perspectivecamera.h"
+#include "transmissioncable.h"
 
 class Viewport3D : public QOpenGLWidget
 {
@@ -32,6 +33,9 @@ private:
     PerspectiveCamera          m_Camera;
     QMap<int, bool>            m_Keys;
     QElapsedTimer              m_Timer;
+
+    //TODO separate this and maybe make a scene graph (?)
+    TransmissionCable* cable;
 };
 
 #endif // VIEWPORT3D_H

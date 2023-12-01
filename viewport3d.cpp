@@ -32,6 +32,9 @@ void Viewport3D::initializeGL()
     m_GLFuncs->glClearColor(0.1, 0.1, 0.1, 1.0);
 
     emit cameraMoved(m_Camera.Position);
+
+
+    cable = new TransmissionCable(m_GLFuncs, m_Camera);
 }
 
 

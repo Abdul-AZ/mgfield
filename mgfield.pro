@@ -12,11 +12,13 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     perspectivecamera.cpp \
+    transmissioncable.cpp \
     viewport3d.cpp
 
 HEADERS += \
     mainwindow.h \
     perspectivecamera.h \
+    transmissioncable.h \
     viewport3d.h
 
 FORMS += \
@@ -26,3 +28,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    application.qrc
