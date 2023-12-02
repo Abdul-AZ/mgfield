@@ -3,6 +3,8 @@
 
 #include <QOpenGLFunctions_3_3_Core>
 #include <QOpenGLShaderProgram>
+#include <QOpenGLBuffer>
+#include <QOpenGLVertexArrayObject>
 #include "perspectivecamera.h"
 
 class TransmissionCable
@@ -15,6 +17,8 @@ public:
     QOpenGLFunctions_3_3_Core* m_GLFuncs;
     PerspectiveCamera&         m_Camera;
     QOpenGLShaderProgram       m_Shader;
+    QOpenGLBuffer              m_VertexBuffer;
+    QOpenGLVertexArrayObject   m_VertexArray;
 };
 
 #endif // TRANSMISSIONCABLE_H

@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include <QKeyEvent>
 
+
 Viewport3D::Viewport3D(QWidget* parent) : QOpenGLWidget(parent)
 {
     setFocusPolicy(Qt::ClickFocus);
@@ -11,8 +12,15 @@ Viewport3D::Viewport3D(QWidget* parent) : QOpenGLWidget(parent)
     m_Timer.restart();
 }
 
+void Viewport3D::messageLogged(const QOpenGLDebugMessage &debugMessage)
+{
+    qCritical() << debugMessage.message();
+}
+
 void Viewport3D::initializeGL()
 {
+    makeCurrent();
+
     if (context()->format().majorVersion() < 4)
     {
         if ( context()->format().minorVersion() < 3)
@@ -26,13 +34,35 @@ void Viewport3D::initializeGL()
         }
     }
 
+    QSurfaceFormat format;
+    format.setDepthBufferSize(24);
+    format.setVersion(3, 3);
+    format.setProfile(QSurfaceFormat::CoreProfile);
+
+#ifdef QT_DEBUG
+    format.setOption(QSurfaceFormat::DebugContext);
+#endif
+
+    QSurfaceFormat::setDefaultFormat(format);
+    context()->setFormat(format);
+    context()->create();
+
+    makeCurrent();
     m_GLFuncs = new QOpenGLFunctions_3_3_Core;
     m_GLFuncs->initializeOpenGLFunctions();
+
+#ifdef QT_DEBUG
+    QOpenGLDebugLogger *logger = new QOpenGLDebugLogger(this);
+
+    logger->initialize();
+    logger->startLogging();
+
+    connect(logger, SIGNAL(messageLogged(QOpenGLDebugMessage)), this, SLOT(messageLogged(QOpenGLDebugMessage)));
+#endif
 
     m_GLFuncs->glClearColor(0.1, 0.1, 0.1, 1.0);
 
     emit cameraMoved(m_Camera.Position);
-
 
     cable = new TransmissionCable(m_GLFuncs, m_Camera);
 }
@@ -41,6 +71,8 @@ void Viewport3D::initializeGL()
 void Viewport3D::paintGL()
 {
     m_GLFuncs->glClear(GL_COLOR_BUFFER_BIT);
+
+    cable->Draw();
 }
 
 void Viewport3D::keyPressEvent(QKeyEvent *event)

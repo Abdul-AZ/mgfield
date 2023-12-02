@@ -5,6 +5,7 @@
 #include <QOpenGLFunctions_3_3_Core>
 #include <QVector3D>
 #include <QElapsedTimer>
+#include <QOpenGLDebugLogger>
 
 #include "perspectivecamera.h"
 #include "transmissioncable.h"
@@ -17,6 +18,8 @@ public:
     Viewport3D(QWidget* parent = nullptr);
     virtual ~Viewport3D() {};
 
+private slots:
+    void messageLogged(const QOpenGLDebugMessage &debugMessage);
 
 signals:
     void cameraMoved(QVector3D newPos);
