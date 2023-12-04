@@ -6,6 +6,7 @@
 #include <QVector3D>
 #include <QElapsedTimer>
 #include <QOpenGLDebugLogger>
+#include <QMatrix4x4>
 
 #include "perspectivecamera.h"
 #include "transmissioncable.h"
@@ -27,6 +28,7 @@ signals:
 private:
     virtual void initializeGL() override;
     virtual void paintGL() override;
+    virtual void resizeGL(int width, int height) override;
     virtual void keyPressEvent(QKeyEvent* event) override;
     virtual void keyReleaseEvent(QKeyEvent* event) override;
     virtual void timerEvent(QTimerEvent* event) override;
@@ -36,6 +38,7 @@ private:
     PerspectiveCamera          m_Camera;
     QMap<int, bool>            m_Keys;
     QElapsedTimer              m_Timer;
+    QMatrix4x4                 m_ProjectionMatrix;
 
     //TODO separate this and maybe make a scene graph (?)
     TransmissionCable* cable;

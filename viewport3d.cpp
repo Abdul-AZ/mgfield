@@ -72,7 +72,15 @@ void Viewport3D::paintGL()
 {
     m_GLFuncs->glClear(GL_COLOR_BUFFER_BIT);
 
-    cable->Draw();
+    QMatrix4x4 viewProjection = m_ProjectionMatrix * m_Camera.GetViewMatrix();
+
+    cable->Draw(viewProjection);
+}
+
+void Viewport3D::resizeGL(int width, int height)
+{
+    m_ProjectionMatrix.setToIdentity();
+    m_ProjectionMatrix.perspective(45.0f, (float)width / height, 0.001f, 1000.0f);
 }
 
 void Viewport3D::keyPressEvent(QKeyEvent *event)
@@ -103,14 +111,14 @@ void Viewport3D::keyReleaseEvent(QKeyEvent *event)
     }
 }
 
-void Viewport3D::timerEvent(QTimerEvent* event)
+void Viewport3D::timerEvent(QTimerEvent*)
 {
     const float factor = 1.0f;
 
     bool positionChanged = false;
     if(m_Keys[Qt::Key_W])
     {
-        m_Camera.Position.setZ(m_Camera.Position.z() + factor * m_Timer.elapsed() / 1000.0f);
+        m_Camera.Position.setZ(m_Camera.Position.z() - factor * m_Timer.elapsed() / 1000.0f);
 
         positionChanged = true;
     }
@@ -124,7 +132,7 @@ void Viewport3D::timerEvent(QTimerEvent* event)
 
     if(m_Keys[Qt::Key_S])
     {
-        m_Camera.Position.setZ(m_Camera.Position.z() - factor * m_Timer.elapsed() / 1000.0f);
+        m_Camera.Position.setZ(m_Camera.Position.z() + factor * m_Timer.elapsed() / 1000.0f);
 
         positionChanged = true;
     }
@@ -151,7 +159,10 @@ void Viewport3D::timerEvent(QTimerEvent* event)
     }
 
     if(positionChanged)
+    {
+        repaint();
         emit cameraMoved(m_Camera.Position);
+    }
 
     m_Timer.restart();
 }

@@ -40,10 +40,12 @@ TransmissionCable::TransmissionCable(QOpenGLFunctions_3_3_Core* funcs, Perspecti
     m_VertexArray.release();
 }
 
-void TransmissionCable::Draw()
+void TransmissionCable::Draw(QMatrix4x4 viewProjection)
 {
     m_Shader.bind();
     m_VertexArray.bind();
+
+    m_Shader.setUniformValue(m_Shader.uniformLocation("uViewProjection"), viewProjection);
 
     m_GLFuncs->glDrawArrays(GL_TRIANGLES, 0, 3);
 
