@@ -15,11 +15,16 @@ public:
 
     void Draw(QMatrix4x4 viewProjection);
 
+private:
+    void createBuffers();
+
     QOpenGLFunctions_3_3_Core* m_GLFuncs;
     PerspectiveCamera&         m_Camera;
     QOpenGLShaderProgram       m_Shader;
     QOpenGLBuffer              m_VertexBuffer;
+    QOpenGLBuffer              m_IndexBuffer;
     QOpenGLVertexArrayObject   m_VertexArray;
+    int32_t                    m_NumIndecies;
 };
 
 #endif // TRANSMISSIONCABLE_H
