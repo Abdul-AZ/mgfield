@@ -18,6 +18,7 @@ public:
 
 public slots:
     void updateCameraLocationStatus(QVector3D newPos);
+    void showAboutWindow();
 
 private:
     Ui::MainWindow *ui;

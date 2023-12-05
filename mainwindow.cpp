@@ -1,14 +1,17 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QMessageBox>>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
-
     connect(ui->viewport3D, &Viewport3D::cameraMoved, this, &MainWindow::updateCameraLocationStatus);
+
+    connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(showAboutWindow()));
 }
 
 MainWindow::~MainWindow()
@@ -27,3 +30,12 @@ void MainWindow::updateCameraLocationStatus(QVector3D newPos)
     ui->statusbar->showMessage(message, 100000000);
 }
 
+void MainWindow::showAboutWindow()
+{
+    QMessageBox dialog(this);
+
+    dialog.setWindowTitle("About");
+    dialog.setText("Author: Abdulrahman Al Zeidi");
+
+    dialog.exec();
+}
