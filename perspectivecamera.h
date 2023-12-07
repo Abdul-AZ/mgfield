@@ -13,7 +13,7 @@ public:
     QMatrix4x4 GetViewMatrix();
 
     QVector3D Position = QVector3D(0, 0, 20.0f);
-    QVector3D Forward  = QVector3D(0, 0, -1);
+    QVector3D Target   = QVector3D(0, 0, 0);
     QVector3D Up       = QVector3D(0, 1, 0);
 };
 

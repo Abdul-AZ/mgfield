@@ -1,13 +1,21 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include <QMessageBox>>
+#include <QMessageBox>
+#include "viewport3d.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    ui->CameraTypeComboBox->addItem("Orbit", (int32_t)CameraControlMode::Orbit);
+    ui->CameraTypeComboBox->addItem("Free Roam", (int32_t)CameraControlMode::FreeRoam);
+    connect(ui->CameraTypeComboBox, &QComboBox::currentIndexChanged, this, [this]()
+    {
+        ui->viewport3D->cameraModeChanged((CameraControlMode)ui->CameraTypeComboBox->currentData().toInt());
+    });
 
     connect(ui->viewport3D, &Viewport3D::cameraMoved, this, &MainWindow::updateCameraLocationStatus);
 

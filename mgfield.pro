@@ -11,12 +11,14 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    orbitcameracontroller.cpp \
     perspectivecamera.cpp \
     transmissioncable.cpp \
     viewport3d.cpp
 
 HEADERS += \
     mainwindow.h \
+    orbitcameracontroller.h \
     perspectivecamera.h \
     transmissioncable.h \
     viewport3d.h
