@@ -10,6 +10,7 @@
 
 #include "perspectivecamera.h"
 #include "orbitcameracontroller.h"
+#include "vectorfield3d.h"
 #include "transmissioncable.h"
 
 enum class CameraControlMode
@@ -60,6 +61,7 @@ private:
 
     //TODO separate this and maybe make a scene graph (?)
     TransmissionCable* cable;
+    VectorField3D* vectorField;
 };
 
 #endif // VIEWPORT3D_H

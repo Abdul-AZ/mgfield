@@ -1,9 +1,9 @@
-<!DOCTYPE RCC>
-<RCC version="1.0">
-
-<qresource>
+<RCC>
+    <qresource prefix="/">
         <file>TransmissionCable.vert</file>
         <file>TransmissionCable.frag</file>
-</qresource>
-
+        <file>res/shapes/Arrow3D.glb</file>
+        <file>shaders/VectorField3D.frag</file>
+        <file>shaders/VectorField3D.vert</file>
+    </qresource>
 </RCC>

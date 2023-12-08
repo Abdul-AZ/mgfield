@@ -39,12 +39,14 @@ DebugMessageOutput (QtMsgType type, const QMessageLogContext &context,
 
 int main(int argc, char *argv[])
 {
+    Q_INIT_RESOURCE(application);
 #ifdef QT_DEBUG
     qInstallMessageHandler (DebugMessageOutput);
 #endif
 
     QApplication a(argc, argv);
     MainWindow w;
+
     w.show();
     return a.exec();
 }

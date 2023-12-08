@@ -60,21 +60,21 @@ void Viewport3D::initializeGL()
     connect(logger, SIGNAL(messageLogged(QOpenGLDebugMessage)), this, SLOT(messageLogged(QOpenGLDebugMessage)));
 #endif
 
+    m_GLFuncs->glEnable(GL_DEPTH_TEST);
     m_GLFuncs->glClearColor(0.1, 0.1, 0.1, 1.0);
 
     emit cameraMoved(m_Camera.Position);
 
     cable = new TransmissionCable(m_GLFuncs, m_Camera);
+    vectorField = new VectorField3D(m_GLFuncs);
 }
-
 
 void Viewport3D::paintGL()
 {
-    m_GLFuncs->glClear(GL_COLOR_BUFFER_BIT);
-
     QMatrix4x4 viewProjection = m_ProjectionMatrix * m_Camera.GetViewMatrix();
 
     cable->Draw(viewProjection);
+    vectorField->Draw(viewProjection);
 }
 
 void Viewport3D::resizeGL(int width, int height)
