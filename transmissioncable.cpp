@@ -14,10 +14,10 @@ TransmissionCable::TransmissionCable(QOpenGLFunctions_3_3_Core* funcs, Perspecti
     m_IndexBuffer(QOpenGLBuffer::IndexBuffer)
 {
 
-    if(!m_Shader.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/TransmissionCable.vert"))
+    if(!m_Shader.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shaders/TransmissionCable.vert"))
         qCritical() << "TransmissionLine vertex shader error";
 
-    if(!m_Shader.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/TransmissionCable.frag"))
+    if(!m_Shader.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/TransmissionCable.frag"))
         qCritical() << "TransmissionLine fragment shader error";
 
     if(!m_Shader.link())
