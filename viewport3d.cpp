@@ -3,6 +3,8 @@
 #include <QMessageBox>
 #include <QKeyEvent>
 #include <QDebug>
+#include <QMenu>
+#include <QFileDialog>
 
 Viewport3D::Viewport3D(QWidget* parent) : QOpenGLWidget(parent)
 {
@@ -10,6 +12,10 @@ Viewport3D::Viewport3D(QWidget* parent) : QOpenGLWidget(parent)
 
     startTimer(1000/30);
     m_Timer.restart();
+
+    setContextMenuPolicy(Qt::CustomContextMenu);
+
+    connect(this, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
 }
 
 void Viewport3D::messageLogged(const QOpenGLDebugMessage &debugMessage)
@@ -177,7 +183,7 @@ void Viewport3D::timerEvent(QTimerEvent*)
 
 void Viewport3D::mousePressEvent(QMouseEvent* event)
 {
-    if(event->button() == Qt::RightButton)
+    if(event->button() == Qt::LeftButton)
     {
         m_MouseLastPosition = event->pos();
         m_CapturingMouseDelta = true;
@@ -186,7 +192,7 @@ void Viewport3D::mousePressEvent(QMouseEvent* event)
 
 void Viewport3D::mouseReleaseEvent(QMouseEvent* event)
 {
-    if(event->button() == Qt::RightButton)
+    if(event->button() == Qt::LeftButton)
     {
         m_CapturingMouseDelta = false;
     }
@@ -219,4 +225,33 @@ void Viewport3D::wheelEvent(QWheelEvent* event)
         repaint();
         emit cameraMoved(m_Camera.Position);
     }
+}
+
+void Viewport3D::showContextMenu(QPoint mousePos)
+{
+    QMenu contextMenu(tr("Context menu"), this);
+
+    QAction action1("Save Image", this);
+    connect(&action1, SIGNAL(triggered()), this, SLOT(saveFrameAsImage()));
+    contextMenu.addAction(&action1);
+
+    contextMenu.exec(mapToGlobal(mousePos));
+}
+
+void Viewport3D::saveFrameAsImage()
+{
+    auto image = grabFramebuffer();
+
+    QString path = QFileDialog::getSaveFileName(this, tr("Save Image File"), QString(), tr("Images (*.png)"));
+
+    if (!path.isEmpty())
+    {
+        if(!path.endsWith(".png"))
+            path.append(".png");
+
+        image.save(path);
+        emit exportedImage(path);
+    }
+    else
+        emit exportedImage("Saving cancelled");
 }

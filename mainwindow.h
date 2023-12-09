@@ -18,6 +18,7 @@ public:
 
 public slots:
     void updateCameraLocationStatus(QVector3D newPos);
+    void showExportedImageStatus(QString path);
     void showAboutWindow();
 
 private:

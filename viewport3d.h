@@ -32,9 +32,12 @@ public slots:
 
 private slots:
     void messageLogged(const QOpenGLDebugMessage &debugMessage);
+    void showContextMenu(QPoint mousePos);
+    void saveFrameAsImage();
 
 signals:
     void cameraMoved(QVector3D newPos);
+    void exportedImage(QString path);
 
 private:
     virtual void initializeGL() override;
