@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QVector3D>
+#include "src/sim/mfsimulator.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -23,5 +24,7 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
+
+    MFSimulator* simulator;
 };
 #endif // MAINWINDOW_H

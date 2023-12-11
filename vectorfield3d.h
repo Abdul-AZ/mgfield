@@ -5,13 +5,24 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLVertexArrayObject>
+#include "src/sim/mfsimulator.h"
+#include <QObject>
 
-class VectorField3D
+class VectorField3D : public QObject
 {
+    Q_OBJECT
+
 public:
     VectorField3D(QOpenGLFunctions_3_3_Core* funcs);
+    virtual ~VectorField3D() {};
 
     void Draw(QMatrix4x4 viewProjection);
+
+public slots:
+    void updateBuffers();
+
+signals:
+    void repaintRequested();
 
 private:
     void loadModel();
@@ -23,6 +34,7 @@ private:
     QOpenGLBuffer              m_IndexBuffer;
     QOpenGLShaderProgram       m_Shader;
     int32_t                    m_NumIndecies;
+    MFSimulator*               m_Simulator;
 };
 
 #endif // VECTORFIELD3D_H

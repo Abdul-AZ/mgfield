@@ -73,6 +73,8 @@ void Viewport3D::initializeGL()
 
     cable = new TransmissionCable(m_GLFuncs, m_Camera);
     vectorField = new VectorField3D(m_GLFuncs);
+
+    connect(vectorField, SIGNAL(repaintRequested()), this, SLOT(repaint()));
 }
 
 void Viewport3D::paintGL()

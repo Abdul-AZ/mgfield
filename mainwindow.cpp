@@ -2,11 +2,14 @@
 #include "ui_mainwindow.h"
 
 #include <QMessageBox>
+#include <QPushButton>
 #include "viewport3d.h"
+#include "src/sim/mfsimulator.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , simulator(MFSimulator::GetInstance())
 {
     ui->setupUi(this);
 
@@ -19,6 +22,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->viewport3D, &Viewport3D::cameraMoved, this, &MainWindow::updateCameraLocationStatus);
     connect(ui->viewport3D, &Viewport3D::exportedImage, this, &MainWindow::showExportedImageStatus);
+
+    connect(ui->simulatePushButton, &QPushButton::clicked, simulator, &MFSimulator::RequestNewSimulationRun);
 
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(showAboutWindow()));
 }

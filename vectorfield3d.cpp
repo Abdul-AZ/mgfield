@@ -28,6 +28,9 @@ VectorField3D::VectorField3D(QOpenGLFunctions_3_3_Core* funcs)
     m_Shader.bind();
     m_Shader.setAttributeBuffer(0, GL_FLOAT, 0, 3, 0);
     m_Shader.enableAttributeArray(0);
+
+    m_Simulator = MFSimulator::GetInstance();
+    connect(m_Simulator, SIGNAL(SimulationFinished()), this, SLOT(updateBuffers()));
 }
 
 void VectorField3D::loadModel()
@@ -86,13 +89,37 @@ void VectorField3D::Draw(QMatrix4x4 viewProjection)
     m_Shader.bind();
     m_VertexArray.bind();
 
-    QMatrix4x4 matrix;
-    matrix.scale(0.1f);
+    m_Shader.setUniformValue(m_Shader.uniformLocation("uViewProjection"), viewProjection);
 
-    m_Shader.setUniformValue(m_Shader.uniformLocation("uModelViewProjection"), viewProjection);
-
-    m_GLFuncs->glDrawElements(GL_TRIANGLES, m_NumIndecies, GL_UNSIGNED_SHORT, 0);
+    m_GLFuncs->glDrawElementsInstanced(GL_TRIANGLES, m_NumIndecies, GL_UNSIGNED_SHORT, 0, 27);
 
     m_Shader.release();
     m_VertexArray.release();
+}
+
+void VectorField3D::updateBuffers()
+{
+    QMatrix4x4* buffer = new QMatrix4x4[27];
+
+    int i = 0;
+    for (int x = 0; x < SIMULATION_DIMENSION; x++)
+        for (int y = 0; y < SIMULATION_DIMENSION; y++)
+            for (int z = 0; z < SIMULATION_DIMENSION; z++)
+            {
+                buffer[i].translate({(float)x - 1, (float)y - 1, (float)z - 1});
+                buffer[i].scale(0.05f);
+                i++;
+            }
+
+    m_Shader.bind();
+    for (int i = 0; i < 27; i++)
+    {
+        QString string = QString("uModelMatrices[%1]").arg(i);
+        m_Shader.setUniformValue(m_Shader.uniformLocation(string), buffer[i]);
+    }
+    m_Shader.release();
+
+    delete[] buffer;
+
+    emit repaintRequested();
 }

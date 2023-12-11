@@ -15,6 +15,16 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="Viewport3D" name="viewport3D">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="2">
      <layout class="QFormLayout" name="formLayout">
       <property name="sizeConstraint">
@@ -45,13 +55,10 @@
       </item>
      </layout>
     </item>
-    <item row="0" column="0">
-     <widget class="Viewport3D" name="viewport3D">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
+    <item row="1" column="0">
+     <widget class="QPushButton" name="simulatePushButton">
+      <property name="text">
+       <string>Simulate</string>
       </property>
      </widget>
     </item>
