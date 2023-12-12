@@ -28,6 +28,7 @@ signals:
     void SimulationFinished();
 
 private:
+    void ResetResults();
     void CalculateContributionsFromCable(const TransmissionCable& cable);
 
 public:

@@ -107,10 +107,10 @@ void VectorField3D::updateBuffers()
             for (int z = 0; z < SIMULATION_DIMENSION; z++)
             {
                 QVector3D position = {(float)x - 2, (float)y - 2, (float)z - 2};
-                QQuaternion quat = QQuaternion::fromDirection(m_Simulator->SimulationResults[x][y][z], {0.0f, 1.0f, 0.0f});
+                QQuaternion quat = QQuaternion::fromDirection(m_Simulator->SimulationResults[x][y][z].normalized(), {0.0f, 1.0f, 0.0f});
                 buffer[i].translate(position);
                 buffer[i].rotate(quat);
-                buffer[i].scale(0.05f / QVector2D(position.y(), position.z()).length());
+                buffer[i].scale(0.05f / m_Simulator->SimulationResults[x][y][z].length());
 
                 i++;
             }
