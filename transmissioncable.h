@@ -8,12 +8,17 @@
 #include <QMatrix4x4>
 #include "perspectivecamera.h"
 
+#define TRANSMISSION_CABLE_BASE_DIRECTION {1.0f, 0.0f, 0.0f}
+
 class TransmissionCable
 {
 public:
-    TransmissionCable(QOpenGLFunctions_3_3_Core* funcs, PerspectiveCamera& camera);
+    TransmissionCable(QOpenGLFunctions_3_3_Core* funcs, PerspectiveCamera* camera);
 
     void Draw(QMatrix4x4 viewProjection);
+
+    QVector3D GetDirection() const { return m_Direction; };
+    QVector3D GetPosition() const { return m_Position; };
 
 private:
     void createBuffers();
@@ -25,6 +30,9 @@ private:
     QOpenGLBuffer              m_IndexBuffer;
     QOpenGLVertexArrayObject   m_VertexArray;
     int32_t                    m_NumIndecies;
+
+    QVector3D                  m_Position  = {0.0f, 0.0f, 0.0f};
+    QVector3D                  m_Direction = {0.0f, 1.0f, 1.0f};
 };
 
 #endif // TRANSMISSIONCABLE_H

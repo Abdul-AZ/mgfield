@@ -71,18 +71,20 @@ void Viewport3D::initializeGL()
 
     emit cameraMoved(m_Camera.Position);
 
-    cable = new TransmissionCable(m_GLFuncs, m_Camera);
-    vectorField = new VectorField3D(m_GLFuncs);
+    SceneData.Cables.append(std::make_shared<TransmissionCable>(m_GLFuncs, &m_Camera));
+    m_SimulationVectorField = new VectorField3D(m_GLFuncs);
 
-    connect(vectorField, SIGNAL(repaintRequested()), this, SLOT(repaint()));
+    connect(m_SimulationVectorField, SIGNAL(repaintRequested()), this, SLOT(repaint()));
 }
 
 void Viewport3D::paintGL()
 {
     QMatrix4x4 viewProjection = m_ProjectionMatrix * m_Camera.GetViewMatrix();
 
-    cable->Draw(viewProjection);
-    vectorField->Draw(viewProjection);
+    for (auto& cable : SceneData.Cables)
+        cable->Draw(viewProjection);
+
+    m_SimulationVectorField->Draw(viewProjection);
 }
 
 void Viewport3D::resizeGL(int width, int height)

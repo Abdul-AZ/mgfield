@@ -11,7 +11,6 @@
 #include "perspectivecamera.h"
 #include "orbitcameracontroller.h"
 #include "vectorfield3d.h"
-#include "transmissioncable.h"
 
 enum class CameraControlMode
 {
@@ -51,6 +50,9 @@ private:
     virtual void mouseMoveEvent(QMouseEvent* event) override;
     virtual void wheelEvent(QWheelEvent* event) override;
 
+public:
+    Scene SceneData;
+
 private:
     QOpenGLFunctions_3_3_Core* m_GLFuncs;
     PerspectiveCamera          m_Camera;
@@ -62,9 +64,7 @@ private:
     CameraControlMode          m_CameraMode = CameraControlMode::Orbit;
     bool                       m_CapturingMouseDelta = false;
 
-    //TODO separate this and maybe make a scene graph (?)
-    TransmissionCable* cable;
-    VectorField3D* vectorField;
+    VectorField3D* m_SimulationVectorField;
 };
 
 #endif // VIEWPORT3D_H

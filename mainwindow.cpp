@@ -23,7 +23,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->viewport3D, &Viewport3D::cameraMoved, this, &MainWindow::updateCameraLocationStatus);
     connect(ui->viewport3D, &Viewport3D::exportedImage, this, &MainWindow::showExportedImageStatus);
 
-    connect(ui->simulatePushButton, &QPushButton::clicked, simulator, &MFSimulator::RequestNewSimulationRun);
+    connect(ui->simulatePushButton, &QPushButton::clicked, this,[this]()
+    {
+        MFSimulator::GetInstance()->RequestNewSimulationRun(&ui->viewport3D->SceneData);
+    });
 
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(showAboutWindow()));
 }

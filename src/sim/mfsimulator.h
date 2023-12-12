@@ -5,6 +5,8 @@
 #include <array>
 #include <QVector3D>
 
+#include "../scene.h"
+
 #define SIMULATION_DIMENSION (5)
 
 class MFSimulator : public QObject
@@ -19,17 +21,18 @@ public:
     static MFSimulator *GetInstance();
 
 public slots:
-    void RequestNewSimulationRun();
+    void RequestNewSimulationRun(Scene* scene);
 
 signals:
     void SimulationStarted();
     void SimulationFinished();
 
-public:
-    std::array<std::array<std::array<QVector3D, SIMULATION_DIMENSION>, SIMULATION_DIMENSION>, SIMULATION_DIMENSION> SimulationResults;
+private:
+    void CalculateContributionsFromCable(const TransmissionCable& cable);
 
-    //SCENE description
-    QVector3D CurrentFlowDirection = {1.0f, 0.0f, 0.0f};
+public:
+    Scene* TargetScene = nullptr;
+    std::array<std::array<std::array<QVector3D, SIMULATION_DIMENSION>, SIMULATION_DIMENSION>, SIMULATION_DIMENSION> SimulationResults;
 
 protected:
     static MFSimulator* singleton;

@@ -9,6 +9,7 @@ SOURCES += \
     mainwindow.cpp \
     orbitcameracontroller.cpp \
     perspectivecamera.cpp \
+    src/scene.cpp \
     src/sim/mfsimulator.cpp \
     transmissioncable.cpp \
     vectorfield3d.cpp \
@@ -19,6 +20,7 @@ HEADERS += \
     mainwindow.h \
     orbitcameracontroller.h \
     perspectivecamera.h \
+    src/scene.h \
     src/sim/mfsimulator.h \
     transmissioncable.h \
     vectorfield3d.h \

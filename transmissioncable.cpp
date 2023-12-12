@@ -6,10 +6,10 @@
 #define CYLINDER_HEIGHT       (50.0f)
 #define CYLINDER_WIDTH        (0.7f)
 
-TransmissionCable::TransmissionCable(QOpenGLFunctions_3_3_Core* funcs, PerspectiveCamera& camera)
+TransmissionCable::TransmissionCable(QOpenGLFunctions_3_3_Core* funcs, PerspectiveCamera* camera)
     :
     m_GLFuncs(funcs),
-    m_Camera(camera),
+    m_Camera(*camera),
     m_VertexBuffer(QOpenGLBuffer::VertexBuffer),
     m_IndexBuffer(QOpenGLBuffer::IndexBuffer)
 {
@@ -42,7 +42,14 @@ void TransmissionCable::Draw(QMatrix4x4 viewProjection)
 
     QMatrix4x4 matrix;
     matrix *= viewProjection;
-    matrix.rotate(90, 0.0f, 0.0f, 1.0f);
+
+
+    // Base objection rotation quat
+    QQuaternion quat1 = QQuaternion::fromDirection(TRANSMISSION_CABLE_BASE_DIRECTION, {1.0f, 0.0f, 0.0f});
+    // Actual object rotation quat
+    QQuaternion quat2 = QQuaternion::fromDirection(m_Direction, {1.0f, 0.0f, 0.0f});
+    matrix.translate(m_Position);
+    matrix.rotate(quat2 * quat1);
     matrix.scale(0.1f);
 
     m_Shader.setUniformValue(m_Shader.uniformLocation("uModelViewProjection"), matrix);
@@ -59,18 +66,18 @@ void TransmissionCable::createBuffers()
     const float step = 2.0f * M_PI / CYLINDER_NUM_VERTICES;
     float angle = 0.0f;
 
-    vertices.emplace_back(0.0f, -CYLINDER_HEIGHT, 0.0f);
+    vertices.emplace_back(-CYLINDER_HEIGHT, 0.0f, 0.0f);
     for (int i = 0; i < CYLINDER_NUM_VERTICES; i++)
     {
-        vertices.emplace_back(CYLINDER_WIDTH * (float)cos(angle), -CYLINDER_HEIGHT, CYLINDER_WIDTH * (float)sin(angle));
+        vertices.emplace_back(-CYLINDER_HEIGHT, CYLINDER_WIDTH * (float)cos(angle), CYLINDER_WIDTH * (float)sin(angle));
 
         angle += step;
     }
 
-    vertices.emplace_back(0.0f, CYLINDER_HEIGHT, 0.0f);
+    vertices.emplace_back(CYLINDER_HEIGHT, 0.0f, 0.0f);
     for (int i = 0; i < CYLINDER_NUM_VERTICES; i++)
     {
-        vertices.emplace_back(CYLINDER_WIDTH * (float)cos(angle), CYLINDER_HEIGHT, CYLINDER_WIDTH * (float)sin(angle));
+        vertices.emplace_back(CYLINDER_HEIGHT, CYLINDER_WIDTH * (float)cos(angle), CYLINDER_WIDTH * (float)sin(angle));
 
         angle += step;
     }
