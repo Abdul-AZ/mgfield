@@ -5,7 +5,7 @@
 #include <array>
 #include <QVector3D>
 
-#define SIMULATION_DIMENSION (3)
+#define SIMULATION_DIMENSION (5)
 
 class MFSimulator : public QObject
 {
@@ -28,6 +28,8 @@ signals:
 public:
     std::array<std::array<std::array<QVector3D, SIMULATION_DIMENSION>, SIMULATION_DIMENSION>, SIMULATION_DIMENSION> SimulationResults;
 
+    //SCENE description
+    QVector3D CurrentFlowDirection = {1.0f, 0.0f, 0.0f};
 
 protected:
     static MFSimulator* singleton;

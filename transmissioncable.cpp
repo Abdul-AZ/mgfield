@@ -3,7 +3,7 @@
 #include <QDebug>
 
 #define CYLINDER_NUM_VERTICES (6)
-#define CYLINDER_HEIGHT       (8.0f)
+#define CYLINDER_HEIGHT       (50.0f)
 #define CYLINDER_WIDTH        (0.7f)
 
 TransmissionCable::TransmissionCable(QOpenGLFunctions_3_3_Core* funcs, PerspectiveCamera& camera)
@@ -43,6 +43,7 @@ void TransmissionCable::Draw(QMatrix4x4 viewProjection)
     QMatrix4x4 matrix;
     matrix *= viewProjection;
     matrix.rotate(90, 0.0f, 0.0f, 1.0f);
+    matrix.scale(0.1f);
 
     m_Shader.setUniformValue(m_Shader.uniformLocation("uModelViewProjection"), matrix);
 

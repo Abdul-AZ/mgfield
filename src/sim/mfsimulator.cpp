@@ -1,5 +1,7 @@
 #include "mfsimulator.h"
 
+#include <QDebug>
+
 MFSimulator::MFSimulator() {}
 
 MFSimulator* MFSimulator::singleton = nullptr;
@@ -8,16 +10,15 @@ void MFSimulator::RequestNewSimulationRun()
 {
     emit SimulationStarted();
 
-    for (auto& x : SimulationResults)
-    {
-        for (auto& y : x)
-        {
-            for (int i = 0; i < SIMULATION_DIMENSION; i++)
+    for (int x = 0; x < SIMULATION_DIMENSION; x++)
+        for (int y = 0; y < SIMULATION_DIMENSION; y++)
+            for (int z = 0; z < SIMULATION_DIMENSION; z++)
             {
-                y[i] = QVector3D{1.0f, 1.0f, 1.0f};
+                QVector3D position = {(float)x - 2, (float)y - 2, (float)z - 2};
+                SimulationResults[x][y][z] = QVector3D::crossProduct(CurrentFlowDirection, QVector3D{position.x(), position.y(), position.z()}).normalized();
+
+                qCritical() << position << "RESULTS IN: " << SimulationResults[x][y][z];
             }
-        }
-    }
 
     emit SimulationFinished();
 }
