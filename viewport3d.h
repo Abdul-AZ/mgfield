@@ -11,6 +11,7 @@
 #include "perspectivecamera.h"
 #include "orbitcameracontroller.h"
 #include "vectorfield3d.h"
+#include "src/grid3d.h"
 
 enum class CameraControlMode
 {
@@ -65,6 +66,7 @@ private:
     bool                       m_CapturingMouseDelta = false;
 
     VectorField3D* m_SimulationVectorField;
+    Grid3D*        m_Grid;
 };
 
 #endif // VIEWPORT3D_H

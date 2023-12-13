@@ -65,14 +65,16 @@ void Viewport3D::initializeGL()
 
     connect(logger, SIGNAL(messageLogged(QOpenGLDebugMessage)), this, SLOT(messageLogged(QOpenGLDebugMessage)));
 #endif
-
+    m_GLFuncs->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     m_GLFuncs->glEnable(GL_DEPTH_TEST);
+    m_GLFuncs->glEnable(GL_BLEND);
     m_GLFuncs->glClearColor(0.1, 0.1, 0.1, 1.0);
 
     emit cameraMoved(m_Camera.Position);
 
-    SceneData.Cables.append(std::make_shared<TransmissionCable>(m_GLFuncs, &m_Camera));
+    SceneData.Cables.append(std::make_shared<TransmissionCable>(m_GLFuncs));
     m_SimulationVectorField = new VectorField3D(m_GLFuncs);
+    m_Grid = new Grid3D(m_GLFuncs);
 
     connect(m_SimulationVectorField, SIGNAL(repaintRequested()), this, SLOT(repaint()));
 }
@@ -80,6 +82,8 @@ void Viewport3D::initializeGL()
 void Viewport3D::paintGL()
 {
     QMatrix4x4 viewProjection = m_ProjectionMatrix * m_Camera.GetViewMatrix();
+
+    m_Grid->Draw(viewProjection);
 
     for (auto& cable : SceneData.Cables)
         cable->Draw(viewProjection);

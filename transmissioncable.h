@@ -6,14 +6,13 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
 #include <QMatrix4x4>
-#include "perspectivecamera.h"
 
 #define TRANSMISSION_CABLE_BASE_DIRECTION {1.0f, 0.0f, 0.0f}
 
 class TransmissionCable
 {
 public:
-    TransmissionCable(QOpenGLFunctions_3_3_Core* funcs, PerspectiveCamera* camera);
+    TransmissionCable(QOpenGLFunctions_3_3_Core* funcs);
 
     void Draw(QMatrix4x4 viewProjection);
 
@@ -24,7 +23,6 @@ private:
     void createBuffers();
 
     QOpenGLFunctions_3_3_Core* m_GLFuncs;
-    PerspectiveCamera&         m_Camera;
     QOpenGLShaderProgram       m_Shader;
     QOpenGLBuffer              m_VertexBuffer;
     QOpenGLBuffer              m_IndexBuffer;

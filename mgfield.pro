@@ -9,6 +9,7 @@ SOURCES += \
     mainwindow.cpp \
     orbitcameracontroller.cpp \
     perspectivecamera.cpp \
+    src/grid3d.cpp \
     src/scene.cpp \
     src/sim/mfsimulator.cpp \
     transmissioncable.cpp \
@@ -20,6 +21,7 @@ HEADERS += \
     mainwindow.h \
     orbitcameracontroller.h \
     perspectivecamera.h \
+    src/grid3d.h \
     src/scene.h \
     src/sim/mfsimulator.h \
     transmissioncable.h \

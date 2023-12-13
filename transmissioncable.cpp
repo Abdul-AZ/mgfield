@@ -6,18 +6,17 @@
 #define CYLINDER_HEIGHT       (50.0f)
 #define CYLINDER_WIDTH        (0.7f)
 
-TransmissionCable::TransmissionCable(QOpenGLFunctions_3_3_Core* funcs, PerspectiveCamera* camera)
+TransmissionCable::TransmissionCable(QOpenGLFunctions_3_3_Core* funcs)
     :
     m_GLFuncs(funcs),
-    m_Camera(*camera),
     m_VertexBuffer(QOpenGLBuffer::VertexBuffer),
     m_IndexBuffer(QOpenGLBuffer::IndexBuffer)
 {
 
-    if(!m_Shader.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shaders/TransmissionCable.vert"))
+    if(!m_Shader.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shaders/ColoredMesh.vert"))
         qCritical() << "TransmissionLine vertex shader error";
 
-    if(!m_Shader.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/TransmissionCable.frag"))
+    if(!m_Shader.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/ColoredMesh.frag"))
         qCritical() << "TransmissionLine fragment shader error";
 
     if(!m_Shader.link())
@@ -31,6 +30,7 @@ TransmissionCable::TransmissionCable(QOpenGLFunctions_3_3_Core* funcs, Perspecti
     m_Shader.bind();
     m_Shader.setAttributeBuffer(0, GL_FLOAT, 0, 3, 0);
     m_Shader.enableAttributeArray(0);
+    m_Shader.setUniformValue("uMeshColor", QVector4D(1.0f, 1.0f, 1.0f, 1.0f));
 
     m_VertexArray.release();
 }

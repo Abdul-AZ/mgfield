@@ -2,7 +2,9 @@
 
 out vec4 FragColor;
 
+uniform vec4 uMeshColor;
+
 void main(void)
 {
-    FragColor = vec4(1.0,1.0,1.0,1.0);
+    FragColor = uMeshColor;
 }
