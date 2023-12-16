@@ -3,7 +3,7 @@
 
 #include <QMessageBox>
 #include <QPushButton>
-#include "viewport3d.h"
+#include "src/view/viewport3d.h"
 #include "src/sim/mfsimulator.h"
 
 MainWindow::MainWindow(QWidget *parent)

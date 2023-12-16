@@ -138,12 +138,12 @@
   <customwidget>
    <class>Viewport3D</class>
    <extends>QOpenGLWidget</extends>
-   <header>viewport3d.h</header>
+   <header>src/view/viewport3d.h</header>
   </customwidget>
   <customwidget>
    <class>ObjectListView</class>
    <extends>QListView</extends>
-   <header>src/objectlistview.h</header>
+   <header>src/view/objectlistview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

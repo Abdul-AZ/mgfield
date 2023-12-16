@@ -6,7 +6,7 @@
 #include <QWidget>
 #include <QStringListModel>
 
-#include "scene.h"
+#include "../scene.h"
 
 class ObjectListView : public QListView
 {

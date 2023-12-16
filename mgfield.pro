@@ -10,12 +10,12 @@ SOURCES += \
     orbitcameracontroller.cpp \
     perspectivecamera.cpp \
     src/grid3d.cpp \
-    src/objectlistview.cpp \
+    src/view/objectlistview.cpp \
     src/scene.cpp \
     src/sim/mfsimulator.cpp \
     transmissioncable.cpp \
     vectorfield3d.cpp \
-    viewport3d.cpp \
+    src/view/viewport3d.cpp \
     thirdparty/tinygltf/tiny_gltf.cpp
 
 HEADERS += \
@@ -23,12 +23,12 @@ HEADERS += \
     orbitcameracontroller.h \
     perspectivecamera.h \
     src/grid3d.h \
-    src/objectlistview.h \
+    src/view/objectlistview.h \
     src/scene.h \
     src/sim/mfsimulator.h \
     transmissioncable.h \
     vectorfield3d.h \
-    viewport3d.h \
+    src/view/viewport3d.h \
     thirdparty/tinygltf/json.hpp \
     thirdparty/tinygltf/stb_image.h \
     thirdparty/tinygltf/stb_image_write.h \
