@@ -16,6 +16,7 @@ Viewport3D::Viewport3D(QWidget* parent) : QOpenGLWidget(parent)
     setContextMenuPolicy(Qt::CustomContextMenu);
 
     connect(this, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
+
 }
 
 void Viewport3D::messageLogged(const QOpenGLDebugMessage &debugMessage)
@@ -25,8 +26,6 @@ void Viewport3D::messageLogged(const QOpenGLDebugMessage &debugMessage)
 
 void Viewport3D::initializeGL()
 {
-    makeCurrent();
-
     if (context()->format().majorVersion() < 4)
     {
         if ( context()->format().minorVersion() < 3)
@@ -40,20 +39,6 @@ void Viewport3D::initializeGL()
         }
     }
 
-    QSurfaceFormat format;
-    format.setDepthBufferSize(24);
-    format.setVersion(3, 3);
-    format.setProfile(QSurfaceFormat::CoreProfile);
-
-#ifdef QT_DEBUG
-    format.setOption(QSurfaceFormat::DebugContext);
-#endif
-
-    QSurfaceFormat::setDefaultFormat(format);
-    context()->setFormat(format);
-    context()->create();
-
-    makeCurrent();
     m_GLFuncs = new QOpenGLFunctions_3_3_Core;
     m_GLFuncs->initializeOpenGLFunctions();
 
