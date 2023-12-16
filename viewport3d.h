@@ -29,6 +29,8 @@ public:
 
 public slots:
     void cameraModeChanged(CameraControlMode newMode);
+    void SceneLoaded(Scene* scene);
+    void RequestAddObject();
 
 private slots:
     void messageLogged(const QOpenGLDebugMessage &debugMessage);
@@ -51,10 +53,8 @@ private:
     virtual void mouseMoveEvent(QMouseEvent* event) override;
     virtual void wheelEvent(QWheelEvent* event) override;
 
-public:
-    Scene SceneData;
-
 private:
+    Scene*                     m_CurrentScene = nullptr;
     QOpenGLFunctions_3_3_Core* m_GLFuncs;
     PerspectiveCamera          m_Camera;
     QMap<int, bool>            m_Keys;

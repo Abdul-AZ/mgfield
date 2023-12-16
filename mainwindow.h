@@ -26,5 +26,6 @@ private:
     Ui::MainWindow *ui;
 
     MFSimulator* simulator;
+    Scene*       scene;
 };
 #endif // MAINWINDOW_H

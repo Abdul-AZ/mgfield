@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
     , simulator(MFSimulator::GetInstance())
 {
     ui->setupUi(this);
+    scene = new Scene;
 
     ui->CameraTypeComboBox->addItem("Orbit", (int32_t)CameraControlMode::Orbit);
     ui->CameraTypeComboBox->addItem("Free Roam", (int32_t)CameraControlMode::FreeRoam);
@@ -25,10 +26,16 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->simulatePushButton, &QPushButton::clicked, this,[this]()
     {
-        MFSimulator::GetInstance()->RequestNewSimulationRun(&ui->viewport3D->SceneData);
+        MFSimulator::GetInstance()->RequestNewSimulationRun(scene);
     });
 
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(showAboutWindow()));
+
+    connect(ui->AddObjectButton, SIGNAL(clicked()), ui->viewport3D, SLOT(RequestAddObject()));
+    ui->viewport3D->SceneLoaded(scene);
+    ui->ObjectList->SceneLoaded(scene);
+
+    connect(scene, SIGNAL(ObjectAdded()), ui->ObjectList, SLOT(ObjectsChanged()));
 }
 
 MainWindow::~MainWindow()

@@ -14,7 +14,7 @@ class TransmissionCable
 public:
     TransmissionCable(QOpenGLFunctions_3_3_Core* funcs);
 
-    void Draw(QMatrix4x4 viewProjection);
+    void Draw(QMatrix4x4 viewProjection, QOpenGLFunctions_3_3_Core* funcs);
 
     QVector3D GetDirection() const { return m_Direction; };
     QVector3D GetPosition() const { return m_Position; };
@@ -22,7 +22,6 @@ public:
 private:
     void createBuffers();
 
-    QOpenGLFunctions_3_3_Core* m_GLFuncs;
     QOpenGLShaderProgram       m_Shader;
     QOpenGLBuffer              m_VertexBuffer;
     QOpenGLBuffer              m_IndexBuffer;

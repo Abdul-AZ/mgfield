@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>951</width>
+    <height>553</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,7 +15,17 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetMaximumSize</enum>
+    </property>
+    <item row="1" column="6">
+     <widget class="QPushButton" name="simulatePushButton">
+      <property name="text">
+       <string>Simulate</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="6">
      <widget class="Viewport3D" name="viewport3D">
       <property name="sizePolicy">
        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
@@ -25,11 +35,18 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="2">
+    <item row="0" column="8">
      <layout class="QFormLayout" name="formLayout">
       <property name="sizeConstraint">
        <enum>QLayout::SetMinimumSize</enum>
       </property>
+      <item row="1" column="0">
+       <widget class="QLabel" name="CameraTypeLabel">
+        <property name="text">
+         <string>Camera Type</string>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="1">
        <widget class="QComboBox" name="CameraTypeComboBox">
         <property name="sizePolicy">
@@ -46,21 +63,32 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="CameraTypeLabel">
-        <property name="text">
-         <string>Camera Type</string>
-        </property>
-       </widget>
-      </item>
      </layout>
     </item>
-    <item row="1" column="0">
-     <widget class="QPushButton" name="simulatePushButton">
-      <property name="text">
-       <string>Simulate</string>
-      </property>
-     </widget>
+    <item row="0" column="0" colspan="2">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <widget class="QPushButton" name="AddObjectButton">
+          <property name="text">
+           <string>Add Object</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QPushButton" name="RemoveObjectButton">
+          <property name="text">
+           <string>Remove Object</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="ObjectListView" name="ObjectList"/>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -69,7 +97,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>951</width>
      <height>22</height>
     </rect>
    </property>
@@ -111,6 +139,11 @@
    <class>Viewport3D</class>
    <extends>QOpenGLWidget</extends>
    <header>viewport3d.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ObjectListView</class>
+   <extends>QListView</extends>
+   <header>src/objectlistview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -72,11 +72,27 @@ void Viewport3D::initializeGL()
 
     emit cameraMoved(m_Camera.Position);
 
-    SceneData.Cables.append(std::make_shared<TransmissionCable>(m_GLFuncs));
     m_SimulationVectorField = new VectorField3D(m_GLFuncs);
     m_Grid = new Grid3D(m_GLFuncs);
 
     connect(m_SimulationVectorField, SIGNAL(repaintRequested()), this, SLOT(repaint()));
+}
+
+
+//TODO separate rendering and data so that adding objects does not happen in this class
+//Maybe have a SceneRenderer class which has all the data?
+void Viewport3D::RequestAddObject()
+{
+    makeCurrent();
+    m_CurrentScene->Cables.append(std::make_shared<TransmissionCable>(nullptr));
+
+    emit m_CurrentScene->ObjectAdded();
+    repaint();
+}
+
+void Viewport3D::SceneLoaded(Scene* scene)
+{
+    m_CurrentScene = scene;
 }
 
 void Viewport3D::paintGL()
@@ -85,8 +101,11 @@ void Viewport3D::paintGL()
 
     m_Grid->Draw(viewProjection);
 
-    for (auto& cable : SceneData.Cables)
-        cable->Draw(viewProjection);
+    if(m_CurrentScene)
+    {
+        for (auto& cable : m_CurrentScene->Cables)
+            cable->Draw(viewProjection, m_GLFuncs);
+    }
 
     m_SimulationVectorField->Draw(viewProjection);
 }

@@ -12,6 +12,9 @@ class Scene : public QObject
 public:
     Scene();
 
+signals:
+    void ObjectAdded();
+
 public:
     QVector<std::shared_ptr<TransmissionCable>> Cables;
 };

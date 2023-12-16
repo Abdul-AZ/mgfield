@@ -8,7 +8,6 @@
 
 TransmissionCable::TransmissionCable(QOpenGLFunctions_3_3_Core* funcs)
     :
-    m_GLFuncs(funcs),
     m_VertexBuffer(QOpenGLBuffer::VertexBuffer),
     m_IndexBuffer(QOpenGLBuffer::IndexBuffer)
 {
@@ -32,13 +31,14 @@ TransmissionCable::TransmissionCable(QOpenGLFunctions_3_3_Core* funcs)
     m_Shader.enableAttributeArray(0);
     m_Shader.setUniformValue("uMeshColor", QVector4D(1.0f, 1.0f, 1.0f, 1.0f));
 
+    m_Shader.release();
     m_VertexArray.release();
 }
 
-void TransmissionCable::Draw(QMatrix4x4 viewProjection)
+void TransmissionCable::Draw(QMatrix4x4 viewProjection, QOpenGLFunctions_3_3_Core* funcs)
 {
-    m_Shader.bind();
     m_VertexArray.bind();
+    m_Shader.bind();
 
     QMatrix4x4 matrix;
     matrix *= viewProjection;
@@ -54,7 +54,7 @@ void TransmissionCable::Draw(QMatrix4x4 viewProjection)
 
     m_Shader.setUniformValue(m_Shader.uniformLocation("uModelViewProjection"), matrix);
 
-    m_GLFuncs->glDrawElements(GL_TRIANGLES, m_NumIndecies, GL_UNSIGNED_INT, 0);
+    funcs->glDrawElements(GL_TRIANGLES, m_NumIndecies, GL_UNSIGNED_INT, 0);
 
     m_Shader.release();
     m_VertexArray.release();
