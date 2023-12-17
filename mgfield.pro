@@ -13,6 +13,7 @@ SOURCES += \
     src/view/objectlistview.cpp \
     src/scene.cpp \
     src/sim/mfsimulator.cpp \
+    src/view/viewportsettings.cpp \
     transmissioncable.cpp \
     vectorfield3d.cpp \
     src/view/viewport3d.cpp \
@@ -26,6 +27,7 @@ HEADERS += \
     src/view/objectlistview.h \
     src/scene.h \
     src/sim/mfsimulator.h \
+    src/view/viewportsettings.h \
     transmissioncable.h \
     vectorfield3d.h \
     src/view/viewport3d.h \
@@ -35,7 +37,8 @@ HEADERS += \
     thirdparty/tinygltf/tiny_gltf.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    src/view/viewportsettings.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

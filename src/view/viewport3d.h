@@ -12,6 +12,7 @@
 #include "orbitcameracontroller.h"
 #include "vectorfield3d.h"
 #include "src/grid3d.h"
+#include "viewportsettings.h"
 
 enum class CameraControlMode
 {
@@ -26,6 +27,8 @@ class Viewport3D : public QOpenGLWidget
 public:
     Viewport3D(QWidget* parent = nullptr);
     virtual ~Viewport3D() {};
+
+    void HookViewportSettings(ViewportSettings* settings);
 
 public slots:
     void cameraModeChanged(CameraControlMode newMode);
@@ -64,6 +67,7 @@ private:
     OrbitCameraController      m_OrbitCameraController;
     CameraControlMode          m_CameraMode = CameraControlMode::Orbit;
     bool                       m_CapturingMouseDelta = false;
+    ViewportSettings*          m_ViewportSettings = nullptr;
 
     VectorField3D* m_SimulationVectorField;
     Grid3D*        m_Grid;

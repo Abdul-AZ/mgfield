@@ -36,6 +36,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->ObjectList->SceneLoaded(scene);
 
     connect(scene, SIGNAL(ObjectAdded()), ui->ObjectList, SLOT(ObjectsChanged()));
+
+    ui->viewport3D->HookViewportSettings(ui->ViewportSettingsWidget);
 }
 
 MainWindow::~MainWindow()

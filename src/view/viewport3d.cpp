@@ -84,7 +84,13 @@ void Viewport3D::paintGL()
 {
     QMatrix4x4 viewProjection = m_ProjectionMatrix * m_Camera.GetViewMatrix();
 
-    m_Grid->Draw(viewProjection);
+    if(m_ViewportSettings)
+    {
+        if(m_ViewportSettings->getGridEnabled())
+            m_Grid->Draw(viewProjection);
+    }
+    else
+        m_Grid->Draw(viewProjection);
 
     if(m_CurrentScene)
     {
@@ -266,4 +272,11 @@ void Viewport3D::saveFrameAsImage()
     }
     else
         emit exportedImage("Saving cancelled");
+}
+
+void Viewport3D::HookViewportSettings(ViewportSettings* settings)
+{
+    m_ViewportSettings = settings;
+
+    connect(settings, &ViewportSettings::SettingsChanged, this, [this] ()  {repaint(); });
 }
