@@ -1,7 +1,10 @@
 #version 330 core
 layout (location = 0) in vec3 aPos;
 
-uniform mat4 uModelMatrices[5 * 5 * 5];
+layout (std140) uniform uModelMatricesBuffer
+{
+    mat4 uModelMatrices[32768];
+};
 uniform mat4 uViewProjection;
 
 void main(void)

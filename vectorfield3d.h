@@ -32,6 +32,7 @@ private:
     QOpenGLVertexArrayObject   m_VertexArray;
     QOpenGLBuffer              m_VertexBuffer;
     QOpenGLBuffer              m_IndexBuffer;
+    uint32_t                   m_UniformBuffer;
     QOpenGLShaderProgram       m_Shader;
     int32_t                    m_NumIndecies;
     MFSimulator*               m_Simulator;

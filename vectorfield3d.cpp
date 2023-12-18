@@ -24,6 +24,8 @@ VectorField3D::VectorField3D(QOpenGLFunctions_3_3_Core* funcs)
     m_VertexArray.bind();
 
     loadModel();
+    m_GLFuncs->glGenBuffers(1, &m_UniformBuffer);
+    m_GLFuncs->glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBuffer);
 
     m_Shader.bind();
     m_Shader.setAttributeBuffer(0, GL_FLOAT, 0, 3, 0);
@@ -90,8 +92,13 @@ void VectorField3D::Draw(QMatrix4x4 viewProjection)
     m_VertexArray.bind();
 
     m_Shader.setUniformValue(m_Shader.uniformLocation("uViewProjection"), viewProjection);
+    uint32_t index = m_GLFuncs->glGetUniformBlockIndex(m_Shader.programId(), "uModelMatricesBuffer");
+    m_GLFuncs->glUniformBlockBinding(m_Shader.programId(), index, 2);
+    m_GLFuncs->glBindBufferBase(GL_UNIFORM_BUFFER, 2, m_UniformBuffer);
+    //m_GLFuncs->glUniformBlockBinding(m_Shader.programId(), 0, 0);
 
-    m_GLFuncs->glDrawElementsInstanced(GL_TRIANGLES, m_NumIndecies, GL_UNSIGNED_SHORT, 0, 5 * 5 * 5);
+
+    m_GLFuncs->glDrawElementsInstanced(GL_TRIANGLES, m_NumIndecies, GL_UNSIGNED_SHORT, 0, m_Simulator->SimulationResults.size());
 
     m_Shader.release();
     m_VertexArray.release();
@@ -99,31 +106,38 @@ void VectorField3D::Draw(QMatrix4x4 viewProjection)
 
 void VectorField3D::updateBuffers()
 {
-    QMatrix4x4* buffer = new QMatrix4x4[SIMULATION_DIMENSION * SIMULATION_DIMENSION * SIMULATION_DIMENSION];
+    if(!m_Simulator->SimulationResultsExist)
+    {
+        emit repaintRequested();
+        return;
+    }
+
+    uint8_t* buffer = (uint8_t*)malloc(m_Simulator->SimulationResults.size() * sizeof(float) * 16);
 
     int i = 0;
-    for (int x = 0; x < SIMULATION_DIMENSION; x++)
-        for (int y = 0; y < SIMULATION_DIMENSION; y++)
-            for (int z = 0; z < SIMULATION_DIMENSION; z++)
+    for (int x = 0; x < m_Simulator->SimulationNumDatapointsX; x++)
+        for (int y = 0; y < m_Simulator->SimulationNumDatapointsY; y++)
+            for (int z = 0; z < m_Simulator->SimulationNumDatapointsZ; z++)
             {
-                QVector3D position = {(float)x - 2, (float)y - 2, (float)z - 2};
-                QQuaternion quat = QQuaternion::fromDirection(m_Simulator->SimulationResults[x][y][z].normalized(), {0.0f, 1.0f, 0.0f});
-                buffer[i].translate(position);
-                buffer[i].rotate(quat);
-                buffer[i].scale(0.05f / m_Simulator->SimulationResults[x][y][z].length());
+                QVector3D position = m_Simulator->GetPosition(x, y, z);
+                QQuaternion quat = QQuaternion::fromDirection(m_Simulator->GetResult(x, y, z).normalized(), {0.0f, 1.0f, 0.0f});
+                QMatrix4x4 mat;
+                mat.translate(position);
+                mat.rotate(quat);
+                mat.scale(0.05f * m_Simulator->GetResult(x, y, z).length());
+                memcpy(buffer + i * sizeof(float) * 16, mat.data(), sizeof(float) * 16);
 
                 i++;
             }
 
     m_Shader.bind();
-    for (int i = 0; i < 5 * 5 * 5; i++)
-    {
-        QString string = QString("uModelMatrices[%1]").arg(i);
-        m_Shader.setUniformValue(m_Shader.uniformLocation(string), buffer[i]);
-    }
+    m_GLFuncs->glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBuffer);
+    m_GLFuncs->glBufferData(GL_UNIFORM_BUFFER, sizeof(float) * 16 * m_Simulator->SimulationResults.size(), buffer, GL_DYNAMIC_DRAW);
+    m_GLFuncs->glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
     m_Shader.release();
 
-    delete[] buffer;
+    free(buffer);
 
     emit repaintRequested();
 }

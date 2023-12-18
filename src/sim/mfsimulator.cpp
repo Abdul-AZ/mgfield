@@ -12,11 +12,13 @@ void MFSimulator::RequestNewSimulationRun(Scene* scene)
 
     emit SimulationStarted();
 
-    ResetResults();
+    ClearResults();
+    SimulationResults.resize(SimulationNumDatapointsX * SimulationNumDatapointsY * SimulationNumDatapointsZ);
 
     foreach (auto& cable, scene->Cables)
         CalculateContributionsFromCable(*cable);
 
+    SimulationResultsExist = true;
     emit SimulationFinished();
 }
 
@@ -28,25 +30,48 @@ MFSimulator* MFSimulator::GetInstance()
     return singleton;
 }
 
-void MFSimulator::ResetResults()
+void MFSimulator::ClearResults()
 {
-    for (int x = 0; x < SIMULATION_DIMENSION; x++)
-        for (int y = 0; y < SIMULATION_DIMENSION; y++)
-            for (int z = 0; z < SIMULATION_DIMENSION; z++)
-                SimulationResults[x][y][z] = QVector3D(0.0f, 0.0f, 0.0f);
+    SimulationResultsExist = false;
+    SimulationResults.clear();
+
+    emit SimulationFinished();
+}
+
+size_t MFSimulator::GetResultsElementIndex(int32_t x, int32_t y, int32_t z)
+{
+    int index = (z * SimulationNumDatapointsX * SimulationNumDatapointsY) + (y * SimulationNumDatapointsX) + x;
+
+    if(index < 0 || index >= SimulationNumDatapointsX * SimulationNumDatapointsY * SimulationNumDatapointsZ)
+    {
+        qFatal() << "Invalid simulation results access coords, value in (" << x << ", " << y << ", " << z << ") does not exist";
+        return 0;
+    }
+
+    return index;
+}
+
+const QVector3D MFSimulator::GetResult(int32_t x, int32_t y, int32_t z)
+{
+    return SimulationResults.at(GetResultsElementIndex(x, y, z));
+}
+
+const QVector3D MFSimulator::GetPosition(int32_t x, int32_t y, int32_t z)
+{
+    return QVector3D(x - SimulationNumDatapointsX / 2, y - SimulationNumDatapointsY / 2, z - SimulationNumDatapointsZ / 2);
 }
 
 void MFSimulator::CalculateContributionsFromCable(const TransmissionCable& cable)
 {
-    for (int x = 0; x < SIMULATION_DIMENSION; x++)
-        for (int y = 0; y < SIMULATION_DIMENSION; y++)
-            for (int z = 0; z < SIMULATION_DIMENSION; z++)
+    for (int x = 0; x < SimulationNumDatapointsX; x++)
+        for (int y = 0; y < SimulationNumDatapointsY; y++)
+            for (int z = 0; z < SimulationNumDatapointsZ; z++)
             {
-                QVector3D position = {(float)x - 2, (float)y - 2, (float)z - 2};
+                QVector3D position = GetPosition(x, y, z);
 
-                float magnitude = position.distanceToLine(cable.GetPosition(), cable.GetDirection());
-                QVector3D direction =  QVector3D::crossProduct(cable.GetDirection(), QVector3D{position.x(), position.y(), position.z()}).normalized();
+                float magnitude = 1.0f / position.distanceToLine(cable.GetPosition(), cable.GetDirection());
+                QVector3D direction =  QVector3D::crossProduct(cable.GetDirection(), position).normalized();
 
-                SimulationResults[x][y][z] += magnitude * direction;
+                SimulationResults[GetResultsElementIndex(x, y, z)] += magnitude * direction;
             }
 }

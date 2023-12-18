@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include "src/view/viewport3d.h"
+#include "src/view/simulationsettingsdialog.h"
 #include "src/sim/mfsimulator.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -38,6 +39,18 @@ MainWindow::MainWindow(QWidget *parent)
     connect(scene, SIGNAL(ObjectAdded()), ui->ObjectList, SLOT(ObjectsChanged()));
 
     ui->viewport3D->HookViewportSettings(ui->ViewportSettingsWidget);
+
+    connect(ui->actionSimulationSettings, &QAction::triggered, this, [this]()
+    {
+        SimulationSettingsDialog dialog(this);
+
+        dialog.exec();
+    });
+
+    connect(ui->actionSimulationClearResults, &QAction::triggered, this, [this]()
+    {
+        MFSimulator::GetInstance()->ClearResults();
+    });
 }
 
 MainWindow::~MainWindow()

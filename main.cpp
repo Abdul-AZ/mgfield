@@ -43,7 +43,6 @@ int main(int argc, char *argv[])
 #ifdef QT_DEBUG
     qInstallMessageHandler (DebugMessageOutput);
 #endif
-
     // Set OpenGL to version 3.3 - Core Profile
     QSurfaceFormat format;
     format.setDepthBufferSize(24);

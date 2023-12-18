@@ -2,12 +2,9 @@
 #define MFSIMULATOR_H
 
 #include <QObject>
-#include <array>
 #include <QVector3D>
 
 #include "../scene.h"
-
-#define SIMULATION_DIMENSION (5)
 
 class MFSimulator : public QObject
 {
@@ -19,6 +16,11 @@ public:
     virtual ~MFSimulator() {};
 
     static MFSimulator *GetInstance();
+    void ClearResults();
+
+    inline size_t   GetResultsElementIndex(int32_t x, int32_t y, int32_t z);
+    const QVector3D GetResult(int32_t x, int32_t y, int32_t z);
+    const QVector3D GetPosition(int32_t x, int32_t y, int32_t z);
 
 public slots:
     void RequestNewSimulationRun(Scene* scene);
@@ -28,12 +30,17 @@ signals:
     void SimulationFinished();
 
 private:
-    void ResetResults();
     void CalculateContributionsFromCable(const TransmissionCable& cable);
 
 public:
     Scene* TargetScene = nullptr;
-    std::array<std::array<std::array<QVector3D, SIMULATION_DIMENSION>, SIMULATION_DIMENSION>, SIMULATION_DIMENSION> SimulationResults;
+
+    int32_t SimulationNumDatapointsX = 5;
+    int32_t SimulationNumDatapointsY = 5;
+    int32_t SimulationNumDatapointsZ = 5;
+
+    bool                   SimulationResultsExist = false;
+    std::vector<QVector3D> SimulationResults;
 
 protected:
     static MFSimulator* singleton;

@@ -13,6 +13,7 @@ SOURCES += \
     src/view/objectlistview.cpp \
     src/scene.cpp \
     src/sim/mfsimulator.cpp \
+    src/view/simulationsettingsdialog.cpp \
     src/view/viewportsettings.cpp \
     transmissioncable.cpp \
     vectorfield3d.cpp \
@@ -27,6 +28,7 @@ HEADERS += \
     src/view/objectlistview.h \
     src/scene.h \
     src/sim/mfsimulator.h \
+    src/view/simulationsettingsdialog.h \
     src/view/viewportsettings.h \
     transmissioncable.h \
     vectorfield3d.h \
@@ -38,6 +40,7 @@ HEADERS += \
 
 FORMS += \
     mainwindow.ui \
+    src/view/simulationsettingsdialog.ui \
     src/view/viewportsettings.ui
 
 # Default rules for deployment.
