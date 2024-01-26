@@ -35,6 +35,7 @@ public slots:
     void cameraModeChanged(CameraControlMode newMode);
     void SceneLoaded(Scene* scene);
     void RequestAddObject();
+    void RequestRemoveObject(int32_t index);
 
 private slots:
     void messageLogged(const QOpenGLDebugMessage &debugMessage);

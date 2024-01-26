@@ -75,6 +75,15 @@ void Viewport3D::RequestAddObject()
     repaint();
 }
 
+void Viewport3D::RequestRemoveObject(int32_t index)
+{
+    makeCurrent();
+    m_CurrentScene->Cables.remove(index);
+
+    emit m_CurrentScene->ObjectRemoved();
+    repaint();
+}
+
 void Viewport3D::SceneLoaded(Scene* scene)
 {
     m_CurrentScene = scene;

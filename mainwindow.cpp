@@ -32,11 +32,25 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(showAboutWindow()));
 
+    // Connect add and remove buttons
     connect(ui->AddObjectButton, SIGNAL(clicked()), ui->viewport3D, SLOT(RequestAddObject()));
+    connect(ui->RemoveObjectButton, &QPushButton::clicked, this, [this]()
+    {
+        ui->viewport3D->RequestRemoveObject(ui->ObjectList->currentIndex().row());
+        ui->RemoveObjectButton->setEnabled(false);
+    });
+
+    // Disable remove button when no object is selected
+    connect(ui->ObjectList, &ObjectListView::activated, this, [this](QModelIndex index)
+    {
+        ui->RemoveObjectButton->setEnabled(index.row() != -1);
+    });
+
     ui->viewport3D->SceneLoaded(scene);
     ui->ObjectList->SceneLoaded(scene);
 
     connect(scene, SIGNAL(ObjectAdded()), ui->ObjectList, SLOT(ObjectsChanged()));
+    connect(scene, SIGNAL(ObjectRemoved()), ui->ObjectList, SLOT(ObjectsChanged()));
 
     ui->viewport3D->HookViewportSettings(ui->ViewportSettingsWidget);
 

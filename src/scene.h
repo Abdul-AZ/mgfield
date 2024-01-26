@@ -14,6 +14,7 @@ public:
 
 signals:
     void ObjectAdded();
+    void ObjectRemoved();
 
 public:
     QVector<std::shared_ptr<TransmissionCable>> Cables;
