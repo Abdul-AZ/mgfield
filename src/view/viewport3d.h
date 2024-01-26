@@ -9,7 +9,8 @@
 #include <QMatrix4x4>
 
 #include "perspectivecamera.h"
-#include "orbitcameracontroller.h"
+#include "../orbitcameracontroller.h"
+#include "../freeroamcameracontroller.h"
 #include "vectorfield3d.h"
 #include "src/grid3d.h"
 #include "viewportsettings.h"
@@ -60,11 +61,11 @@ private:
     Scene*                     m_CurrentScene = nullptr;
     QOpenGLFunctions_3_3_Core* m_GLFuncs;
     PerspectiveCamera          m_Camera;
-    QMap<int, bool>            m_Keys;
     QElapsedTimer              m_Timer;
     QMatrix4x4                 m_ProjectionMatrix;
     QPoint                     m_MouseLastPosition;
     OrbitCameraController      m_OrbitCameraController;
+    FreeRoamCameraController   m_FreeRoamCameraController;
     CameraControlMode          m_CameraMode = CameraControlMode::Orbit;
     bool                       m_CapturingMouseDelta = false;
     ViewportSettings*          m_ViewportSettings = nullptr;

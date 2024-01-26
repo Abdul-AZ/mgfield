@@ -7,8 +7,9 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    orbitcameracontroller.cpp \
+    src/orbitcameracontroller.cpp \
     perspectivecamera.cpp \
+    src/freeroamcameracontroller.cpp \
     src/grid3d.cpp \
     src/view/objectlistview.cpp \
     src/scene.cpp \
@@ -22,8 +23,9 @@ SOURCES += \
 
 HEADERS += \
     mainwindow.h \
-    orbitcameracontroller.h \
+    src/orbitcameracontroller.h \
     perspectivecamera.h \
+    src/freeroamcameracontroller.h \
     src/grid3d.h \
     src/view/objectlistview.h \
     src/scene.h \

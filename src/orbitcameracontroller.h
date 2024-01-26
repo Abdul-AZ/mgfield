@@ -15,7 +15,8 @@ public:
     void handleCameraMouseScroll(PerspectiveCamera& camera, int32_t scroll);
 
 private:
-    float m_OrbitRadius = ORBIT_CAMERA_CONTROLLER_DEFAULT_RADIUS;
+    float     m_OrbitRadius = ORBIT_CAMERA_CONTROLLER_DEFAULT_RADIUS;
+    QVector3D m_Target      = {0.0f, 0.0f, 0.0f};
 };
 
 #endif // ORBITCAMERACONTROLLER_H

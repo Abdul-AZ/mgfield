@@ -12,6 +12,8 @@ void OrbitCameraController::handleCameraMouseDrag(PerspectiveCamera& camera, QVe
     camera.Position.setX(m_OrbitRadius * sin(polarAngle) * cos(azimuthAngle));
     camera.Position.setZ(m_OrbitRadius * sin(polarAngle) * sin(azimuthAngle));
     camera.Position.setY(m_OrbitRadius * cos(polarAngle));
+
+    camera.Direction = (m_Target - camera.Position).normalized();
 }
 
 void OrbitCameraController::handleCameraMouseScroll(PerspectiveCamera& camera, int32_t scroll)
