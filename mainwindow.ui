@@ -18,10 +18,19 @@
     <property name="sizeConstraint">
      <enum>QLayout::SetMaximumSize</enum>
     </property>
-    <item row="1" column="6">
-     <widget class="QPushButton" name="simulatePushButton">
-      <property name="text">
-       <string>Simulate</string>
+    <item row="1" column="1">
+     <widget class="QComboBox" name="CameraTypeComboBox">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>150</width>
+        <height>0</height>
+       </size>
       </property>
      </widget>
     </item>
@@ -32,6 +41,20 @@
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="CameraTypeLabel">
+      <property name="text">
+       <string>Camera Type</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="6">
+     <widget class="QPushButton" name="simulatePushButton">
+      <property name="text">
+       <string>Simulate</string>
       </property>
      </widget>
     </item>
@@ -63,35 +86,24 @@
       </item>
      </layout>
     </item>
-    <item row="0" column="7">
-     <widget class="ViewportSettings" name="ViewportSettingsWidget">
-      <property name="title">
-       <string>Viewport Settings</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QComboBox" name="CameraTypeComboBox">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>150</width>
-        <height>0</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="CameraTypeLabel">
-      <property name="text">
-       <string>Camera Type</string>
-      </property>
-     </widget>
+    <item row="0" column="8">
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="ViewportSettings" name="ViewportSettingsWidget">
+        <property name="title">
+         <string>Viewport Settings</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="ObjectInspector" name="groupBox">
+        <property name="title">
+         <string>Object Inspector</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_3"/>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -170,6 +182,12 @@
    <class>ViewportSettings</class>
    <extends>QGroupBox</extends>
    <header>src/view/viewportsettings.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ObjectInspector</class>
+   <extends>QGroupBox</extends>
+   <header>src/view/objectinspector.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

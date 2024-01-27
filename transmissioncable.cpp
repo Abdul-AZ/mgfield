@@ -8,6 +8,7 @@
 
 TransmissionCable::TransmissionCable(QOpenGLFunctions_3_3_Core* funcs)
     :
+    Object(CurrentCarryingCable),
     m_VertexBuffer(QOpenGLBuffer::VertexBuffer),
     m_IndexBuffer(QOpenGLBuffer::IndexBuffer)
 {

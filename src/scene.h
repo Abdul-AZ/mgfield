@@ -2,8 +2,7 @@
 #define SCENE_H
 
 #include <QObject>
-
-#include "transmissioncable.h"
+#include "scene/object.h"
 
 class Scene : public QObject
 {
@@ -17,7 +16,7 @@ signals:
     void ObjectRemoved();
 
 public:
-    QVector<std::shared_ptr<TransmissionCable>> Cables;
+    QVector<std::shared_ptr<Object>> Objects;
 };
 
 #endif // SCENE_H

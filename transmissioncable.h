@@ -6,10 +6,11 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
 #include <QMatrix4x4>
+#include "src/scene/object.h"
 
 #define TRANSMISSION_CABLE_BASE_DIRECTION {1.0f, 0.0f, 0.0f}
 
-class TransmissionCable
+class TransmissionCable : public Object
 {
 public:
     TransmissionCable(QOpenGLFunctions_3_3_Core* funcs);

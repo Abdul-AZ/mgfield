@@ -15,8 +15,14 @@ void MFSimulator::RequestNewSimulationRun(Scene* scene)
     ClearResults();
     SimulationResults.resize(SimulationNumDatapointsX * SimulationNumDatapointsY * SimulationNumDatapointsZ);
 
-    foreach (auto& cable, scene->Cables)
-        CalculateContributionsFromCable(*cable);
+    foreach (auto& object, scene->Objects)
+    {
+        switch (object->Type) {
+        case CurrentCarryingCable:
+            CalculateContributionsFromCable(*(TransmissionCable*)object.get());
+            continue;
+        }
+    }
 
     SimulationResultsExist = true;
     emit SimulationFinished();

@@ -15,7 +15,7 @@ void ObjectListView::ObjectsChanged()
     if(!m_CurrentScene)
         return;
 
-    for (auto& cable : m_CurrentScene->Cables)
+    for (auto& object : m_CurrentScene->Objects)
     {
         m_Model->insertRow(0);
         m_Model->setData(m_Model->index(0), "Current Carrying Conductor");

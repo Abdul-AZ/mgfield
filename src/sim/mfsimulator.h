@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QVector3D>
 
+#include "../../transmissioncable.h"
+
 #include "../scene.h"
 
 class MFSimulator : public QObject

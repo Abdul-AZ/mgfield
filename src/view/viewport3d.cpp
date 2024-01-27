@@ -69,7 +69,7 @@ void Viewport3D::initializeGL()
 void Viewport3D::RequestAddObject()
 {
     makeCurrent();
-    m_CurrentScene->Cables.append(std::make_shared<TransmissionCable>(nullptr));
+    m_CurrentScene->Objects.append(std::make_shared<TransmissionCable>(nullptr));
 
     emit m_CurrentScene->ObjectAdded();
     repaint();
@@ -78,7 +78,7 @@ void Viewport3D::RequestAddObject()
 void Viewport3D::RequestRemoveObject(int32_t index)
 {
     makeCurrent();
-    m_CurrentScene->Cables.remove(index);
+    m_CurrentScene->Objects.remove(index);
 
     emit m_CurrentScene->ObjectRemoved();
     repaint();
@@ -103,8 +103,11 @@ void Viewport3D::paintGL()
 
     if(m_CurrentScene)
     {
-        for (auto& cable : m_CurrentScene->Cables)
-            cable->Draw(viewProjection, m_GLFuncs);
+        for (auto& object : m_CurrentScene->Objects)
+        {
+            if(object->Type == CurrentCarryingCable)
+                ((TransmissionCable*)(object.get()))->Draw(viewProjection, m_GLFuncs);
+        }
     }
 
     m_SimulationVectorField->Draw(viewProjection);

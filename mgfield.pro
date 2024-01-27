@@ -11,6 +11,7 @@ SOURCES += \
     perspectivecamera.cpp \
     src/freeroamcameracontroller.cpp \
     src/grid3d.cpp \
+    src/view/objectinspector.cpp \
     src/view/objectlistview.cpp \
     src/scene.cpp \
     src/sim/mfsimulator.cpp \
@@ -27,6 +28,8 @@ HEADERS += \
     perspectivecamera.h \
     src/freeroamcameracontroller.h \
     src/grid3d.h \
+    src/scene/object.h \
+    src/view/objectinspector.h \
     src/view/objectlistview.h \
     src/scene.h \
     src/sim/mfsimulator.h \
@@ -42,6 +45,7 @@ HEADERS += \
 
 FORMS += \
     mainwindow.ui \
+    src/view/objectinspector.ui \
     src/view/simulationsettingsdialog.ui \
     src/view/viewportsettings.ui
 
