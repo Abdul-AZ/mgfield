@@ -8,9 +8,16 @@ ObjectListView::ObjectListView(QWidget* parent) :
     setModel(m_Model);
 }
 
+void ObjectListView::currentChanged(const QModelIndex &current, const QModelIndex &previous)
+{
+    if(current.row() >= 0)
+        emit ObjectSelected(m_CurrentScene->Objects[current.row()]);
+}
+
 void ObjectListView::ObjectsChanged()
 {
     m_Model->removeRows(0, m_Model->rowCount());
+    emit ObjectSelected(nullptr);
 
     if(!m_CurrentScene)
         return;

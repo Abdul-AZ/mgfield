@@ -14,9 +14,14 @@ class ObjectListView : public QListView
 public:
     ObjectListView(QWidget* parent);
 
+    virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous) override;
+
 public slots:
     void SceneLoaded(Scene* scene);
     void ObjectsChanged();
+
+signals:
+    void ObjectSelected(std::shared_ptr<Object> object);
 
 private:
     Scene* m_CurrentScene = nullptr;

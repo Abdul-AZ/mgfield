@@ -12,3 +12,8 @@ ObjectInspector::~ObjectInspector()
 {
     delete ui;
 }
+
+void ObjectInspector::ObjectSelected(std::shared_ptr<Object> obj)
+{
+
+}

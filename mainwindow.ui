@@ -96,7 +96,7 @@
        </widget>
       </item>
       <item>
-       <widget class="ObjectInspector" name="groupBox">
+       <widget class="ObjectInspector" name="ObjectInspectorInstance">
         <property name="title">
          <string>Object Inspector</string>
         </property>

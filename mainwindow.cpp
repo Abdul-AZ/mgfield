@@ -65,6 +65,8 @@ MainWindow::MainWindow(QWidget *parent)
     {
         MFSimulator::GetInstance()->ClearResults();
     });
+
+    connect(ui->ObjectList, &ObjectListView::ObjectSelected, ui->ObjectInspectorInstance, &ObjectInspector::ObjectSelected);
 }
 
 MainWindow::~MainWindow()
