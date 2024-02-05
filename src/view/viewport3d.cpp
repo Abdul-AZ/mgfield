@@ -199,6 +199,11 @@ void Viewport3D::wheelEvent(QWheelEvent* event)
     }
 }
 
+void Viewport3D::Redraw()
+{
+    repaint();
+}
+
 void Viewport3D::showContextMenu(QPoint mousePos)
 {
     QMenu contextMenu(tr("Context menu"), this);

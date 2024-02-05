@@ -16,11 +16,19 @@ public:
     explicit ObjectInspector(QWidget *parent = nullptr);
     ~ObjectInspector();
 
+private:
+    void DisconnectSignals();
+    void ConnectSignals();
+
+signals:
+    void ObjectEdited(std::shared_ptr<Object> obj);
+
 public slots:
     void ObjectSelected(std::shared_ptr<Object> obj);
 
 private:
     Ui::ObjectInspector *ui;
+    std::shared_ptr<Object> m_CurrentlySelectedObject;
 };
 
 #endif // OBJECTINSPECTOR_H

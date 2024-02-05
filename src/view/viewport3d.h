@@ -36,6 +36,7 @@ public slots:
     void SceneLoaded(Scene* scene);
     void RequestAddObject();
     void RequestRemoveObject(int32_t index);
+    void Redraw();
 
 private slots:
     void messageLogged(const QOpenGLDebugMessage &debugMessage);

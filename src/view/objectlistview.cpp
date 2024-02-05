@@ -14,6 +14,9 @@ void ObjectListView::currentChanged(const QModelIndex &current, const QModelInde
         emit ObjectSelected(m_CurrentScene->Objects[current.row()]);
 }
 
+/*! \brief Called an object is added or remoed, removes focus on currently selected object
+ *
+ */
 void ObjectListView::ObjectsChanged()
 {
     m_Model->removeRows(0, m_Model->rowCount());
@@ -24,8 +27,18 @@ void ObjectListView::ObjectsChanged()
 
     for (auto& object : m_CurrentScene->Objects)
     {
-        m_Model->insertRow(0);
-        m_Model->setData(m_Model->index(0), "Current Carrying Conductor");
+        m_Model->insertRow(m_Model->rowCount());
+        m_Model->setData(m_Model->index(m_Model->rowCount() - 1), object->Name);
+    }
+}
+/*! \brief Called when there is an edit in an object but object focus not remoed
+ *
+ */
+void ObjectListView::ObjectEdited()
+{
+    for (auto& object : m_CurrentScene->Objects)
+    {
+        m_Model->setData(m_Model->index(m_Model->rowCount() - 1), object->Name);
     }
 }
 

@@ -67,6 +67,8 @@ MainWindow::MainWindow(QWidget *parent)
     });
 
     connect(ui->ObjectList, &ObjectListView::ObjectSelected, ui->ObjectInspectorInstance, &ObjectInspector::ObjectSelected);
+    connect(ui->ObjectInspectorInstance, &ObjectInspector::ObjectEdited, ui->ObjectList, &ObjectListView::ObjectEdited);
+    connect(ui->ObjectInspectorInstance, &ObjectInspector::ObjectEdited, ui->viewport3D, &Viewport3D::Redraw);
 }
 
 MainWindow::~MainWindow()

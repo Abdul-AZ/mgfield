@@ -12,6 +12,7 @@ TransmissionCable::TransmissionCable(QOpenGLFunctions_3_3_Core* funcs)
     m_VertexBuffer(QOpenGLBuffer::VertexBuffer),
     m_IndexBuffer(QOpenGLBuffer::IndexBuffer)
 {
+    Name = "Current Carrying Conductor";
 
     if(!m_Shader.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shaders/ColoredMesh.vert"))
         qCritical() << "TransmissionLine vertex shader error";
@@ -47,10 +48,8 @@ void TransmissionCable::Draw(QMatrix4x4 viewProjection, QOpenGLFunctions_3_3_Cor
 
     // Base objection rotation quat
     QQuaternion quat1 = QQuaternion::fromDirection(TRANSMISSION_CABLE_BASE_DIRECTION, {1.0f, 0.0f, 0.0f});
-    // Actual object rotation quat
-    QQuaternion quat2 = QQuaternion::fromDirection(m_Direction, {1.0f, 0.0f, 0.0f});
-    matrix.translate(m_Position);
-    matrix.rotate(quat2 * quat1);
+    matrix.translate(Position);
+    matrix.rotate(Rotation * quat1);
     matrix.scale(0.1f);
 
     m_Shader.setUniformValue(m_Shader.uniformLocation("uModelViewProjection"), matrix);
