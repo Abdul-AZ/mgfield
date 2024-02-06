@@ -13,6 +13,12 @@
   <property name="windowTitle">
    <string>MGField</string>
   </property>
+  <property name="iconSize">
+   <size>
+    <width>256</width>
+    <height>256</height>
+   </size>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <property name="sizeConstraint">

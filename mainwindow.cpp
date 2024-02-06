@@ -13,6 +13,8 @@ MainWindow::MainWindow(QWidget *parent)
     , simulator(MFSimulator::GetInstance())
 {
     ui->setupUi(this);
+    setWindowIcon(QIcon(":/res/icon_256px.png"));
+
     scene = new Scene;
 
     ui->CameraTypeComboBox->addItem("Orbit", (int32_t)CameraControlMode::Orbit);
