@@ -20,7 +20,7 @@ Grid3D::Grid3D(QOpenGLFunctions_3_3_Core* funcs) :
     m_Shader.bind();
     m_Shader.setAttributeBuffer(0, GL_FLOAT, 0, 3, 0);
     m_Shader.enableAttributeArray(0);
-    m_Shader.setUniformValue("uMeshColor", QVector4D(1.0f, 1.0f, 1.0f, 0.3f));
+    m_Shader.setUniformValue("uMeshColor", QVector4D(0.3f, 0.3f, 0.3f, 1.0f));
 
     m_VertexArray.release();
 }

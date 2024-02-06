@@ -13,6 +13,13 @@ ViewportSettings::ViewportSettings(QWidget *parent)
         emit SettingsChanged();
     }
     );
+
+    connect(ui->ShowGradientCheckbox, &QCheckBox::stateChanged, this, [this](int state)
+    {
+        this->m_GradientEnabled = state;
+        emit SettingsChanged();
+    }
+    );
 }
 
 ViewportSettings::~ViewportSettings()

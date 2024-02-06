@@ -59,6 +59,8 @@ private:
     virtual void mouseMoveEvent(QMouseEvent* event) override;
     virtual void wheelEvent(QWheelEvent* event) override;
 
+    void DrawGradient();
+
 private:
     Scene*                     m_CurrentScene = nullptr;
     QOpenGLFunctions_3_3_Core* m_GLFuncs;

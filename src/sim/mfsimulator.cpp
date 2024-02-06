@@ -1,5 +1,6 @@
 #include "mfsimulator.h"
 
+#include <algorithm>
 #include <QDebug>
 
 MFSimulator::MFSimulator() {}
@@ -23,6 +24,14 @@ void MFSimulator::RequestNewSimulationRun(Scene* scene)
             continue;
         }
     }
+
+    auto[minIterator, maxIterator] = std::minmax_element(SimulationResults.begin(), SimulationResults.end(), [](const QVector3D& a, const QVector3D& b) -> bool
+    {
+        return a.lengthSquared() < b.lengthSquared();
+    });
+
+    SimulationResultsMinMagnitude = (*minIterator).length();
+    SimulationResultsMaxMagnitude = (*maxIterator).length();
 
     SimulationResultsExist = true;
     emit SimulationFinished();

@@ -43,6 +43,8 @@ public:
 
     bool                   SimulationResultsExist = false;
     std::vector<QVector3D> SimulationResults;
+    float                  SimulationResultsMaxMagnitude = 0.0f;
+    float                  SimulationResultsMinMagnitude = 0.0f;
 
 protected:
     static MFSimulator* singleton;
