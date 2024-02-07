@@ -73,7 +73,7 @@ const QVector3D MFSimulator::GetResult(int32_t x, int32_t y, int32_t z)
 
 const QVector3D MFSimulator::GetPosition(int32_t x, int32_t y, int32_t z)
 {
-    return QVector3D(x - SimulationNumDatapointsX / 2, y - SimulationNumDatapointsY / 2, z - SimulationNumDatapointsZ / 2);
+    return SimulationDatapointsSpacing * QVector3D(x - SimulationNumDatapointsX / 2, y - SimulationNumDatapointsY / 2, z - SimulationNumDatapointsZ / 2);
 }
 
 void MFSimulator::CalculateContributionsFromCable(const TransmissionCable& cable)

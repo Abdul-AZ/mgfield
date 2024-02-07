@@ -21,6 +21,8 @@ SimulationSettingsDialog::SimulationSettingsDialog(QWidget *parent)
     ui->DatapointsXSpinBox->setMaximum(SIMULATION_SETTINGS_MAX_DATAPOINTS_PER_AXIS);
     ui->DatapointsYSpinBox->setMaximum(SIMULATION_SETTINGS_MAX_DATAPOINTS_PER_AXIS);
     ui->DatapointsZSpinBox->setMaximum(SIMULATION_SETTINGS_MAX_DATAPOINTS_PER_AXIS);
+
+    ui->VectorFieldSpacingSpinBox->setValue(simulator->SimulationDatapointsSpacing);
 }
 
 SimulationSettingsDialog::~SimulationSettingsDialog()
@@ -35,6 +37,7 @@ void SimulationSettingsDialog::SaveSimulatorSettings()
     simulator->SimulationNumDatapointsX = ui->DatapointsXSpinBox->value();
     simulator->SimulationNumDatapointsY = ui->DatapointsYSpinBox->value();
     simulator->SimulationNumDatapointsZ = ui->DatapointsZSpinBox->value();
+    simulator->SimulationDatapointsSpacing = ui->VectorFieldSpacingSpinBox->value();
 
     simulator->ClearResults();
 }

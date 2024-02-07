@@ -23,7 +23,7 @@ Viewport3D::Viewport3D(QWidget* parent) : QOpenGLWidget(parent)
 void Viewport3D::messageLogged(const QOpenGLDebugMessage &debugMessage)
 {
     if(debugMessage.severity() == QOpenGLDebugMessage::HighSeverity)
-        qError() << debugMessage.message();
+        qCritical() << debugMessage.message();
     else if(debugMessage.severity() == QOpenGLDebugMessage::MediumSeverity)
         qWarning() << debugMessage.message();
 }

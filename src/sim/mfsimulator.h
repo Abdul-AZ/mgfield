@@ -37,9 +37,10 @@ private:
 public:
     Scene* TargetScene = nullptr;
 
-    int32_t SimulationNumDatapointsX = 5;
-    int32_t SimulationNumDatapointsY = 5;
-    int32_t SimulationNumDatapointsZ = 5;
+    int32_t SimulationNumDatapointsX    = 5;
+    int32_t SimulationNumDatapointsY    = 5;
+    int32_t SimulationNumDatapointsZ    = 5;
+    float   SimulationDatapointsSpacing = 1.0f;
 
     bool                   SimulationResultsExist = false;
     std::vector<QVector3D> SimulationResults;
