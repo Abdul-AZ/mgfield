@@ -92,11 +92,9 @@ void VectorField3D::Draw(QMatrix4x4 viewProjection)
     m_VertexArray.bind();
 
     m_Shader.setUniformValue(m_Shader.uniformLocation("uViewProjection"), viewProjection);
-    uint32_t index = m_GLFuncs->glGetUniformBlockIndex(m_Shader.programId(), "uModelMatricesBuffer");
+    uint32_t index = m_GLFuncs->glGetUniformBlockIndex(m_Shader.programId(), "uVectorFieldData");
     m_GLFuncs->glUniformBlockBinding(m_Shader.programId(), index, 2);
     m_GLFuncs->glBindBufferBase(GL_UNIFORM_BUFFER, 2, m_UniformBuffer);
-    //m_GLFuncs->glUniformBlockBinding(m_Shader.programId(), 0, 0);
-
 
     m_GLFuncs->glDrawElementsInstanced(GL_TRIANGLES, m_NumIndecies, GL_UNSIGNED_SHORT, 0, m_Simulator->SimulationResults.size());
 
@@ -112,7 +110,11 @@ void VectorField3D::updateBuffers()
         return;
     }
 
-    uint8_t* buffer = (uint8_t*)malloc(m_Simulator->SimulationResults.size() * sizeof(float) * 16);
+    const uint32_t bufferSize =
+        VECTOR_FIELD_3D_MAX_ARROW_COUNT * sizeof(float) * 16 +                     // Model matrices
+        ceil((VECTOR_FIELD_3D_MAX_ARROW_COUNT + 3) / 4) * sizeof(float) * 4;       // Color value as vec4[] to avoid wasted padding
+
+    uint8_t* buffer = (uint8_t*)malloc(bufferSize);
 
     int i = 0;
     for (int x = 0; x < m_Simulator->SimulationNumDatapointsX; x++)
@@ -127,12 +129,15 @@ void VectorField3D::updateBuffers()
                 mat.scale(0.05f * m_Simulator->GetResult(x, y, z).length());
                 memcpy(buffer + i * sizeof(float) * 16, mat.data(), sizeof(float) * 16);
 
+                float colorInterpolation = (m_Simulator->GetResult(x, y, z).length() - m_Simulator->SimulationResultsMinMagnitude) / (m_Simulator->SimulationResultsMaxMagnitude - m_Simulator->SimulationResultsMinMagnitude);
+                memcpy(buffer + VECTOR_FIELD_3D_MAX_ARROW_COUNT * sizeof(float) * 16 + i * sizeof(float), &colorInterpolation, sizeof(float));
+
                 i++;
             }
 
     m_Shader.bind();
     m_GLFuncs->glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBuffer);
-    m_GLFuncs->glBufferData(GL_UNIFORM_BUFFER, sizeof(float) * 16 * m_Simulator->SimulationResults.size(), buffer, GL_DYNAMIC_DRAW);
+    m_GLFuncs->glBufferData(GL_UNIFORM_BUFFER, bufferSize, buffer, GL_DYNAMIC_DRAW);
     m_GLFuncs->glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
     m_Shader.release();
