@@ -11,6 +11,7 @@ SOURCES += \
     perspectivecamera.cpp \
     src/freeroamcameracontroller.cpp \
     src/grid3d.cpp \
+    src/view/modifieddoublespinbox.cpp \
     src/view/objectinspector.cpp \
     src/view/objectlistview.cpp \
     src/scene.cpp \
@@ -29,6 +30,7 @@ HEADERS += \
     src/freeroamcameracontroller.h \
     src/grid3d.h \
     src/scene/object.h \
+    src/view/modifieddoublespinbox.h \
     src/view/objectinspector.h \
     src/view/objectlistview.h \
     src/scene.h \

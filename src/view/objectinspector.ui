@@ -40,7 +40,10 @@
    <item row="1" column="1">
     <layout class="QHBoxLayout" name="PositionEditLayout">
      <item>
-      <widget class="QDoubleSpinBox" name="PositionEditX">
+      <widget class="ModifiedDoubleSpinBox" name="PositionEditX">
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
        <property name="inputMethodHints">
         <set>Qt::ImhFormattedNumbersOnly</set>
        </property>
@@ -62,7 +65,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="PositionEditZ">
+      <widget class="ModifiedDoubleSpinBox" name="PositionEditZ">
        <property name="buttonSymbols">
         <enum>QAbstractSpinBox::NoButtons</enum>
        </property>
@@ -75,7 +78,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="PositionEditY">
+      <widget class="ModifiedDoubleSpinBox" name="PositionEditY">
        <property name="buttonSymbols">
         <enum>QAbstractSpinBox::NoButtons</enum>
        </property>
@@ -115,7 +118,7 @@
    <item row="2" column="1">
     <layout class="QHBoxLayout" name="RotationEditLayout">
      <item>
-      <widget class="QDoubleSpinBox" name="RotationEditX">
+      <widget class="ModifiedDoubleSpinBox" name="RotationEditX">
        <property name="buttonSymbols">
         <enum>QAbstractSpinBox::NoButtons</enum>
        </property>
@@ -128,7 +131,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="RotationEditY">
+      <widget class="ModifiedDoubleSpinBox" name="RotationEditY">
        <property name="buttonSymbols">
         <enum>QAbstractSpinBox::NoButtons</enum>
        </property>
@@ -141,7 +144,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="RotationEditZ">
+      <widget class="ModifiedDoubleSpinBox" name="RotationEditZ">
        <property name="buttonSymbols">
         <enum>QAbstractSpinBox::NoButtons</enum>
        </property>
@@ -173,6 +176,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ModifiedDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>src/view/modifieddoublespinbox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
