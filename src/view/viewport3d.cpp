@@ -18,22 +18,24 @@ Viewport3D::Viewport3D(QWidget* parent) : QOpenGLWidget(parent)
     setContextMenuPolicy(Qt::CustomContextMenu);
 
     connect(this, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
-
 }
 
 void Viewport3D::messageLogged(const QOpenGLDebugMessage &debugMessage)
 {
-    qCritical() << debugMessage.message();
+    if(debugMessage.severity() == QOpenGLDebugMessage::HighSeverity)
+        qError() << debugMessage.message();
+    else if(debugMessage.severity() == QOpenGLDebugMessage::MediumSeverity)
+        qWarning() << debugMessage.message();
 }
 
 void Viewport3D::initializeGL()
 {
     if (context()->format().majorVersion() < 4)
     {
-        if ( context()->format().minorVersion() < 3)
+        if ( context()->format().minorVersion() < 6)
         {
             QMessageBox msgBox;
-            msgBox.setText("ERROR: OpenGL 3.3+ is not supported by this system.");
+            msgBox.setText("ERROR: OpenGL 4.6 is not supported by this system.");
             msgBox.setDefaultButton(QMessageBox::Ok);
             msgBox.exec();
 
