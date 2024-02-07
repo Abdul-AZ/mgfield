@@ -94,6 +94,8 @@ void Viewport3D::SceneLoaded(Scene* scene)
 void Viewport3D::paintGL()
 {
     QMatrix4x4 viewProjection = m_ProjectionMatrix * m_Camera.GetViewMatrix();
+    m_GLFuncs->glEnable(GL_DEPTH_TEST);
+    m_GLFuncs->glEnable(GL_BLEND);
 
     if(m_ViewportSettings)
     {
