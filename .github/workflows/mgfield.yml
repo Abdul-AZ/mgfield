@@ -1,0 +1,41 @@
+name: Test on macOS
+
+on:
+  push:
+    branches: [ github-actions-test ]
+  pull_request:
+    branches: [ github-actions-test ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install Qt
+      run: |
+        if ! command -v qmake &> /dev/null; then
+          echo "Qt is not installed. Installing..."
+          brew install qt
+          echo "QT_PATH=$(brew --prefix qt)" >> $GITHUB_ENV
+          echo "export PATH=$QT_PATH/bin:$PATH" >> $GITHUB_ENV
+        else
+          echo "Qt is already installed."
+        fi
+      shell: zsh
+
+    - name: Verify Qt Installation
+      run: |
+        qmake --version
+      shell: zsh
+
+    - name: Build the project
+      run: |
+        qmake mgfield.pro
+        make
+      shell: zsh
+      env:
+        QT_PATH: ${{ env.QT_PATH }}
+
