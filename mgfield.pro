@@ -5,10 +5,10 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets opengl openglwidgets
 CONFIG += c++17
 
 SOURCES += \
-    main.cpp \
-    mainwindow.cpp \
+    src/main.cpp \
+    src/mainwindow.cpp \
     src/orbitcameracontroller.cpp \
-    perspectivecamera.cpp \
+    src/perspectivecamera.cpp \
     src/freeroamcameracontroller.cpp \
     src/grid3d.cpp \
     src/view/modifieddoublespinbox.cpp \
@@ -18,15 +18,15 @@ SOURCES += \
     src/sim/mfsimulator.cpp \
     src/view/simulationsettingsdialog.cpp \
     src/view/viewportsettings.cpp \
-    transmissioncable.cpp \
-    vectorfield3d.cpp \
+    src/transmissioncable.cpp \
+    src/vectorfield3d.cpp \
     src/view/viewport3d.cpp \
     thirdparty/tinygltf/tiny_gltf.cpp
 
 HEADERS += \
-    mainwindow.h \
+    src/mainwindow.h \
     src/orbitcameracontroller.h \
-    perspectivecamera.h \
+    src/perspectivecamera.h \
     src/freeroamcameracontroller.h \
     src/grid3d.h \
     src/scene/object.h \
@@ -37,8 +37,8 @@ HEADERS += \
     src/sim/mfsimulator.h \
     src/view/simulationsettingsdialog.h \
     src/view/viewportsettings.h \
-    transmissioncable.h \
-    vectorfield3d.h \
+    src/transmissioncable.h \
+    src/vectorfield3d.h \
     src/view/viewport3d.h \
     thirdparty/tinygltf/json.hpp \
     thirdparty/tinygltf/stb_image.h \
@@ -46,7 +46,7 @@ HEADERS += \
     thirdparty/tinygltf/tiny_gltf.h
 
 FORMS += \
-    mainwindow.ui \
+    src/mainwindow.ui \
     src/view/objectinspector.ui \
     src/view/simulationsettingsdialog.ui \
     src/view/viewportsettings.ui
