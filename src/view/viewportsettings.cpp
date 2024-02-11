@@ -7,6 +7,13 @@ ViewportSettings::ViewportSettings(QWidget *parent)
 {
     ui->setupUi(this);
 
+    connect(ui->AutoSimulateCheckbox, &QCheckBox::stateChanged, this, [this](int state)
+    {
+        this->m_AutoSimulateEnabled = state;
+        emit SettingsChanged();
+    }
+    );
+
     connect(ui->ShowGridCheckbox, &QCheckBox::stateChanged, this, [this](int state)
     {
         this->m_GridEnabled = state;
