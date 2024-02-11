@@ -126,7 +126,7 @@ void VectorField3D::updateBuffers()
                 QMatrix4x4 mat;
                 mat.translate(position);
                 mat.rotate(quat);
-                mat.scale(0.05f * m_Simulator->GetResult(x, y, z).length());
+                mat.scale(0.05f * std::clamp(m_Simulator->GetResult(x, y, z).length(), 0.01f, 1.0f));
                 memcpy(buffer + i * sizeof(float) * 16, mat.data(), sizeof(float) * 16);
 
                 float colorInterpolation = (m_Simulator->GetResult(x, y, z).length() - m_Simulator->SimulationResultsMinMagnitude) / (m_Simulator->SimulationResultsMaxMagnitude - m_Simulator->SimulationResultsMinMagnitude);

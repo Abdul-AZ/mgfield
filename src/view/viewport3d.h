@@ -8,10 +8,10 @@
 #include <QOpenGLDebugLogger>
 #include <QMatrix4x4>
 
-#include "perspectivecamera.h"
+#include "../perspectivecamera.h"
 #include "../orbitcameracontroller.h"
 #include "../freeroamcameracontroller.h"
-#include "vectorfield3d.h"
+#include "src/vectorfield3d.h"
 #include "src/grid3d.h"
 #include "viewportsettings.h"
 

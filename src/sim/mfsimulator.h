@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QVector3D>
 
-#include "../../transmissioncable.h"
+#include "../transmissioncable.h"
 
 #include "../scene.h"
 
