@@ -24,18 +24,18 @@ jobs:
         else
           echo "Qt is already installed."
         fi
-      shell: zsh
+      shell: bash
 
     - name: Verify Qt Installation
       run: |
         qmake --version
-      shell: zsh
+      shell: bash
 
     - name: Build the project
       run: |
         qmake mgfield.pro
         make
-      shell: zsh
+      shell: bash
       env:
         QT_PATH: ${{ env.QT_PATH }}
 
