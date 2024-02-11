@@ -37,8 +37,8 @@ void ObjectInspector::ConnectSignals()
 
     // Connect position edit
     ui->PositionEditX->setValue(m_CurrentlySelectedObject->Position.x());
-    ui->PositionEditY->setValue(m_CurrentlySelectedObject->Position.y());
     ui->PositionEditZ->setValue(m_CurrentlySelectedObject->Position.z());
+    ui->PositionEditY->setValue(m_CurrentlySelectedObject->Position.y());
     connect(ui->PositionEditX, &QDoubleSpinBox::valueChanged, this, [this](double val) {
         m_CurrentlySelectedObject->Position.setX(val);
 
@@ -46,13 +46,13 @@ void ObjectInspector::ConnectSignals()
     });
 
     connect(ui->PositionEditY, &QDoubleSpinBox::valueChanged, this, [this](double val) {
-        m_CurrentlySelectedObject->Position.setY(val);
+        m_CurrentlySelectedObject->Position.setZ(val);
 
         emit ObjectEdited(m_CurrentlySelectedObject);
     });
 
     connect(ui->PositionEditZ, &QDoubleSpinBox::valueChanged, this, [this](double val) {
-        m_CurrentlySelectedObject->Position.setZ(val);
+        m_CurrentlySelectedObject->Position.setY(val);
 
         emit ObjectEdited(m_CurrentlySelectedObject);
     });

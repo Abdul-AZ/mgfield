@@ -83,10 +83,10 @@ void MFSimulator::CalculateContributionsFromCable(const TransmissionCable& cable
             for (int z = 0; z < SimulationNumDatapointsZ; z++)
             {
                 QVector3D position = GetPosition(x, y, z);
-                QVector3D cableDirection = (cable.Rotation * QVector3D{0.0f, 0.0f, 1.0f}).normalized();
+                QVector3D cableDirection = (cable.Rotation * QVector3D{1.0f, 0.0f, 0.0f}).normalized();
 
                 float magnitude = 1.0f / position.distanceToLine(cable.Position, cableDirection);
-                QVector3D direction =  QVector3D::crossProduct(cableDirection, position).normalized();
+                QVector3D direction =  QVector3D::crossProduct(cableDirection, cable.Position - position).normalized();
 
                 SimulationResults[GetResultsElementIndex(x, y, z)] += magnitude * direction;
             }

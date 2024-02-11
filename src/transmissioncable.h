@@ -8,7 +8,7 @@
 #include <QMatrix4x4>
 #include "src/scene/object.h"
 
-#define TRANSMISSION_CABLE_BASE_DIRECTION {1.0f, 0.0f, 0.0f}
+#define TRANSMISSION_CABLE_BASE_DIRECTION {0.0f, 0.0f, 1.0f}
 
 class TransmissionCable : public Object
 {

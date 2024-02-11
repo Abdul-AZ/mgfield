@@ -47,9 +47,9 @@ void TransmissionCable::Draw(QMatrix4x4 viewProjection, QOpenGLFunctions_3_3_Cor
 
 
     // Base objection rotation quat
-    QQuaternion quat1 = QQuaternion::fromDirection(TRANSMISSION_CABLE_BASE_DIRECTION, {1.0f, 0.0f, 0.0f});
+    QQuaternion quat1 = QQuaternion::fromDirection(TRANSMISSION_CABLE_BASE_DIRECTION, { 0.0f, 1.0f, 0.0f});
     matrix.translate(Position);
-    matrix.rotate(Rotation * quat1);
+    matrix.rotate(quat1 * Rotation);
     matrix.scale(0.1f);
 
     m_Shader.setUniformValue(m_Shader.uniformLocation("uModelViewProjection"), matrix);

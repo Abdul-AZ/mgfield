@@ -122,7 +122,7 @@ void VectorField3D::updateBuffers()
             for (int z = 0; z < m_Simulator->SimulationNumDatapointsZ; z++)
             {
                 QVector3D position = m_Simulator->GetPosition(x, y, z);
-                QQuaternion quat = QQuaternion::fromDirection(m_Simulator->GetResult(x, y, z).normalized(), {0.0f, 1.0f, 0.0f});
+                QQuaternion quat = QQuaternion::fromDirection(m_Simulator->GetResult(x, y, z).normalized(), {0.0f, 0.0f, 1.0f});
                 QMatrix4x4 mat;
                 mat.translate(position);
                 mat.rotate(quat);
