@@ -18,7 +18,7 @@ public:
 
     void Draw(QMatrix4x4 viewProjection, QOpenGLFunctions_3_3_Core* funcs);
 
-    float GetDCCurrent() { return m_DCCurrent; };
+    float GetDCCurrent() const { return m_DCCurrent; };
     void  SetDCCurrent(float value) { m_DCCurrent = value; };
 
 private:

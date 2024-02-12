@@ -104,6 +104,7 @@ void ObjectInspector::AddUniqueComponentWidgets(std::shared_ptr<Object> obj)
         ModifiedDoubleSpinBox* spinbox = new ModifiedDoubleSpinBox(nullptr);
         spinbox->setButtonSymbols(QAbstractSpinBox::NoButtons);
         spinbox->setValue(cable->GetDCCurrent());
+        spinbox->setMaximum(1e9);
         connect(spinbox, &QDoubleSpinBox::valueChanged, this, [this](double val)
         {
             ((TransmissionCable*)m_CurrentlySelectedObject.get())->SetDCCurrent(val);

@@ -78,6 +78,11 @@ const QVector3D MFSimulator::GetPosition(int32_t x, int32_t y, int32_t z)
 
 void MFSimulator::CalculateContributionsFromCable(const TransmissionCable& cable)
 {
+    // Assuming cable is infinite in length
+    // Using Biot-Savart Law to calculate magnitude of magnetic field
+    // |B| = (u0 . I) / (2PI . h)
+    // Where h is the shortest distance of point from cable
+    const double pi = SIM_CONSTANT_PI;
     for (int x = 0; x < SimulationNumDatapointsX; x++)
         for (int y = 0; y < SimulationNumDatapointsY; y++)
             for (int z = 0; z < SimulationNumDatapointsZ; z++)
@@ -85,7 +90,8 @@ void MFSimulator::CalculateContributionsFromCable(const TransmissionCable& cable
                 QVector3D position = GetPosition(x, y, z);
                 QVector3D cableDirection = (cable.Rotation * QVector3D{1.0f, 0.0f, 0.0f}).normalized();
 
-                float magnitude = 1.0f / position.distanceToLine(cable.Position, cableDirection);
+                float h = position.distanceToLine(cable.Position, cableDirection);
+                float magnitude = cable.GetDCCurrent() / (2 * pi * h);
                 QVector3D direction =  QVector3D::crossProduct(cableDirection, cable.Position - position).normalized();
 
                 SimulationResults[GetResultsElementIndex(x, y, z)] += magnitude * direction;

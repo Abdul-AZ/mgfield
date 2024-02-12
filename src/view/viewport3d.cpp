@@ -7,6 +7,9 @@
 #include <QFileDialog>
 #include <QPainter>
 #include <QPainterPath>
+#include <QString>
+
+#include "thirdparty/eng_format/eng_format.hpp"
 
 Viewport3D::Viewport3D(QWidget* parent) : QOpenGLWidget(parent)
 {
@@ -134,9 +137,11 @@ void Viewport3D::DrawGradient()
     QPoint bottomRight(50, height() - 80);
 
     painter.drawText(topLeft + QPoint(35, fontMetrics().capHeight()), "MAX");
-    painter.drawText(topLeft + QPoint(35, fontMetrics().capHeight() * 2 + 3), QString("%1").arg(MFSimulator::GetInstance()->SimulationResultsMaxMagnitude));
+    std::string maxValue = to_engineering_string(SIM_CONSTANT_VACUUM_MAGNETIC_PERMEABILITY * MFSimulator::GetInstance()->SimulationResultsMaxMagnitude, 3, eng_prefixed, "T");
+    painter.drawText(topLeft + QPoint(35, fontMetrics().capHeight() * 2 + 3), QString::fromStdString(maxValue));
     painter.drawText(bottomRight + QPoint(5, 0), "MIN");
-    painter.drawText(bottomRight + QPoint(5, -fontMetrics().capHeight() - 3), QString("%1").arg(MFSimulator::GetInstance()->SimulationResultsMinMagnitude));
+    std::string minValue = to_engineering_string(SIM_CONSTANT_VACUUM_MAGNETIC_PERMEABILITY * MFSimulator::GetInstance()->SimulationResultsMinMagnitude, 3, eng_prefixed, "T");
+    painter.drawText(bottomRight + QPoint(5, -fontMetrics().capHeight() - 3), QString::fromStdString(minValue));
 
     // Set border size
     QPen pen(Qt::black, 2);

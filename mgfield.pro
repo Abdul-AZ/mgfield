@@ -4,6 +4,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets opengl openglwidgets
 
 CONFIG += c++17
 
+DEFINES += ENG_FORMAT_MICRO_GLYPH=\\\"u\\\"
+
 SOURCES += \
     src/main.cpp \
     src/mainwindow.cpp \
@@ -21,7 +23,8 @@ SOURCES += \
     src/transmissioncable.cpp \
     src/vectorfield3d.cpp \
     src/view/viewport3d.cpp \
-    thirdparty/tinygltf/tiny_gltf.cpp
+    thirdparty/tinygltf/tiny_gltf.cpp \
+    thirdparty/eng_format/eng_format.cpp
 
 HEADERS += \
     src/mainwindow.h \
@@ -43,7 +46,8 @@ HEADERS += \
     thirdparty/tinygltf/json.hpp \
     thirdparty/tinygltf/stb_image.h \
     thirdparty/tinygltf/stb_image_write.h \
-    thirdparty/tinygltf/tiny_gltf.h
+    thirdparty/tinygltf/tiny_gltf.h \
+    thirdparty/eng_format/eng_format.hpp
 
 FORMS += \
     src/mainwindow.ui \

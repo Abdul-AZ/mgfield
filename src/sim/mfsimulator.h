@@ -8,6 +8,9 @@
 
 #include "../scene.h"
 
+#define SIM_CONSTANT_PI                           (3.14159265   )
+#define SIM_CONSTANT_VACUUM_MAGNETIC_PERMEABILITY (1.25663706e-6)
+
 class MFSimulator : public QObject
 {
     Q_OBJECT
@@ -43,6 +46,8 @@ public:
     float   SimulationDatapointsSpacing = 1.0f;
 
     bool                   SimulationResultsExist = false;
+
+    // The resultant values are a multiple of SIM_CONSTANT_VACUUM_MAGNETIC_PERMEABILITY
     std::vector<QVector3D> SimulationResults;
     float                  SimulationResultsMaxMagnitude = 0.0f;
     float                  SimulationResultsMinMagnitude = 0.0f;
