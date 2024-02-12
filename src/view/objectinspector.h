@@ -20,6 +20,8 @@ private:
     void DisconnectSignals();
     void ConnectSignals();
 
+    void AddUniqueComponentWidgets(std::shared_ptr<Object> obj);
+
 signals:
     void ObjectEdited(std::shared_ptr<Object> obj);
 

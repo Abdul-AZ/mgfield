@@ -18,9 +18,13 @@ public:
 
     void Draw(QMatrix4x4 viewProjection, QOpenGLFunctions_3_3_Core* funcs);
 
+    float GetDCCurrent() { return m_DCCurrent; };
+    void  SetDCCurrent(float value) { m_DCCurrent = value; };
+
 private:
     void createBuffers();
 
+    float                      m_DCCurrent = 1.0f;
     QOpenGLShaderProgram       m_Shader;
     QOpenGLBuffer              m_VertexBuffer;
     QOpenGLBuffer              m_IndexBuffer;

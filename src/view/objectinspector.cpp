@@ -1,6 +1,10 @@
 #include "objectinspector.h"
 #include "ui_objectinspector.h"
 
+#include "QLabel"
+
+#include "src/transmissioncable.h"
+
 ObjectInspector::ObjectInspector(QWidget *parent)
     : QGroupBox(parent)
     , ui(new Ui::ObjectInspector)
@@ -90,9 +94,32 @@ void ObjectInspector::ConnectSignals()
     });
 }
 
+//TODO organize this better
+void ObjectInspector::AddUniqueComponentWidgets(std::shared_ptr<Object> obj)
+{
+    if(obj->Type == CurrentCarryingCable)
+    {
+        TransmissionCable* cable = (TransmissionCable*)obj.get();
+
+        ModifiedDoubleSpinBox* spinbox = new ModifiedDoubleSpinBox(nullptr);
+        spinbox->setButtonSymbols(QAbstractSpinBox::NoButtons);
+        spinbox->setValue(cable->GetDCCurrent());
+        connect(spinbox, &QDoubleSpinBox::valueChanged, this, [this](double val)
+        {
+            ((TransmissionCable*)m_CurrentlySelectedObject.get())->SetDCCurrent(val);
+
+            emit ObjectEdited(m_CurrentlySelectedObject);
+        });
+        ui->UniqueComponents->addRow("Current", spinbox);
+
+    }
+}
+
 void ObjectInspector::ObjectSelected(std::shared_ptr<Object> obj)
 {
     DisconnectSignals();
+    while (ui->UniqueComponents->rowCount() > 0)
+        ui->UniqueComponents->removeRow(0);
     m_CurrentlySelectedObject = obj;
 
     if(obj == nullptr)
@@ -100,6 +127,8 @@ void ObjectInspector::ObjectSelected(std::shared_ptr<Object> obj)
         setEnabled(false);
         return;
     }
+
+    AddUniqueComponentWidgets(obj);
 
     ConnectSignals();
     setEnabled(true);
