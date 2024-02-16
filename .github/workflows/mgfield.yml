@@ -72,7 +72,7 @@ jobs:
 
     - name: Install Qt
       run: |
-	choco install qt5-default
+        choco install qt5-default
       shell: pwsh
 
     - name: Verify Qt Installation
