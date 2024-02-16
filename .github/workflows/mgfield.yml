@@ -7,12 +7,12 @@ on:
     branches: [ github-actions-test ]
 
 jobs:
-  build:
+  build-macos:
     runs-on: macos-latest
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Install Qt
       run: |
@@ -39,3 +39,49 @@ jobs:
       env:
         QT_PATH: ${{ env.QT_PATH }}
 
+  build-ubuntu:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install Qt
+      run: |
+        sudo apt-get update
+        sudo apt-get install qt5-default
+      shell: bash
+
+    - name: Verify Qt Installation
+      run: |
+        qmake --version
+      shell: bash
+
+    - name: Build the project
+      run: |
+        qmake mgfield.pro
+        make
+      shell: bash
+
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install Qt
+      run: |
+	choco install qt5-default
+      shell: pwsh
+
+    - name: Verify Qt Installation
+      run: |
+        qmake --version
+      shell: pwsh
+
+    - name: Build the project
+      run: |
+        qmake mgfield.pro
+        make
+      shell: pwsh
