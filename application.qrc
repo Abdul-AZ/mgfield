@@ -6,5 +6,6 @@
         <file>shaders/ColoredMesh.vert</file>
         <file>shaders/ColoredMesh.frag</file>
         <file>res/icon_256px.png</file>
+        <file>res/shapes/Cable3D.glb</file>
     </qresource>
 </RCC>

@@ -8,8 +8,6 @@
 #include <QMatrix4x4>
 #include "src/scene/object.h"
 
-#define TRANSMISSION_CABLE_BASE_DIRECTION {0.0f, 0.0f, 1.0f}
-
 class TransmissionCable : public Object
 {
 public:
@@ -22,7 +20,7 @@ public:
     void  SetDCCurrent(float value) { m_DCCurrent = value; };
 
 private:
-    void createBuffers();
+    void loadModel();
 
     float                      m_DCCurrent = 1.0f;
     QOpenGLShaderProgram       m_Shader;
