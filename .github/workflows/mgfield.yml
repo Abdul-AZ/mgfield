@@ -1,4 +1,4 @@
-name: Test on macOS
+name: Test on macOS Ubuntu and Windows
 
 on:
   push:
@@ -49,7 +49,7 @@ jobs:
     - name: Install Qt
       run: |
         sudo apt-get update
-        sudo apt-get install qt5-default
+        sudo apt-get install qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools
       shell: bash
 
     - name: Verify Qt Installation
