@@ -45,7 +45,10 @@ void TransmissionCable::Draw(QMatrix4x4 viewProjection, QOpenGLFunctions_3_3_Cor
 
     matrix.translate(Position);
     matrix.rotate(Rotation);
-    matrix.scale(0.1f);
+    if(m_IsInfiniteLength)
+        matrix.scale(1000.0f, TRANSMISSION_CABLE_MODEL_BASE_SCALE, TRANSMISSION_CABLE_MODEL_BASE_SCALE);
+    else
+        matrix.scale(TRANSMISSION_CABLE_MODEL_BASE_SCALE);
 
     m_Shader.setUniformValue(m_Shader.uniformLocation("uModelViewProjection"), matrix);
 

@@ -2,6 +2,7 @@
 #include "ui_objectinspector.h"
 
 #include "QLabel"
+#include <QCheckBox>
 
 #include "src/transmissioncable.h"
 
@@ -100,6 +101,17 @@ void ObjectInspector::AddUniqueComponentWidgets(std::shared_ptr<Object> obj)
     if(obj->Type == CurrentCarryingCable)
     {
         TransmissionCable* cable = (TransmissionCable*)obj.get();
+
+        QCheckBox* checkbox = new QCheckBox(nullptr);
+        checkbox->setText("");
+        checkbox->setChecked(cable->GetIsInfiniteLength());
+        connect(checkbox, &QCheckBox::stateChanged, this, [this](int val)
+        {
+            ((TransmissionCable*)m_CurrentlySelectedObject.get())->SetIsInfiniteLength((bool)val);
+
+            emit ObjectEdited(m_CurrentlySelectedObject);
+        });
+        ui->UniqueComponents->addRow("Infinite Length", checkbox);
 
         ModifiedDoubleSpinBox* spinbox = new ModifiedDoubleSpinBox(nullptr);
         spinbox->setButtonSymbols(QAbstractSpinBox::NoButtons);
