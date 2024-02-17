@@ -50,6 +50,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt install qt6-base-dev
+        sudo apt install qtcreator
       shell: bash
 
     - name: Verify Qt Installation
