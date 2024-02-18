@@ -59,7 +59,7 @@ size_t MFSimulator::GetResultsElementIndex(int32_t x, int32_t y, int32_t z)
 
     if(index < 0 || index >= SimulationNumDatapointsX * SimulationNumDatapointsY * SimulationNumDatapointsZ)
     {
-        qFatal() << "Invalid simulation results access coords, value in (" << x << ", " << y << ", " << z << ") does not exist";
+        qCritical() << "Invalid simulation results access coords, value in (" << x << ", " << y << ", " << z << ") does not exist";
         return 0;
     }
 
