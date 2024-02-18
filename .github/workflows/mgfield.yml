@@ -74,16 +74,16 @@ jobs:
 
     - name: Install Qt
       run: |
-        choco install qt5-default
+        choco install qt6-base-dev
       shell: pwsh
 
     - name: Verify Qt Installation
       run: |
-        qmake --version
+        qmake6 --version
       shell: pwsh
 
     - name: Build the project
       run: |
-        qmake mgfield.pro
+        qmake6 mgfield.pro
         make
       shell: pwsh
