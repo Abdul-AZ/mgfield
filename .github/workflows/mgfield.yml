@@ -1,6 +1,6 @@
 name: Build Test on different OSs
 
-on: [push, pull_request]
+on: push
 
 jobs:
   build-macos:
