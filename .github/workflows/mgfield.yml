@@ -1,10 +1,6 @@
 name: Build Test on different OSs
 
-on:
-  push:
-    branches: [ github-actions-test ]
-  pull_request:
-    branches: [ github-actions-test ]
+on: [push, pull_request]
 
 jobs:
   build-macos:
