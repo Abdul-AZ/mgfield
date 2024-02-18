@@ -79,11 +79,11 @@ jobs:
 
     - name: Verify Qt Installation
       run: |
-        qmake6 --version
+        qmake --version
       shell: pwsh
 
     - name: Build the project
       run: |
-        qmake6 mgfield.pro
+        qmake mgfield.pro
         make
       shell: pwsh
