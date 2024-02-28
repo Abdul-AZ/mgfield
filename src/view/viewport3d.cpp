@@ -72,31 +72,12 @@ void Viewport3D::initializeGL()
     m_ObjectRenderer = std::make_unique<ObjectRenderer>();
 }
 
-
-//TODO separate rendering and data so that adding objects does not happen in this class
-//Maybe have a SceneRenderer class which has all the data?
-void Viewport3D::RequestAddObject(ObjectType type)
-{
-    makeCurrent();
-    //TODO properly select object to be added
-    m_CurrentScene->Objects.append(std::make_shared<TransmissionCable>());
-
-    emit m_CurrentScene->ObjectAdded();
-    repaint();
-}
-
-void Viewport3D::RequestRemoveObject(int32_t index)
-{
-    makeCurrent();
-    m_CurrentScene->Objects.remove(index);
-
-    emit m_CurrentScene->ObjectRemoved();
-    repaint();
-}
-
 void Viewport3D::SceneLoaded(Scene* scene)
 {
     m_CurrentScene = scene;
+
+    connect(scene, &Scene::ObjectAdded, this, &Viewport3D::Redraw);
+    connect(scene, &Scene::ObjectRemoved, this, &Viewport3D::Redraw);
 }
 
 void Viewport3D::paintGL()

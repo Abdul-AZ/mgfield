@@ -15,6 +15,10 @@ signals:
     void ObjectAdded();
     void ObjectRemoved();
 
+public slots:
+    void AddObject(ObjectType type);
+    void RemoveObject(int32_t index);
+
 public:
     QVector<std::shared_ptr<Object>> Objects;
 };

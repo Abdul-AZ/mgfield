@@ -42,12 +42,12 @@ MainWindow::MainWindow(QWidget *parent)
 
         if(dialog.exec() == QDialog::Accepted)
         {
-            ui->viewport3D->RequestAddObject(dialog.GetSelectedObjectType());
+            scene->AddObject(dialog.GetSelectedObjectType());
         }
     });
     connect(ui->RemoveObjectButton, &QPushButton::clicked, this, [this]()
     {
-        ui->viewport3D->RequestRemoveObject(ui->ObjectList->currentIndex().row());
+        scene->RemoveObject(ui->ObjectList->currentIndex().row());
         ui->RemoveObjectButton->setEnabled(false);
     });
 

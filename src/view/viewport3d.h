@@ -35,8 +35,6 @@ public:
 public slots:
     void cameraModeChanged(CameraControlMode newMode);
     void SceneLoaded(Scene* scene);
-    void RequestAddObject(ObjectType type);
-    void RequestRemoveObject(int32_t index);
     void Redraw();
 
 private slots:
