@@ -138,6 +138,6 @@ void MFSimulator::CalculateContributionsFromCable(const TransmissionCable& cable
                 else
                     result = CalculateContributionFromfiniteCable(position, cable);
 
-                SimulationResults[GetResultsElementIndex(x, y, z)] = result;
+                SimulationResults[GetResultsElementIndex(x, y, z)] += result;
             }
 }
