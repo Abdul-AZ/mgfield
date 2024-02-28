@@ -6,7 +6,8 @@
 
 enum ObjectType
 {
-    CurrentCarryingCable
+    CurrentCarryingCable,
+    CurrentCarryingSheet
 };
 
 class Object

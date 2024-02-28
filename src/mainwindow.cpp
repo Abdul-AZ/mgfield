@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include "src/view/viewport3d.h"
 #include "src/view/simulationsettingsdialog.h"
+#include "src/view/addobjectdialog.h"
 #include "src/sim/mfsimulator.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -35,7 +36,15 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(showAboutWindow()));
 
     // Connect add and remove buttons
-    connect(ui->AddObjectButton, SIGNAL(clicked()), ui->viewport3D, SLOT(RequestAddObject()));
+    connect(ui->AddObjectButton, &QPushButton::clicked, this, [this]()
+    {
+        AddObjectDialog dialog(this);
+
+        if(dialog.exec() == QDialog::Accepted)
+        {
+            ui->viewport3D->RequestAddObject(dialog.GetSelectedObjectType());
+        }
+    });
     connect(ui->RemoveObjectButton, &QPushButton::clicked, this, [this]()
     {
         ui->viewport3D->RequestRemoveObject(ui->ObjectList->currentIndex().row());

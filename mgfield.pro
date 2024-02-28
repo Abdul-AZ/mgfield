@@ -13,6 +13,7 @@ SOURCES += \
     src/perspectivecamera.cpp \
     src/freeroamcameracontroller.cpp \
     src/grid3d.cpp \
+    src/view/addobjectdialog.cpp \
     src/view/modifieddoublespinbox.cpp \
     src/view/objectinspector.cpp \
     src/view/objectlistview.cpp \
@@ -33,6 +34,7 @@ HEADERS += \
     src/freeroamcameracontroller.h \
     src/grid3d.h \
     src/scene/object.h \
+    src/view/addobjectdialog.h \
     src/view/modifieddoublespinbox.h \
     src/view/objectinspector.h \
     src/view/objectlistview.h \
@@ -51,6 +53,7 @@ HEADERS += \
 
 FORMS += \
     src/mainwindow.ui \
+    src/view/addobjectdialog.ui \
     src/view/objectinspector.ui \
     src/view/simulationsettingsdialog.ui \
     src/view/viewportsettings.ui

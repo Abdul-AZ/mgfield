@@ -73,9 +73,10 @@ void Viewport3D::initializeGL()
 
 //TODO separate rendering and data so that adding objects does not happen in this class
 //Maybe have a SceneRenderer class which has all the data?
-void Viewport3D::RequestAddObject()
+void Viewport3D::RequestAddObject(ObjectType type)
 {
     makeCurrent();
+    //TODO properly select object to be added
     m_CurrentScene->Objects.append(std::make_shared<TransmissionCable>(nullptr));
 
     emit m_CurrentScene->ObjectAdded();
