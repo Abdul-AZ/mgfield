@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 
 #include <QApplication>
+#include <QSurfaceFormat>
 
 
 #ifdef QT_DEBUG

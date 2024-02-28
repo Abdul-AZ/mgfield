@@ -68,6 +68,8 @@ void Viewport3D::initializeGL()
     m_Grid = new Grid3D(m_GLFuncs);
 
     connect(m_SimulationVectorField, SIGNAL(repaintRequested()), this, SLOT(repaint()));
+
+    m_ObjectRenderer = std::make_unique<ObjectRenderer>();
 }
 
 
@@ -77,7 +79,7 @@ void Viewport3D::RequestAddObject(ObjectType type)
 {
     makeCurrent();
     //TODO properly select object to be added
-    m_CurrentScene->Objects.append(std::make_shared<TransmissionCable>(nullptr));
+    m_CurrentScene->Objects.append(std::make_shared<TransmissionCable>());
 
     emit m_CurrentScene->ObjectAdded();
     repaint();
@@ -112,13 +114,7 @@ void Viewport3D::paintGL()
         m_Grid->Draw(viewProjection);
 
     if(m_CurrentScene)
-    {
-        for (auto& object : m_CurrentScene->Objects)
-        {
-            if(object->Type == CurrentCarryingCable)
-                ((TransmissionCable*)(object.get()))->Draw(viewProjection, m_GLFuncs);
-        }
-    }
+        m_ObjectRenderer->DrawScene(context(), m_CurrentScene, viewProjection);
 
     m_SimulationVectorField->Draw(viewProjection);
 

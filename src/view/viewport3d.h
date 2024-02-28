@@ -13,6 +13,7 @@
 #include "../freeroamcameracontroller.h"
 #include "src/vectorfield3d.h"
 #include "src/grid3d.h"
+#include "src/scene/objectrenderer.h"
 #include "viewportsettings.h"
 
 enum class CameraControlMode
@@ -76,6 +77,8 @@ private:
 
     VectorField3D* m_SimulationVectorField;
     Grid3D*        m_Grid;
+
+    std::unique_ptr<ObjectRenderer> m_ObjectRenderer = nullptr;
 };
 
 #endif // VIEWPORT3D_H
