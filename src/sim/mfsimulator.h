@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QVector3D>
 
-#include "../transmissioncable.h"
+#include "../scene/straightwireobject.h"
 
 #include "../scene.h"
 
@@ -35,7 +35,7 @@ signals:
     void SimulationFinished();
 
 private:
-    void CalculateContributionsFromCable(const TransmissionCable& cable);
+    void CalculateContributionsFromCable(const StraightWireObject& cable);
 
 public:
     Scene* TargetScene = nullptr;

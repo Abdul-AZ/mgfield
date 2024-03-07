@@ -19,8 +19,8 @@ void MFSimulator::RequestNewSimulationRun(Scene* scene)
     foreach (auto& object, scene->Objects)
     {
         switch (object->Type) {
-        case CurrentCarryingCable:
-            CalculateContributionsFromCable(*(TransmissionCable*)object.get());
+        case ObjectType::StraightWire:
+            CalculateContributionsFromCable(*(StraightWireObject*)object.get());
             continue;
         }
     }
@@ -76,7 +76,7 @@ const QVector3D MFSimulator::GetPosition(int32_t x, int32_t y, int32_t z)
     return SimulationDatapointsSpacing * QVector3D(x - SimulationNumDatapointsX / 2, y - SimulationNumDatapointsY / 2, z - SimulationNumDatapointsZ / 2);
 }
 
-static QVector3D CalculateContributionFromInfiniteCable(const QVector3D& point, const TransmissionCable& cable)
+static QVector3D CalculateContributionFromInfiniteCable(const QVector3D& point, const StraightWireObject& cable)
 {
     // Assuming cable is infinite in length
     // Using Biot-Savart Law to calculate magnitude of magnetic field
@@ -92,7 +92,7 @@ static QVector3D CalculateContributionFromInfiniteCable(const QVector3D& point, 
     return magnitude * direction;
 }
 
-static QVector3D CalculateContributionFromfiniteCable(const QVector3D& point, const TransmissionCable& cable)
+static QVector3D CalculateContributionFromfiniteCable(const QVector3D& point, const StraightWireObject& cable)
 {
     const double pi = SIM_CONSTANT_PI;
     QVector3D result;
@@ -125,7 +125,7 @@ static QVector3D CalculateContributionFromfiniteCable(const QVector3D& point, co
     return result * cable.GetDCCurrent() / (4 * pi);
 }
 
-void MFSimulator::CalculateContributionsFromCable(const TransmissionCable& cable)
+void MFSimulator::CalculateContributionsFromCable(const StraightWireObject& cable)
 {
     for (int x = 0; x < SimulationNumDatapointsX; x++)
         for (int y = 0; y < SimulationNumDatapointsY; y++)

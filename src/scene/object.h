@@ -4,9 +4,9 @@
 #include <QVector3D>
 #include <QQuaternion>
 
-enum ObjectType
+enum class ObjectType
 {
-    CurrentCarryingCable,
+    StraightWire,
     CurrentCarryingSheet
 };
 

@@ -8,8 +8,8 @@ AddObjectDialog::AddObjectDialog(QWidget *parent)
 {
     ui->setupUi(this);
 
-    ui->ObjectTypeComboBox->addItem("Current Carrying Conductor", CurrentCarryingCable);
-    ui->ObjectTypeComboBox->addItem("Current Carrying Sheet", CurrentCarryingSheet);
+    ui->ObjectTypeComboBox->addItem("Current Carrying Conductor", (int32_t)ObjectType::StraightWire);
+    ui->ObjectTypeComboBox->addItem("Current Carrying Sheet", (int32_t)ObjectType::CurrentCarryingSheet);
 }
 
 ObjectType AddObjectDialog::GetSelectedObjectType() const

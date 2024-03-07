@@ -4,7 +4,7 @@
 #include "QLabel"
 #include <QCheckBox>
 
-#include "src/transmissioncable.h"
+#include "src/scene/straightwireobject.h"
 
 ObjectInspector::ObjectInspector(QWidget *parent)
     : QGroupBox(parent)
@@ -98,16 +98,16 @@ void ObjectInspector::ConnectSignals()
 //TODO organize this better
 void ObjectInspector::AddUniqueComponentWidgets(std::shared_ptr<Object> obj)
 {
-    if(obj->Type == CurrentCarryingCable)
+    if(obj->Type == ObjectType::StraightWire)
     {
-        TransmissionCable* cable = (TransmissionCable*)obj.get();
+        StraightWireObject* cable = (StraightWireObject*)obj.get();
 
         QCheckBox* checkbox = new QCheckBox(nullptr);
         checkbox->setText("");
         checkbox->setChecked(cable->GetIsInfiniteLength());
         connect(checkbox, &QCheckBox::stateChanged, this, [this](int val)
         {
-            ((TransmissionCable*)m_CurrentlySelectedObject.get())->SetIsInfiniteLength((bool)val);
+            ((StraightWireObject*)m_CurrentlySelectedObject.get())->SetIsInfiniteLength((bool)val);
 
             emit ObjectEdited(m_CurrentlySelectedObject);
         });
@@ -119,7 +119,7 @@ void ObjectInspector::AddUniqueComponentWidgets(std::shared_ptr<Object> obj)
         spinbox->setMaximum(1e9);
         connect(spinbox, &QDoubleSpinBox::valueChanged, this, [this](double val)
         {
-            ((TransmissionCable*)m_CurrentlySelectedObject.get())->SetDCCurrent(val);
+            ((StraightWireObject*)m_CurrentlySelectedObject.get())->SetDCCurrent(val);
 
             emit ObjectEdited(m_CurrentlySelectedObject);
         });

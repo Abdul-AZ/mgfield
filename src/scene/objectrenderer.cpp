@@ -121,7 +121,7 @@ void ObjectRenderer::TerminateCableRendering()
     m_CableIndexBuffer.destroy();
 }
 
-void ObjectRenderer::DrawCable(TransmissionCable* object, QOpenGLFunctions* funcs, const QMatrix4x4& viewProjection)
+void ObjectRenderer::DrawCable(StraightWireObject* object, QOpenGLFunctions* funcs, const QMatrix4x4& viewProjection)
 {
     m_CableVertexArray.bind();
     m_CableShader.bind();
@@ -132,9 +132,9 @@ void ObjectRenderer::DrawCable(TransmissionCable* object, QOpenGLFunctions* func
     matrix.translate(object->Position);
     matrix.rotate(object->Rotation);
     if(object->GetIsInfiniteLength())
-        matrix.scale(1000.0f, TRANSMISSION_CABLE_MODEL_BASE_SCALE, TRANSMISSION_CABLE_MODEL_BASE_SCALE);
+        matrix.scale(1000.0f, STRAIGHT_WIRE_OBJECT_MODEL_BASE_SCALE, STRAIGHT_WIRE_OBJECT_MODEL_BASE_SCALE);
     else
-        matrix.scale(TRANSMISSION_CABLE_MODEL_BASE_SCALE);
+        matrix.scale(STRAIGHT_WIRE_OBJECT_MODEL_BASE_SCALE);
 
     m_CableShader.setUniformValue(m_CableShader.uniformLocation("uModelViewProjection"), matrix);
 
@@ -151,9 +151,9 @@ void ObjectRenderer::DrawScene(QOpenGLContext* context, Scene* scene, const QMat
 
     for (auto& object : scene->Objects)
     {
-        if(object->Type == CurrentCarryingCable)
+        if(object->Type == ObjectType::StraightWire)
         {
-            DrawCable((TransmissionCable*)object.get(), context->functions(), viewProjection);
+            DrawCable((StraightWireObject*)object.get(), context->functions(), viewProjection);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-#include "src/transmissioncable.h"
+#include "src/scene/straightwireobject.h"
 
 Scene::Scene() {}
 
@@ -10,8 +10,8 @@ void Scene::AddObject(ObjectType type)
 {
     switch (type)
     {
-    case CurrentCarryingCable:
-        Objects.append(std::make_shared<TransmissionCable>());
+    case ObjectType::StraightWire:
+        Objects.append(std::make_shared<StraightWireObject>());
         break;
 
     default:

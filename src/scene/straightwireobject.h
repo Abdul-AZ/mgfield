@@ -1,16 +1,16 @@
-#ifndef TRANSMISSIONCABLE_H
-#define TRANSMISSIONCABLE_H
+#ifndef STRAIGHTWIREOBJECT_H
+#define STRAIGHTWIREOBJECT_H
 
 #include <QMatrix4x4>
 #include "src/scene/object.h"
 
-#define TRANSMISSION_CABLE_MODEL_BASE_SCALE (0.1f)
+#define STRAIGHT_WIRE_OBJECT_MODEL_BASE_SCALE (0.1f)
 
-class TransmissionCable : public Object
+class StraightWireObject : public Object
 {
 public:
-    TransmissionCable();
-    ~TransmissionCable() {};
+    StraightWireObject();
+    ~StraightWireObject() {};
 
     float GetDCCurrent() const { return m_DCCurrent; };
     void  SetDCCurrent(float value) { m_DCCurrent = value; };
@@ -25,4 +25,4 @@ private:
     bool                       m_IsInfiniteLength = true;
 };
 
-#endif // TRANSMISSIONCABLE_H
+#endif // STRAIGHTWIREOBJECT_H

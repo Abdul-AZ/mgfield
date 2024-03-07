@@ -14,6 +14,7 @@ SOURCES += \
     src/freeroamcameracontroller.cpp \
     src/grid3d.cpp \
     src/scene/objectrenderer.cpp \
+    src/scene/straightwireobject.cpp \
     src/view/addobjectdialog.cpp \
     src/view/modifieddoublespinbox.cpp \
     src/view/objectinspector.cpp \
@@ -22,7 +23,6 @@ SOURCES += \
     src/sim/mfsimulator.cpp \
     src/view/simulationsettingsdialog.cpp \
     src/view/viewportsettings.cpp \
-    src/transmissioncable.cpp \
     src/vectorfield3d.cpp \
     src/view/viewport3d.cpp \
     thirdparty/tinygltf/tiny_gltf.cpp \
@@ -36,6 +36,7 @@ HEADERS += \
     src/grid3d.h \
     src/scene/object.h \
     src/scene/objectrenderer.h \
+    src/scene/straightwireobject.h \
     src/view/addobjectdialog.h \
     src/view/modifieddoublespinbox.h \
     src/view/objectinspector.h \
@@ -44,7 +45,6 @@ HEADERS += \
     src/sim/mfsimulator.h \
     src/view/simulationsettingsdialog.h \
     src/view/viewportsettings.h \
-    src/transmissioncable.h \
     src/vectorfield3d.h \
     src/view/viewport3d.h \
     thirdparty/tinygltf/json.hpp \
