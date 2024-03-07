@@ -25,12 +25,21 @@ private:
 
     void LoadModel(QString path, QOpenGLBuffer& vbuffer, QOpenGLBuffer& ibuffer, int32_t& numIndecies);
 
+    void LoadShaders();
+
 private:
-    QOpenGLShaderProgram       m_CableShader;
-    QOpenGLBuffer              m_CableVertexBuffer;
-    QOpenGLBuffer              m_CableIndexBuffer;
-    QOpenGLVertexArrayObject   m_CableVertexArray;
-    int32_t                    m_CableNumIndecies;
+    QOpenGLShaderProgram m_ColoredMeshShader;
+
+    struct ObjectTypeRenderData
+    {
+        QOpenGLBuffer              VertexBuffer;
+        QOpenGLBuffer              IndexBuffer;
+        QOpenGLVertexArrayObject   VertexArray;
+        int32_t                    NumIndecies;
+    };
+
+    ObjectTypeRenderData m_CableModelData;
+    ObjectTypeRenderData m_SheetModelData;
 };
 
 #endif // OBJECTRENDERER_H

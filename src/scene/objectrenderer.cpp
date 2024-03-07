@@ -5,6 +5,7 @@
 
 ObjectRenderer::ObjectRenderer()
 {
+    LoadShaders();
     InitCableRendering();
 }
 
@@ -86,45 +87,49 @@ void ObjectRenderer::LoadModel(QString path, QOpenGLBuffer& vbuffer, QOpenGLBuff
         throw std::runtime_error("Invalid index buffer in model");
 }
 
+void ObjectRenderer::LoadShaders()
+{
+    if(!m_ColoredMeshShader.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shaders/ColoredMesh.vert"))
+        qCritical() << "ColoredMesh vertex shader error";
+
+    if(!m_ColoredMeshShader.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/ColoredMesh.frag"))
+        qCritical() << "ColoredMesh fragment shader error";
+
+    if(!m_ColoredMeshShader.link())
+        qCritical() << "ColoredMesh shader program linking error";
+
+    m_ColoredMeshShader.bind();
+    m_ColoredMeshShader.setUniformValue("uMeshColor", QVector4D(1.0f, 1.0f, 1.0f, 1.0f));
+    m_ColoredMeshShader.release();
+}
+
 void ObjectRenderer::InitCableRendering()
 {
-    m_CableVertexBuffer = QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
-    m_CableIndexBuffer = QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
+    m_CableModelData.VertexBuffer = QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
+    m_CableModelData.IndexBuffer = QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
 
-    if(!m_CableShader.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shaders/ColoredMesh.vert"))
-        qCritical() << "TransmissionLine vertex shader error";
+    m_CableModelData.VertexArray.create();
+    m_CableModelData.VertexArray.bind();
 
-    if(!m_CableShader.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/ColoredMesh.frag"))
-        qCritical() << "TransmissionLine fragment shader error";
+    LoadModel(":/res/shapes/Cable3D.glb", m_CableModelData.VertexBuffer, m_CableModelData.IndexBuffer, m_CableModelData.NumIndecies);
 
-    if(!m_CableShader.link())
-        qCritical() << "TransmissionLine shader program linking error";
+    m_ColoredMeshShader.setAttributeBuffer(0, GL_FLOAT, 0, 3, 0);
+    m_ColoredMeshShader.enableAttributeArray(0);
 
-    m_CableVertexArray.create();
-    m_CableVertexArray.bind();
-
-    LoadModel(":/res/shapes/Cable3D.glb", m_CableVertexBuffer, m_CableIndexBuffer, m_CableNumIndecies);
-
-    m_CableShader.bind();
-    m_CableShader.setAttributeBuffer(0, GL_FLOAT, 0, 3, 0);
-    m_CableShader.enableAttributeArray(0);
-    m_CableShader.setUniformValue("uMeshColor", QVector4D(1.0f, 1.0f, 1.0f, 1.0f));
-
-    m_CableShader.release();
-    m_CableVertexArray.release();
+    m_CableModelData.VertexArray.release();
 }
 
 void ObjectRenderer::TerminateCableRendering()
 {
-    m_CableVertexArray.destroy();
-    m_CableVertexBuffer.destroy();
-    m_CableIndexBuffer.destroy();
+    m_CableModelData.VertexArray.destroy();
+    m_CableModelData.VertexBuffer.destroy();
+    m_CableModelData.IndexBuffer.destroy();
 }
 
 void ObjectRenderer::DrawCable(StraightWireObject* object, QOpenGLFunctions* funcs, const QMatrix4x4& viewProjection)
 {
-    m_CableVertexArray.bind();
-    m_CableShader.bind();
+    m_CableModelData.VertexArray.bind();
+    m_ColoredMeshShader.bind();
 
     QMatrix4x4 matrix;
     matrix *= viewProjection;
@@ -136,12 +141,12 @@ void ObjectRenderer::DrawCable(StraightWireObject* object, QOpenGLFunctions* fun
     else
         matrix.scale(STRAIGHT_WIRE_OBJECT_MODEL_BASE_SCALE);
 
-    m_CableShader.setUniformValue(m_CableShader.uniformLocation("uModelViewProjection"), matrix);
+    m_ColoredMeshShader.setUniformValue(m_ColoredMeshShader.uniformLocation("uModelViewProjection"), matrix);
 
-    funcs->glDrawElements(GL_TRIANGLES, m_CableNumIndecies, GL_UNSIGNED_SHORT, 0);
+    funcs->glDrawElements(GL_TRIANGLES, m_CableModelData.NumIndecies, GL_UNSIGNED_SHORT, 0);
 
-    m_CableShader.release();
-    m_CableVertexArray.release();
+    m_ColoredMeshShader.release();
+    m_CableModelData.VertexArray.release();
 }
 
 void ObjectRenderer::DrawScene(QOpenGLContext* context, Scene* scene, const QMatrix4x4& viewProjection)
