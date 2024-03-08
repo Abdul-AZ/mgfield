@@ -7,11 +7,13 @@ ObjectRenderer::ObjectRenderer()
 {
     LoadShaders();
     InitCableRendering();
+    InitSheetRendering();
 }
 
 ObjectRenderer::~ObjectRenderer()
 {
     TerminateCableRendering();
+    TerminateSheetRendering();
 }
 
 void ObjectRenderer::LoadModel(QString path, QOpenGLBuffer& vbuffer, QOpenGLBuffer& ibuffer, int32_t& numIndecies)
@@ -156,9 +158,61 @@ void ObjectRenderer::DrawScene(QOpenGLContext* context, Scene* scene, const QMat
 
     for (auto& object : scene->Objects)
     {
-        if(object->Type == ObjectType::StraightWire)
+        switch (object->Type)
         {
+        case ObjectType::StraightWire:
             DrawCable((StraightWireObject*)object.get(), context->functions(), viewProjection);
+            continue;
+
+        case ObjectType::CurrentCarryingSheet:
+            DrawSheet((CurrentCarryingSheet*)object.get(), context->functions(), viewProjection);
+            continue;
+
+        default:
+            qWarning("Tried to draw unknown object");
+            continue;
         }
     }
+}
+
+void ObjectRenderer::InitSheetRendering()
+{
+    m_SheetModelData.VertexBuffer = QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
+    m_SheetModelData.IndexBuffer = QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
+
+    m_SheetModelData.VertexArray.create();
+    m_SheetModelData.VertexArray.bind();
+
+    LoadModel(":/res/shapes/Plane3D.glb", m_SheetModelData.VertexBuffer, m_SheetModelData.IndexBuffer, m_SheetModelData.NumIndecies);
+
+    m_ColoredMeshShader.setAttributeBuffer(0, GL_FLOAT, 0, 3, 0);
+    m_ColoredMeshShader.enableAttributeArray(0);
+
+    m_SheetModelData.VertexArray.release();
+}
+
+void ObjectRenderer::TerminateSheetRendering()
+{
+    m_SheetModelData.VertexArray.destroy();
+    m_SheetModelData.VertexBuffer.destroy();
+    m_SheetModelData.IndexBuffer.destroy();
+}
+
+void ObjectRenderer::DrawSheet(CurrentCarryingSheet* object, QOpenGLFunctions* funcs, const QMatrix4x4& viewProjection)
+{
+    m_SheetModelData.VertexArray.bind();
+    m_ColoredMeshShader.bind();
+
+    QMatrix4x4 matrix;
+    matrix *= viewProjection;
+
+    matrix.translate(object->Position);
+    matrix.rotate(object->Rotation);
+
+    m_ColoredMeshShader.setUniformValue(m_ColoredMeshShader.uniformLocation("uModelViewProjection"), matrix);
+
+    funcs->glDrawElements(GL_TRIANGLES, m_SheetModelData.NumIndecies, GL_UNSIGNED_SHORT, 0);
+
+    m_ColoredMeshShader.release();
+    m_SheetModelData.VertexArray.release();
 }

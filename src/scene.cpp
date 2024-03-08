@@ -3,6 +3,7 @@
 #include <QDebug>
 
 #include "src/scene/straightwireobject.h"
+#include "src/scene/currentcarryingsheet.h"
 
 Scene::Scene() {}
 
@@ -12,6 +13,10 @@ void Scene::AddObject(ObjectType type)
     {
     case ObjectType::StraightWire:
         Objects.append(std::make_shared<StraightWireObject>());
+        break;
+
+    case ObjectType::CurrentCarryingSheet:
+        Objects.append(std::make_shared<CurrentCarryingSheet>());
         break;
 
     default:

@@ -9,6 +9,7 @@
 #include <QOpenGLFunctions>
 
 #include "src/scene/straightwireobject.h"
+#include "src/scene/currentcarryingsheet.h"
 
 class ObjectRenderer
 {
@@ -22,6 +23,10 @@ private:
     void InitCableRendering();
     void TerminateCableRendering();
     void DrawCable(StraightWireObject* object, QOpenGLFunctions* funcs, const QMatrix4x4& viewProjection);
+
+    void InitSheetRendering();
+    void TerminateSheetRendering();
+    void DrawSheet(CurrentCarryingSheet* object, QOpenGLFunctions* funcs, const QMatrix4x4& viewProjection);
 
     void LoadModel(QString path, QOpenGLBuffer& vbuffer, QOpenGLBuffer& ibuffer, int32_t& numIndecies);
 

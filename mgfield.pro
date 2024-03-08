@@ -13,6 +13,7 @@ SOURCES += \
     src/perspectivecamera.cpp \
     src/freeroamcameracontroller.cpp \
     src/grid3d.cpp \
+    src/scene/currentcarryingsheet.cpp \
     src/scene/objectrenderer.cpp \
     src/scene/straightwireobject.cpp \
     src/view/addobjectdialog.cpp \
@@ -34,6 +35,7 @@ HEADERS += \
     src/perspectivecamera.h \
     src/freeroamcameracontroller.h \
     src/grid3d.h \
+    src/scene/currentcarryingsheet.h \
     src/scene/object.h \
     src/scene/objectrenderer.h \
     src/scene/straightwireobject.h \
