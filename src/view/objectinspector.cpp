@@ -5,6 +5,7 @@
 #include <QCheckBox>
 
 #include "src/scene/straightwireobject.h"
+#include "src/scene/currentcarryingsheet.h"
 
 ObjectInspector::ObjectInspector(QWidget *parent)
     : QGroupBox(parent)
@@ -102,7 +103,7 @@ void ObjectInspector::AddUniqueComponentWidgets(std::shared_ptr<Object> obj)
     {
         StraightWireObject* cable = (StraightWireObject*)obj.get();
 
-        QCheckBox* checkbox = new QCheckBox(nullptr);
+        QCheckBox* checkbox = new QCheckBox(this);
         checkbox->setText("");
         checkbox->setChecked(cable->GetIsInfiniteLength());
         connect(checkbox, &QCheckBox::stateChanged, this, [this](int val)
@@ -113,7 +114,7 @@ void ObjectInspector::AddUniqueComponentWidgets(std::shared_ptr<Object> obj)
         });
         ui->UniqueComponents->addRow("Infinite Length", checkbox);
 
-        ModifiedDoubleSpinBox* spinbox = new ModifiedDoubleSpinBox(nullptr);
+        ModifiedDoubleSpinBox* spinbox = new ModifiedDoubleSpinBox(this);
         spinbox->setButtonSymbols(QAbstractSpinBox::NoButtons);
         spinbox->setValue(cable->GetDCCurrent());
         spinbox->setMaximum(1e9);
@@ -124,7 +125,51 @@ void ObjectInspector::AddUniqueComponentWidgets(std::shared_ptr<Object> obj)
             emit ObjectEdited(m_CurrentlySelectedObject);
         });
         ui->UniqueComponents->addRow("Current", spinbox);
+    }
+    else if (obj->Type == ObjectType::CurrentCarryingSheet)
+    {
+        CurrentCarryingSheet* sheet = (CurrentCarryingSheet*)obj.get();
 
+        ModifiedDoubleSpinBox* widthSpinbox = new ModifiedDoubleSpinBox(this);
+        widthSpinbox->setButtonSymbols(QAbstractSpinBox::NoButtons);
+        widthSpinbox->setValue(sheet->GetWidth());
+        widthSpinbox->setMaximum(100.0f);
+        widthSpinbox->setMinimum(std::numeric_limits<float>::epsilon());
+        connect(widthSpinbox, &QDoubleSpinBox::valueChanged, this, [this](double val)
+        {
+            ((CurrentCarryingSheet*)m_CurrentlySelectedObject.get())->SetWidth(val);
+
+            emit ObjectEdited(m_CurrentlySelectedObject);
+        });
+        ui->UniqueComponents->addRow("Width", widthSpinbox);
+
+
+        ModifiedDoubleSpinBox* lengthSpinbox = new ModifiedDoubleSpinBox(this);
+        lengthSpinbox->setButtonSymbols(QAbstractSpinBox::NoButtons);
+        lengthSpinbox->setValue(sheet->GetWidth());
+        lengthSpinbox->setMaximum(100.0f);
+        lengthSpinbox->setMinimum(std::numeric_limits<float>::epsilon());
+        connect(lengthSpinbox, &QDoubleSpinBox::valueChanged, this, [this](double val)
+        {
+            ((CurrentCarryingSheet*)m_CurrentlySelectedObject.get())->SetLength(val);
+
+            emit ObjectEdited(m_CurrentlySelectedObject);
+        });
+        ui->UniqueComponents->addRow("Length", lengthSpinbox);
+
+
+        ModifiedDoubleSpinBox* brSpinbox = new ModifiedDoubleSpinBox(this);
+        brSpinbox->setButtonSymbols(QAbstractSpinBox::NoButtons);
+        brSpinbox->setValue(sheet->GetBr());
+        brSpinbox->setMaximum(100.0f);
+        brSpinbox->setMinimum(std::numeric_limits<float>::epsilon());
+        connect(brSpinbox, &QDoubleSpinBox::valueChanged, this, [this](double val)
+        {
+            ((CurrentCarryingSheet*)m_CurrentlySelectedObject.get())->SetBr(val);
+
+            emit ObjectEdited(m_CurrentlySelectedObject);
+        });
+        ui->UniqueComponents->addRow("Br", brSpinbox);
     }
 }
 

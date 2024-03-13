@@ -5,6 +5,7 @@
 #include <QVector3D>
 
 #include "../scene/straightwireobject.h"
+#include "../scene/currentcarryingsheet.h"
 
 #include "../scene.h"
 
@@ -36,6 +37,7 @@ signals:
 
 private:
     void CalculateContributionsFromCable(const StraightWireObject& cable);
+    void CalculateContributionsFromSheet(const CurrentCarryingSheet& sheet);
 
 public:
     Scene* TargetScene = nullptr;
