@@ -16,6 +16,8 @@
 #include "src/scene/objectrenderer.h"
 #include "viewportsettings.h"
 
+#define VIEWPORT3D_STENCIL_BUFFER_NO_OBJECT_VALUE (0xFF)
+
 enum class CameraControlMode
 {
     Orbit,
@@ -45,6 +47,7 @@ private slots:
 signals:
     void cameraMoved(QVector3D newPos);
     void exportedImage(QString path);
+    void ObjectSelected(std::shared_ptr<Object> object);
 
 private:
     virtual void initializeGL() override;

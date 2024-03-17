@@ -156,22 +156,27 @@ void ObjectRenderer::DrawScene(QOpenGLContext* context, Scene* scene, const QMat
     if(QOpenGLContext::currentContext() != context)
         context->makeCurrent(nullptr);
 
+    uint8_t stencilBufferValue = 0;
     for (auto& object : scene->Objects)
     {
+        context->functions()->glStencilFunc(GL_ALWAYS, stencilBufferValue, 0xFF);
+
         switch (object->Type)
         {
         case ObjectType::StraightWire:
             DrawCable((StraightWireObject*)object.get(), context->functions(), viewProjection);
-            continue;
+            break;
 
         case ObjectType::CurrentCarryingSheet:
             DrawSheet((CurrentCarryingSheet*)object.get(), context->functions(), viewProjection);
-            continue;
+            break;
 
         default:
             qWarning("Tried to draw unknown object");
-            continue;
+            break;
         }
+
+        stencilBufferValue++;
     }
 }
 

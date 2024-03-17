@@ -59,6 +59,7 @@ void Viewport3D::initializeGL()
 #endif
     m_GLFuncs->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     m_GLFuncs->glEnable(GL_DEPTH_TEST);
+    m_GLFuncs->glEnable(GL_STENCIL_TEST);
     m_GLFuncs->glEnable(GL_BLEND);
     m_GLFuncs->glClearColor(0.1, 0.1, 0.1, 1.0);
 
@@ -83,9 +84,13 @@ void Viewport3D::SceneLoaded(Scene* scene)
 void Viewport3D::paintGL()
 {
     QMatrix4x4 viewProjection = m_ProjectionMatrix * m_Camera.GetViewMatrix();
+    m_GLFuncs->glClearStencil(VIEWPORT3D_STENCIL_BUFFER_NO_OBJECT_VALUE);
+    m_GLFuncs->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     m_GLFuncs->glEnable(GL_DEPTH_TEST);
     m_GLFuncs->glEnable(GL_BLEND);
+    m_GLFuncs->glEnable(GL_STENCIL_TEST);
 
+    m_GLFuncs->glStencilMask(0x00);
     if(m_ViewportSettings)
     {
         if(m_ViewportSettings->getGridEnabled())
@@ -94,8 +99,14 @@ void Viewport3D::paintGL()
     else
         m_Grid->Draw(viewProjection);
 
+    // Enable stencil buffer
+    m_GLFuncs->glStencilMask(0xFF);
+    m_GLFuncs->glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+
     if(m_CurrentScene)
         m_ObjectRenderer->DrawScene(context(), m_CurrentScene, viewProjection);
+
+    m_GLFuncs->glStencilFunc(GL_ALWAYS, VIEWPORT3D_STENCIL_BUFFER_NO_OBJECT_VALUE, VIEWPORT3D_STENCIL_BUFFER_NO_OBJECT_VALUE);
 
     m_SimulationVectorField->Draw(viewProjection);
 
@@ -181,6 +192,21 @@ void Viewport3D::mousePressEvent(QMouseEvent* event)
     {
         m_MouseLastPosition = event->pos();
         m_CapturingMouseDelta = true;
+
+        makeCurrent();
+
+        uint8_t value = 0;
+
+        m_GLFuncs->glReadPixels(event->pos().x(), height() - event->pos().y(), 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_BYTE, &value);
+
+        if(value == VIEWPORT3D_STENCIL_BUFFER_NO_OBJECT_VALUE)
+        {
+            emit ObjectSelected(nullptr);
+        }
+        else
+        {
+            emit ObjectSelected(m_CurrentScene->Objects[value]);
+        }
     }
 }
 

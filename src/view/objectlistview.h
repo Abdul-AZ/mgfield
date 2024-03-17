@@ -20,6 +20,7 @@ public slots:
     void SceneLoaded(Scene* scene);
     void ObjectsChanged();
     void ObjectEdited();
+    void ObjectSelectedSlot(std::shared_ptr<Object> object);
 
 signals:
     void ObjectSelected(std::shared_ptr<Object> object);

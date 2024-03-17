@@ -27,6 +27,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->viewport3D, &Viewport3D::cameraMoved, this, &MainWindow::updateCameraLocationStatus);
     connect(ui->viewport3D, &Viewport3D::exportedImage, this, &MainWindow::showExportedImageStatus);
+    connect(ui->viewport3D, &Viewport3D::ObjectSelected, ui->ObjectInspectorInstance, &ObjectInspector::ObjectSelected);
+    connect(ui->viewport3D, &Viewport3D::ObjectSelected, ui->ObjectList, &ObjectListView::ObjectSelectedSlot);
 
     connect(ui->simulatePushButton, &QPushButton::clicked, this,[this]()
     {
@@ -52,9 +54,14 @@ MainWindow::MainWindow(QWidget *parent)
     });
 
     // Disable remove button when no object is selected
-    connect(ui->ObjectList, &ObjectListView::activated, this, [this](QModelIndex index)
+    connect(ui->ObjectList, &ObjectListView::currentChanged, this, [this](const QModelIndex &current, const QModelIndex &previou)
     {
-        ui->RemoveObjectButton->setEnabled(index.row() != -1);
+        ui->RemoveObjectButton->setEnabled(current.row() != -1);
+    });
+
+    connect(ui->viewport3D, &Viewport3D::ObjectSelected, this, [this](std::shared_ptr<Object> obj)
+    {
+        ui->RemoveObjectButton->setEnabled(obj != nullptr);
     });
 
     ui->viewport3D->SceneLoaded(scene);

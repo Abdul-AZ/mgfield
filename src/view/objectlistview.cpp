@@ -3,7 +3,7 @@
 ObjectListView::ObjectListView(QWidget* parent) :
     QListView(parent)
 {
-    m_Model = new QStringListModel();
+    m_Model = new QStringListModel(this);
 
     setModel(m_Model);
 }
@@ -31,6 +31,12 @@ void ObjectListView::ObjectsChanged()
         m_Model->setData(m_Model->index(m_Model->rowCount() - 1), object->Name);
     }
 }
+void ObjectListView::ObjectSelectedSlot(std::shared_ptr<Object> object)
+{
+    int row = m_CurrentScene->Objects.indexOf(object);
+    setCurrentIndex(model()->index(row, 0));
+}
+
 /*! \brief Called when there is an edit in an object but object focus not remoed
  *
  */
