@@ -4,11 +4,21 @@
 
 #include "src/scene/straightwireobject.h"
 #include "src/scene/currentcarryingsheet.h"
+#include "src/scene/permanentmagnet.h"
+
+#include "view/addobjectdialog.h"
 
 Scene::Scene() {}
 
-void Scene::AddObject(ObjectType type)
+void Scene::AddObjectUsingDialog()
 {
+    AddObjectDialog dialog(nullptr);
+
+    if(dialog.exec() != QDialog::Accepted)
+        return;
+
+    ObjectType type = dialog.GetSelectedObjectType();
+
     switch (type)
     {
     case ObjectType::StraightWire:
@@ -17,6 +27,11 @@ void Scene::AddObject(ObjectType type)
 
     case ObjectType::CurrentCarryingSheet:
         Objects.append(std::make_shared<CurrentCarryingSheet>());
+        break;
+
+    case ObjectType::PermanentMagnet:
+        Objects.append(std::make_shared<PermanentMagnet>());
+        ((PermanentMagnet*)Objects.last().get())->SetShape(dialog.GetMagnetShape());
         break;
 
     default:

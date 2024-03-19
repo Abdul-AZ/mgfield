@@ -16,7 +16,7 @@ signals:
     void ObjectRemoved();
 
 public slots:
-    void AddObject(ObjectType type);
+    void AddObjectUsingDialog();
     void RemoveObject(int32_t index);
 
 public:

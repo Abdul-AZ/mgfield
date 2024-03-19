@@ -5,6 +5,8 @@
 
 #include "src/scene/object.h"
 
+#include "src/scene/permanentmagnet.h"
+
 namespace Ui {
 class AddObjectDialog;
 }
@@ -18,6 +20,7 @@ public:
     virtual ~AddObjectDialog();
 
     ObjectType GetSelectedObjectType() const;
+    PermanentMagnetShape GetMagnetShape() const;
 
 private:
     Ui::AddObjectDialog *ui;

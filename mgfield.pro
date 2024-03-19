@@ -15,6 +15,7 @@ SOURCES += \
     src/grid3d.cpp \
     src/scene/currentcarryingsheet.cpp \
     src/scene/objectrenderer.cpp \
+    src/scene/permanentmagnet.cpp \
     src/scene/straightwireobject.cpp \
     src/view/addobjectdialog.cpp \
     src/view/modifieddoublespinbox.cpp \
@@ -38,6 +39,7 @@ HEADERS += \
     src/scene/currentcarryingsheet.h \
     src/scene/object.h \
     src/scene/objectrenderer.h \
+    src/scene/permanentmagnet.h \
     src/scene/straightwireobject.h \
     src/view/addobjectdialog.h \
     src/view/modifieddoublespinbox.h \

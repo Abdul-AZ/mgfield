@@ -7,7 +7,8 @@
 enum class ObjectType
 {
     StraightWire,
-    CurrentCarryingSheet
+    CurrentCarryingSheet,
+    PermanentMagnet
 };
 
 class Object

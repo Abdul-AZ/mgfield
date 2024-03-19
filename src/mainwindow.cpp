@@ -38,15 +38,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(showAboutWindow()));
 
     // Connect add and remove buttons
-    connect(ui->AddObjectButton, &QPushButton::clicked, this, [this]()
-    {
-        AddObjectDialog dialog(this);
+    connect(ui->AddObjectButton, &QPushButton::clicked, scene, &Scene::AddObjectUsingDialog);
 
-        if(dialog.exec() == QDialog::Accepted)
-        {
-            scene->AddObject(dialog.GetSelectedObjectType());
-        }
-    });
     connect(ui->RemoveObjectButton, &QPushButton::clicked, this, [this]()
     {
         scene->RemoveObject(ui->ObjectList->currentIndex().row());
