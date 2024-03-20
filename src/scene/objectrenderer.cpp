@@ -211,9 +211,9 @@ void ObjectRenderer::DrawSheet(CurrentCarryingSheet* object, QOpenGLFunctions* f
     QMatrix4x4 matrix;
     matrix *= viewProjection;
 
-    matrix.scale(object->GetLength(), 1.0f, object->GetWidth());
-    matrix.rotate(object->Rotation);
     matrix.translate(object->Position);
+    matrix.rotate(object->Rotation);
+    matrix.scale(object->GetLength(), 1.0f, object->GetWidth());
 
     m_ColoredMeshShader.setUniformValue(m_ColoredMeshShader.uniformLocation("uModelViewProjection"), matrix);
 
