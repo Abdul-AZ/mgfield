@@ -18,12 +18,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     scene = new Scene;
 
+    /*
     ui->CameraTypeComboBox->addItem("Orbit", (int32_t)CameraControlMode::Orbit);
     ui->CameraTypeComboBox->addItem("Free Roam", (int32_t)CameraControlMode::FreeRoam);
     connect(ui->CameraTypeComboBox, &QComboBox::currentIndexChanged, this, [this]()
     {
         ui->viewport3D->cameraModeChanged((CameraControlMode)ui->CameraTypeComboBox->currentData().toInt());
     });
+*/
 
     connect(ui->viewport3D, &Viewport3D::cameraMoved, this, &MainWindow::updateCameraLocationStatus);
     connect(ui->viewport3D, &Viewport3D::exportedImage, this, &MainWindow::showExportedImageStatus);
