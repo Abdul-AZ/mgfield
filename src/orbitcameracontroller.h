@@ -11,6 +11,7 @@
 class OrbitCameraController
 {
 public:
+    void ClipPositionToOrbit(PerspectiveCamera& camera, QVector3D position);
     void handleCameraMouseDrag(PerspectiveCamera& camera, QVector2D mouseDelta);
     void handleCameraMouseScroll(PerspectiveCamera& camera, int32_t scroll);
 

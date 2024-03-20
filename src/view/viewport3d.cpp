@@ -63,6 +63,7 @@ void Viewport3D::initializeGL()
     m_GLFuncs->glEnable(GL_BLEND);
     m_GLFuncs->glClearColor(0.1, 0.1, 0.1, 1.0);
 
+    m_OrbitCameraController.ClipPositionToOrbit(m_Camera, VIEWPORT3D_INITIAL_CAMERA_POSITION);
     emit cameraMoved(m_Camera.Position);
 
     m_SimulationVectorField = new VectorField3D(m_GLFuncs);

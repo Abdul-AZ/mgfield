@@ -1,5 +1,12 @@
 #include "orbitcameracontroller.h"
 
+
+void OrbitCameraController::ClipPositionToOrbit(PerspectiveCamera& camera, QVector3D position)
+{
+    camera.Position = position;
+    handleCameraMouseDrag(camera, QVector2D(0.0f, 0.0f));
+}
+
 void OrbitCameraController::handleCameraMouseDrag(PerspectiveCamera& camera, QVector2D mouseDelta)
 {
     float azimuthAngle = std::atan2(camera.Position.z(), camera.Position.x());
