@@ -164,6 +164,9 @@ float I1(float s, float p, float a, float b, float c)
     else if (p < 0.0f)
     {
         float rootP = std::sqrt(-p);
+        if(std::abs(rootP - rootR) < std::numeric_limits<float>::epsilon())
+            return 0.0f;
+
         return (1.0f / (2.0f * rootP)) * std::log(abs(rootP - rootR) / (rootP + rootR));
     }
 
