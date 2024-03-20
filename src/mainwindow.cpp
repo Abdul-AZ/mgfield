@@ -8,6 +8,8 @@
 #include "src/view/addobjectdialog.h"
 #include "src/sim/mfsimulator.h"
 
+#include <qfonticon.h>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -15,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     setWindowIcon(QIcon(":/res/icon_256px.png"));
+    UseIconFont();
 
     scene = new Scene;
 
@@ -32,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->viewport3D, &Viewport3D::ObjectSelected, ui->ObjectInspectorInstance, &ObjectInspector::ObjectSelected);
     connect(ui->viewport3D, &Viewport3D::ObjectSelected, ui->ObjectList, &ObjectListView::ObjectSelectedSlot);
 
-    connect(ui->simulatePushButton, &QPushButton::clicked, this,[this]()
+    connect(ui->SimulateButton, &QPushButton::clicked, this,[this]()
     {
         MFSimulator::GetInstance()->RequestNewSimulationRun(scene);
     });
@@ -92,6 +95,18 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::UseIconFont()
+{
+    ui->AddObjectButton->setText(nullptr);
+    ui->AddObjectButton->setIcon(QFontIcon::icon(QChar(0xF199)));
+
+    ui->RemoveObjectButton->setText(nullptr);
+    ui->RemoveObjectButton->setIcon(QFontIcon::icon(QChar(0xF217)));
+
+    ui->SimulateButton->setText(nullptr);
+    ui->SimulateButton->setIcon(QFontIcon::icon(QChar(0xF198)));
 }
 
 void MainWindow::updateCameraLocationStatus(QVector3D newPos)

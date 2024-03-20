@@ -17,6 +17,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private:
+    void UseIconFont();
+
 public slots:
     void updateCameraLocationStatus(QVector3D newPos);
     void showExportedImageStatus(QString path);

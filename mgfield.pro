@@ -6,6 +6,8 @@ CONFIG += c++17
 
 DEFINES += ENG_FORMAT_MICRO_GLYPH=\\\"u\\\"
 
+include("thirdparty/QFontIcon/QFontIcon.pri")
+
 SOURCES += \
     src/main.cpp \
     src/mainwindow.cpp \

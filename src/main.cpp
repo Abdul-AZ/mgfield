@@ -2,6 +2,7 @@
 
 #include <QApplication>
 #include <QSurfaceFormat>
+#include "thirdparty/QFontIcon/qfonticon.h"
 
 
 #ifdef QT_DEBUG
@@ -57,6 +58,8 @@ int main(int argc, char *argv[])
     QSurfaceFormat::setDefaultFormat(format);
 
     QApplication a(argc, argv);
+    QFontIcon::addFont(":/res/foundation-icons.ttf");
+
     MainWindow w;
 
     w.show();

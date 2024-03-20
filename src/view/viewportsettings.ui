@@ -65,11 +65,44 @@
    </item>
    <item row="1" column="1">
     <widget class="QCheckBox" name="AutoSimulateCheckbox">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QCheckBox::indicator {
+     width: 16px;
+     height: 16px;
+ }</string>
+     </property>
      <property name="text">
       <string/>
      </property>
+     <property name="iconSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="checked">
       <bool>true</bool>
+     </property>
+     <property name="autoRepeat">
+      <bool>false</bool>
+     </property>
+     <property name="tristate">
+      <bool>false</bool>
      </property>
     </widget>
    </item>
@@ -96,8 +129,8 @@
      </property>
      <property name="minimumSize">
       <size>
-       <width>0</width>
-       <height>0</height>
+       <width>24</width>
+       <height>24</height>
       </size>
      </property>
      <property name="baseSize">
@@ -105,6 +138,12 @@
        <width>0</width>
        <height>0</height>
       </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QCheckBox::indicator {
+     width: 16px;
+     height: 16px;
+ }</string>
      </property>
      <property name="text">
       <string/>
@@ -132,6 +171,18 @@
    </item>
    <item row="3" column="1">
     <widget class="QCheckBox" name="ShowGradientCheckbox">
+     <property name="minimumSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QCheckBox::indicator {
+     width: 16px;
+     height: 16px;
+ }</string>
+     </property>
      <property name="text">
       <string/>
      </property>
