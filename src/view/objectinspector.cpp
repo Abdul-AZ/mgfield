@@ -42,9 +42,10 @@ void ObjectInspector::ConnectSignals()
     });
 
     // Connect position edit
+    // Note: Swap Y and Z values so that we have a Y-up coordinate system instead of Z-up
     ui->PositionEditX->setValue(m_CurrentlySelectedObject->Position.x());
-    ui->PositionEditZ->setValue(m_CurrentlySelectedObject->Position.z());
-    ui->PositionEditY->setValue(m_CurrentlySelectedObject->Position.y());
+    ui->PositionEditZ->setValue(m_CurrentlySelectedObject->Position.y());
+    ui->PositionEditY->setValue(m_CurrentlySelectedObject->Position.z());
     connect(ui->PositionEditX, &QDoubleSpinBox::valueChanged, this, [this](double val) {
         m_CurrentlySelectedObject->Position.setX(val);
 
