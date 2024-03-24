@@ -4,7 +4,8 @@
 #include <QListView>
 #include <QObject>
 #include <QWidget>
-#include <QStringListModel>
+#include "src/objectitemmodel.h"
+#include "src/objectitemdelegate.h"
 
 #include "../scene.h"
 
@@ -27,7 +28,8 @@ signals:
 
 private:
     Scene* m_CurrentScene = nullptr;
-    QStringListModel* m_Model = nullptr;
+    ObjectItemModel* m_Model = nullptr;
+    ObjectItemDelegate* m_Delegate = nullptr;
 };
 
 #endif // OBJECTLISTVIEW_H

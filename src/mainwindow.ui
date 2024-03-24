@@ -145,7 +145,11 @@
       <number>0</number>
      </property>
      <item row="0" column="0">
-      <widget class="ObjectListView" name="ObjectList"/>
+      <widget class="ObjectListView" name="ObjectList">
+       <property name="horizontalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOff</enum>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>

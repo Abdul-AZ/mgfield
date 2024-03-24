@@ -62,6 +62,11 @@ MainWindow::MainWindow(QWidget *parent)
         ui->RemoveObjectButton->setEnabled(obj != nullptr);
     });
 
+    connect(ui->ObjectList, &ObjectListView::ObjectSelected, this, [this](std::shared_ptr<Object> obj)
+    {
+        ui->RemoveObjectButton->setEnabled(obj != nullptr);
+    });
+
     ui->viewport3D->SceneLoaded(scene);
     ui->ObjectList->SceneLoaded(scene);
 
