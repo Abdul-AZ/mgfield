@@ -1,6 +1,11 @@
 #include "addobjectdialog.h"
 #include "ui_addobjectdialog.h"
 
+#include <QJsonDocument>
+#include <QFile>
+#include <QJsonObject>
+#include <QJsonArray>
+
 AddObjectDialog::AddObjectDialog(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::AddObjectDialog)
@@ -11,7 +16,7 @@ AddObjectDialog::AddObjectDialog(QWidget *parent)
     ui->ObjectTypeComboBox->addItem("Current Carrying Sheet", (int32_t)ObjectType::CurrentCarryingSheet);
     ui->ObjectTypeComboBox->addItem("Permanent Magnet", (int32_t)ObjectType::PermanentMagnet);
 
-    ui->ShapeComboBox->addItem("Bar Magnet", (int32_t)PermanentMagnetShape::BarMagnet);
+    LoadMagnetModelNames();
 
     ui->ShapeComboBox->setVisible(false);
     ui->ShapeLabel->setVisible(false);
@@ -32,14 +37,37 @@ AddObjectDialog::AddObjectDialog(QWidget *parent)
     });
 }
 
+void AddObjectDialog::LoadMagnetModelNames()
+{
+    QFile file(":/res/data/magnet_models.json");
+    file.open(QIODevice::ReadOnly);
+
+    QByteArray byteArray;
+    byteArray = file.readAll();
+    file.close();
+
+    QJsonDocument jsonDoc;
+    jsonDoc = QJsonDocument::fromJson(byteArray);
+
+    QJsonArray array = jsonDoc.object().value("models").toArray();
+    for(const QJsonValue& model : array)
+    {
+        QJsonObject obj1 = model.toObject();
+        QJsonValue id = obj1.value("id");
+        QJsonValue name = obj1.value("name");
+
+        ui->ShapeComboBox->addItem(name.toString(), id.toInt());
+    }
+}
+
 ObjectType AddObjectDialog::GetSelectedObjectType() const
 {
     return (ObjectType)ui->ObjectTypeComboBox->currentData().toInt();
 }
 
-PermanentMagnetShape AddObjectDialog::GetMagnetShape() const
+int32_t AddObjectDialog::GetMagnetModelID() const
 {
-    return (PermanentMagnetShape)ui->ShapeComboBox->currentData().toInt();
+    return ui->ShapeComboBox->currentData().toInt();
 }
 
 AddObjectDialog::~AddObjectDialog()

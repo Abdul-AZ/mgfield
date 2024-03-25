@@ -9,5 +9,6 @@
         <file>res/shapes/Cable3D.glb</file>
         <file>res/shapes/Plane3D.glb</file>
         <file>res/foundation-icons.ttf</file>
+        <file>res/data/magnet_models.json</file>
     </qresource>
 </RCC>

@@ -31,7 +31,7 @@ void Scene::AddObjectUsingDialog()
 
     case ObjectType::PermanentMagnet:
         Objects.append(std::make_shared<PermanentMagnet>());
-        ((PermanentMagnet*)Objects.last().get())->SetShape(dialog.GetMagnetShape());
+        ((PermanentMagnet*)Objects.last().get())->SetShape(dialog.GetMagnetModelID());
         break;
 
     default:

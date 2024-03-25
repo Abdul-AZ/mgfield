@@ -3,21 +3,14 @@
 
 #include "object.h"
 
-enum class PermanentMagnetShape
-{
-    BarMagnet
-};
-
 class PermanentMagnet : public Object
 {
 public:
     PermanentMagnet();
 
-    void SetShape(PermanentMagnetShape shape) { this->m_Shape = shape; }
-    PermanentMagnetShape GetShape() const { return m_Shape; }
+    void SetShape(int32_t modelID);
 
 private:
-    PermanentMagnetShape m_Shape = PermanentMagnetShape::BarMagnet;
 };
 
 #endif // PERMANENTMAGNET_H

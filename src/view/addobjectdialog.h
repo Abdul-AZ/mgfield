@@ -20,7 +20,10 @@ public:
     virtual ~AddObjectDialog();
 
     ObjectType GetSelectedObjectType() const;
-    PermanentMagnetShape GetMagnetShape() const;
+    int32_t    GetMagnetModelID() const;
+
+private:
+    void LoadMagnetModelNames();
 
 private:
     Ui::AddObjectDialog *ui;
