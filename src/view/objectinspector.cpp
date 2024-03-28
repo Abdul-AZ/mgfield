@@ -147,7 +147,7 @@ void ObjectInspector::AddUniqueComponentWidgets(std::shared_ptr<Object> obj)
 
         ModifiedDoubleSpinBox* lengthSpinbox = new ModifiedDoubleSpinBox(this);
         lengthSpinbox->setButtonSymbols(QAbstractSpinBox::NoButtons);
-        lengthSpinbox->setValue(sheet->GetWidth());
+        lengthSpinbox->setValue(sheet->GetLength());
         lengthSpinbox->setMaximum(100.0f);
         lengthSpinbox->setMinimum(std::numeric_limits<float>::epsilon());
         connect(lengthSpinbox, &QDoubleSpinBox::valueChanged, this, [this](double val)
