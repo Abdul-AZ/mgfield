@@ -262,7 +262,7 @@ void MFSimulator::CalculateContributionsFromSheet(const CurrentCarryingSheet& sh
 {
     QVector3D r_a = sheet.Position + sheet.Rotation * QVector3D(-sheet.GetLength(), 0.0f, 0.0f); // Start of sheet
     QVector3D r_b = sheet.Position + sheet.Rotation * QVector3D(sheet.GetLength(), 0.0f, 0.0f);  // end of sheet
-    float alpha = sheet.GetWidth() / sheet.GetLength();
+    float alpha = sheet.GetLength() / sheet.GetWidth();
     QVector3D n = (sheet.Rotation * QVector3D(0.0f, 1.0f, 0.0f)).normalized();
     QVector3D p = QVector3D::crossProduct(alpha * (r_b- r_a), n);
 
