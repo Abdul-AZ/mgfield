@@ -34,10 +34,9 @@ void ModifiedDoubleSpinBox::mouseMoveEvent(QMouseEvent *event)
         QPointF delta = event->globalPosition() - last;
 
         double val = value();
-        val += delta.x() * 0.01 - delta.y() * 0.01;
+        val += delta.x() * DragSensitivity - delta.y() * DragSensitivity;
         setValue(val);
 
         last = event->globalPosition();
     }
-
 }

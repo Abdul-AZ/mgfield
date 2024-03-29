@@ -4,6 +4,8 @@
 #include <QGroupBox>
 #include "src/scene.h"
 
+#define OBJECT_INSPECTOR_DRAG_SENSITIVITY_ROTATION (0.1f)
+
 namespace Ui {
 class ObjectInspector;
 }

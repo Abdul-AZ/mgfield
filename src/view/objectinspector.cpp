@@ -13,6 +13,10 @@ ObjectInspector::ObjectInspector(QWidget *parent)
 {
     ui->setupUi(this);
     setEnabled(false);
+
+    ui->RotationEditX->DragSensitivity = OBJECT_INSPECTOR_DRAG_SENSITIVITY_ROTATION;
+    ui->RotationEditY->DragSensitivity = OBJECT_INSPECTOR_DRAG_SENSITIVITY_ROTATION;
+    ui->RotationEditZ->DragSensitivity = OBJECT_INSPECTOR_DRAG_SENSITIVITY_ROTATION;
 }
 
 ObjectInspector::~ObjectInspector()
