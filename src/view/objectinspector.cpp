@@ -64,34 +64,31 @@ void ObjectInspector::ConnectSignals()
         emit ObjectEdited(m_CurrentlySelectedObject);
     });
 
-    QVector3D euler = m_CurrentlySelectedObject->Rotation.toEulerAngles();
+    QVector3D euler = m_CurrentlySelectedObject->EulerRotation;
     // Connect rotation edit
     ui->RotationEditX->setValue(euler.x());
     ui->RotationEditY->setValue(euler.y());
     ui->RotationEditZ->setValue(euler.z());
     connect(ui->RotationEditX, &QDoubleSpinBox::valueChanged, this, [this](double val) {
-        QVector3D euler = m_CurrentlySelectedObject->Rotation.toEulerAngles();
-        euler.setX(val);
 
-        m_CurrentlySelectedObject->Rotation = QQuaternion::fromEulerAngles(euler);
+        m_CurrentlySelectedObject->EulerRotation.setX(val);
+        m_CurrentlySelectedObject->Rotation = QQuaternion::fromEulerAngles(m_CurrentlySelectedObject->EulerRotation);
 
         emit ObjectEdited(m_CurrentlySelectedObject);
     });
 
     connect(ui->RotationEditY, &QDoubleSpinBox::valueChanged, this, [this](double val) {
-        QVector3D euler = m_CurrentlySelectedObject->Rotation.toEulerAngles();
-        euler.setY(val);
 
-        m_CurrentlySelectedObject->Rotation = QQuaternion::fromEulerAngles(euler);
+        m_CurrentlySelectedObject->EulerRotation.setY(val);
+        m_CurrentlySelectedObject->Rotation = QQuaternion::fromEulerAngles(m_CurrentlySelectedObject->EulerRotation);
 
         emit ObjectEdited(m_CurrentlySelectedObject);
     });
 
     connect(ui->RotationEditZ, &QDoubleSpinBox::valueChanged, this, [this](double val) {
-        QVector3D euler = m_CurrentlySelectedObject->Rotation.toEulerAngles();
-        euler.setZ(val);
 
-        m_CurrentlySelectedObject->Rotation = QQuaternion::fromEulerAngles(euler);
+        m_CurrentlySelectedObject->EulerRotation.setZ(val);
+        m_CurrentlySelectedObject->Rotation = QQuaternion::fromEulerAngles(m_CurrentlySelectedObject->EulerRotation);
 
         emit ObjectEdited(m_CurrentlySelectedObject);
     });
