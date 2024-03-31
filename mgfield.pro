@@ -11,6 +11,7 @@ include("thirdparty/QFontIcon/QFontIcon.pri")
 SOURCES += \
     src/main.cpp \
     src/mainwindow.cpp \
+    src/modelloader.cpp \
     src/objectitemdelegate.cpp \
     src/objectitemmodel.cpp \
     src/orbitcameracontroller.cpp \
@@ -36,6 +37,7 @@ SOURCES += \
 
 HEADERS += \
     src/mainwindow.h \
+    src/modelloader.h \
     src/objectitemdelegate.h \
     src/objectitemmodel.h \
     src/orbitcameracontroller.h \

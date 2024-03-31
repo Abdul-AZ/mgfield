@@ -8,7 +8,8 @@
 #include "src/sim/mfsimulator.h"
 #include <QObject>
 
-#define VECTOR_FIELD_3D_MAX_ARROW_COUNT (32768)
+#define VECTOR_FIELD_3D_MAX_ARROW_COUNT  (32768)
+#define VECTOR_FIELD_3D_ARROW_MODEL_PATH ":/res/shapes/Arrow3D.glb"
 
 class VectorField3D : public QObject
 {

@@ -1,8 +1,6 @@
 #include "vectorfield3d.h"
 
-#include <QFile>
-#include <QIODevice>
-#include <thirdparty/tinygltf/tiny_gltf.h>
+#include "src/modelloader.h"
 
 VectorField3D::VectorField3D(QOpenGLFunctions_3_3_Core* funcs)
     : m_GLFuncs(funcs),
@@ -37,53 +35,15 @@ VectorField3D::VectorField3D(QOpenGLFunctions_3_3_Core* funcs)
 
 void VectorField3D::loadModel()
 {
-    using namespace tinygltf;
-    Model model;
-    TinyGLTF loader;
-    std::string err;
-    std::string warn;
+    ModelLoader::SingleMeshData mesh = ModelLoader::LoadSingleMeshFile(VECTOR_FIELD_3D_ARROW_MODEL_PATH);
+    m_VertexBuffer.create();
+    m_VertexBuffer.bind();
+    m_VertexBuffer.allocate(mesh.Vertices.data(), mesh.Vertices.size() * sizeof(QVector3D));
 
-    QFile file(":/res/shapes/Arrow3D.glb");
-    file.open(QIODevice::ReadOnly);
-    auto data = file.readAll();
-    file.close();
-
-    loader.LoadBinaryFromMemory(&model, &err, &warn, (uint8_t*)data.data(), data.length());
-
-    if((model.meshes.size() != 1) || model.bufferViews.size() != 2)
-        throw std::runtime_error("Invalid meshes in 3D arrow model");
-
-    bool foundVertexData = false;
-    for (auto& bufferView : model.bufferViews)
-        if(bufferView.target == GL_ARRAY_BUFFER)
-        {
-            foundVertexData = true;
-
-            m_VertexBuffer.create();
-            m_VertexBuffer.bind();
-            m_VertexBuffer.allocate(model.buffers.at(bufferView.buffer).data.data() + bufferView.byteOffset, bufferView.byteLength);
-
-            break;
-        }
-    if(!foundVertexData)
-        throw std::runtime_error("Invalid vertex buffer in 3D arrow model");
-
-
-    bool foundIndexData = false;
-    for (auto& bufferView : model.bufferViews)
-        if(bufferView.target == GL_ELEMENT_ARRAY_BUFFER)
-        {
-            foundIndexData = true;
-
-            m_IndexBuffer.create();
-            m_IndexBuffer.bind();
-            m_IndexBuffer.allocate(model.buffers.at(bufferView.buffer).data.data() + bufferView.byteOffset, bufferView.byteLength);
-            m_NumIndecies = m_IndexBuffer.size() / sizeof(uint16_t);
-
-            break;
-        }
-    if(!foundIndexData)
-        throw std::runtime_error("Invalid index buffer in 3D arrow model");
+    m_IndexBuffer.create();
+    m_IndexBuffer.bind();
+    m_IndexBuffer.allocate(mesh.Indecies.data(), mesh.Indecies.size() * sizeof(uint16_t));
+    m_NumIndecies = m_IndexBuffer.size() / sizeof(uint16_t);
 }
 
 void VectorField3D::Draw(QMatrix4x4 viewProjection)

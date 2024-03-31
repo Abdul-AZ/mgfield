@@ -1,7 +1,6 @@
 #include "objectrenderer.h"
 
-#include "thirdparty/tinygltf/tiny_gltf.h"
-#include <QFile>
+#include "src/modelloader.h"
 
 ObjectRenderer::ObjectRenderer()
 {
@@ -18,75 +17,15 @@ ObjectRenderer::~ObjectRenderer()
 
 void ObjectRenderer::LoadModel(QString path, QOpenGLBuffer& vbuffer, QOpenGLBuffer& ibuffer, int32_t& numIndecies)
 {
-    using namespace tinygltf;
-    Model model;
-    TinyGLTF loader;
-    std::string err;
-    std::string warn;
+    ModelLoader::SingleMeshData mesh = ModelLoader::LoadSingleMeshFile(path);
+    vbuffer.create();
+    vbuffer.bind();
+    vbuffer.allocate(mesh.Vertices.data(), mesh.Vertices.size() * sizeof(QVector3D));
 
-    QFile file(path);
-    file.open(QIODevice::ReadOnly);
-    auto data = file.readAll();
-    file.close();
-
-    loader.LoadBinaryFromMemory(&model, &err, &warn, (uint8_t*)data.data(), data.length());
-
-    if((model.meshes.size() != 1) || model.bufferViews.size() != 2)
-        throw std::runtime_error("Invalid mesh");
-
-    bool foundVertexData = false;
-    for (auto& bufferView : model.bufferViews)
-        if(bufferView.target == GL_ARRAY_BUFFER)
-        {
-            foundVertexData = true;
-
-            std::vector<QVector3D> vertices;
-            vertices.resize(bufferView.byteLength / sizeof(QVector3D));
-
-            memcpy(vertices.data(), model.buffers.at(bufferView.buffer).data.data() + bufferView.byteOffset, bufferView.byteLength);
-            bool needsScaling = model.nodes[0].scale.size() > 0;
-            if(needsScaling)
-            {
-                std::vector<double>& scaleData = model.nodes[0].scale;
-                QVector3D scale (scaleData[0], scaleData[1], scaleData[2]);
-                for(QVector3D& vec : vertices)
-                    vec = vec * scale;
-            }
-
-            bool needsRotating = model.nodes[0].rotation.size() > 0;
-            if(needsRotating)
-            {
-                std::vector<double>& rotationData = model.nodes[0].rotation; //quat
-                QQuaternion rot (rotationData[0], rotationData[1], rotationData[2], rotationData[3]);
-                for(QVector3D& vec : vertices)
-                    vec = rot * vec;
-            }
-
-            vbuffer.create();
-            vbuffer.bind();
-            vbuffer.allocate(vertices.data(), bufferView.byteLength);
-
-            break;
-        }
-    if(!foundVertexData)
-        throw std::runtime_error("Invalid vertex buffer in model");
-
-
-    bool foundIndexData = false;
-    for (auto& bufferView : model.bufferViews)
-        if(bufferView.target == GL_ELEMENT_ARRAY_BUFFER)
-        {
-            foundIndexData = true;
-
-            ibuffer.create();
-            ibuffer.bind();
-            ibuffer.allocate(model.buffers.at(bufferView.buffer).data.data() + bufferView.byteOffset, bufferView.byteLength);
-            numIndecies = ibuffer.size() / sizeof(uint16_t);
-
-            break;
-        }
-    if(!foundIndexData)
-        throw std::runtime_error("Invalid index buffer in model");
+    ibuffer.create();
+    ibuffer.bind();
+    ibuffer.allocate(mesh.Indecies.data(), mesh.Indecies.size() * sizeof(uint16_t));
+    numIndecies = ibuffer.size() / sizeof(uint16_t);
 }
 
 void ObjectRenderer::LoadShaders()
