@@ -8,8 +8,11 @@
 #include "src/sim/mfsimulator.h"
 #include <QObject>
 
-#define VECTOR_FIELD_3D_MAX_ARROW_COUNT  (32768)
-#define VECTOR_FIELD_3D_ARROW_MODEL_PATH ":/res/shapes/Arrow3D.glb"
+#define VECTOR_FIELD_3D_ARROW_MODEL_PATH    ":/res/shapes/Arrow3D.glb"
+#define VECTOR_FIELD_3D_UBO_ELEMENT_SIZE    (20 * sizeof(float))
+
+/** Size of uniform buffer if maximum allowed size in device is large enough (hard cap) */
+#define VECTOR_FIELD_3D_UBO_MAX_WANTED_SIZE (8192 * VECTOR_FIELD_3D_UBO_ELEMENT_SIZE)
 
 class VectorField3D : public QObject
 {
@@ -39,6 +42,7 @@ private:
     QOpenGLShaderProgram       m_Shader;
     int32_t                    m_NumIndecies;
     MFSimulator*               m_Simulator;
+    int32_t                    m_MaxNumArrowsPerDrawcall;
 };
 
 #endif // VECTORFIELD3D_H

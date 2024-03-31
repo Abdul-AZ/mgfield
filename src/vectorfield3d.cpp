@@ -1,5 +1,6 @@
 #include "vectorfield3d.h"
 
+#include <QFile>
 #include "src/modelloader.h"
 
 VectorField3D::VectorField3D(QOpenGLFunctions_3_3_Core* funcs)
@@ -7,9 +8,21 @@ VectorField3D::VectorField3D(QOpenGLFunctions_3_3_Core* funcs)
     m_VertexBuffer(QOpenGLBuffer::VertexBuffer),
     m_IndexBuffer(QOpenGLBuffer::IndexBuffer)
 {
-    m_Shader.create();
+    GLint maxAllowedSize;
+    glGetIntegerv(GL_MAX_UNIFORM_BLOCK_SIZE, &maxAllowedSize);
+    m_MaxNumArrowsPerDrawcall = std::min(maxAllowedSize, (int32_t)VECTOR_FIELD_3D_UBO_MAX_WANTED_SIZE) / VECTOR_FIELD_3D_UBO_ELEMENT_SIZE;
 
-    if(!m_Shader.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shaders/VectorField3D.vert"))
+    QFile vshaderSrcFile(":/shaders/VectorField3D.vert");
+    vshaderSrcFile.open(QIODeviceBase::ReadOnly);
+    std::string vsrc = vshaderSrcFile.readAll().toStdString();
+    vshaderSrcFile.close();
+
+    std::string version_line = "#version 330 core";
+    auto pos = vsrc.find_first_of(version_line);
+    vsrc.insert(version_line.size() + pos, QString("\n#define MAX_ARROW_COUNT (%1)\n").arg(m_MaxNumArrowsPerDrawcall).toStdString());
+
+    m_Shader.create();
+    if(!m_Shader.addShaderFromSourceCode(QOpenGLShader::Vertex, vsrc.c_str()))
         qCritical() << "VectorField3D vertex shader error";
 
     if(!m_Shader.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/VectorField3D.frag"))
@@ -70,9 +83,7 @@ void VectorField3D::updateBuffers()
         return;
     }
 
-    const uint32_t bufferSize =
-        VECTOR_FIELD_3D_MAX_ARROW_COUNT * sizeof(float) * 16 +                     // Model matrices
-        ceil((VECTOR_FIELD_3D_MAX_ARROW_COUNT + 3) / 4) * sizeof(float) * 4;       // Color value as vec4[] to avoid wasted padding
+    const uint32_t bufferSize = m_MaxNumArrowsPerDrawcall * VECTOR_FIELD_3D_UBO_ELEMENT_SIZE;
 
     uint8_t* buffer = (uint8_t*)malloc(bufferSize);
 
@@ -90,7 +101,12 @@ void VectorField3D::updateBuffers()
                 memcpy(buffer + i * sizeof(float) * 16, mat.data(), sizeof(float) * 16);
 
                 float colorInterpolation = (m_Simulator->GetResult(x, y, z).length() - m_Simulator->SimulationResultsMinMagnitude) / (m_Simulator->SimulationResultsMaxMagnitude - m_Simulator->SimulationResultsMinMagnitude);
-                memcpy(buffer + VECTOR_FIELD_3D_MAX_ARROW_COUNT * sizeof(float) * 16 + i * sizeof(float), &colorInterpolation, sizeof(float));
+                QVector3D colStart = QVector3D(0.0,0.0, 1.0);
+                QVector3D colEnd = QVector3D(1.0, 0.0, 0.0);
+                QVector3D col = (colEnd - colStart) * colorInterpolation + colStart;
+                QVector4D color(col, 1.0f);
+
+                memcpy(buffer + m_MaxNumArrowsPerDrawcall * sizeof(float) * 16 + i * sizeof(float) * 4, &color, sizeof(float) * 4);
 
                 i++;
             }
