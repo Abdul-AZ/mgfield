@@ -3,6 +3,9 @@ QT       += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets opengl openglwidgets
 
 CONFIG += c++17
+win32 {
+    LIBS += -lopengl32
+}
 
 DEFINES += ENG_FORMAT_MICRO_GLYPH=\\\"u\\\"
 
