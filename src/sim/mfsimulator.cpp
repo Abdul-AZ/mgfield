@@ -92,11 +92,11 @@ static QVector3D CalculateContributionFromInfiniteCable(const QVector3D& point, 
     // |B| = (u0 . I) / (2PI . h)
     // Where h is the shortest distance of point from cable
     const double pi = SIM_CONSTANT_PI;
-    QVector3D cableDirection = (cable.Rotation * QVector3D{1.0f, 0.0f, 0.0f}).normalized();
+    QVector3D cableDirection = cable.Rotation.rotatedVector(STRAIGHT_WIRE_OBJECT_BASE_ROTATION);
 
     float h = point.distanceToLine(cable.Position, cableDirection);
     float magnitude = cable.GetDCCurrent() / (2 * pi * h);
-    QVector3D direction =  QVector3D::crossProduct(cableDirection, cable.Position - point).normalized();
+    QVector3D direction =  QVector3D::crossProduct(cableDirection, point - cable.Position).normalized();
 
     return magnitude * direction;
 }
@@ -106,8 +106,8 @@ static QVector3D CalculateContributionFromFiniteCable(const QVector3D& point, co
     const double pi = SIM_CONSTANT_PI;
     QVector3D result;
 
-    QVector3D start = cable.Rotation.rotatedVector(QVector3D(1.0f, 0.0f, 0.0f));
-    QVector3D end = cable.Rotation.rotatedVector(QVector3D(-1.0f, 0.0f, 0.0f));
+    QVector3D start = cable.Rotation.rotatedVector(QVector3D(-1.0f, 0.0f, 0.0f));
+    QVector3D end = cable.Rotation.rotatedVector(QVector3D(1.0f, 0.0f, 0.0f));
 
     start += cable.Position;
     end += cable.Position;
@@ -126,7 +126,7 @@ static QVector3D CalculateContributionFromFiniteCable(const QVector3D& point, co
         if(r.lengthSquared() == 0)
             continue;
 
-        QVector3D funcEval = (QVector3D::crossProduct(deltaL, r.normalized()))  / r.lengthSquared();
+        QVector3D funcEval = (QVector3D::crossProduct(r.normalized(), deltaL))  / r.lengthSquared();
 
         result += funcEval;
     }

@@ -5,6 +5,7 @@
 #include "src/scene/object.h"
 
 #define STRAIGHT_WIRE_OBJECT_MODEL_BASE_SCALE (0.1f)
+#define STRAIGHT_WIRE_OBJECT_BASE_ROTATION    QVector3D(1.0f,0.0f,0.0f)
 
 class StraightWireObject : public Object
 {

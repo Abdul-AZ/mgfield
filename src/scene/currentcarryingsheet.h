@@ -8,6 +8,8 @@ class CurrentCarryingSheet : public Object
 public:
     CurrentCarryingSheet();
 
+    QVector3D GetNormalVector() const;
+
     float GetWidth() const { return m_Width; }
     void SetWidth(float width) { m_Width = width; }
 

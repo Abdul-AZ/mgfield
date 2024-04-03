@@ -55,6 +55,12 @@ int32_t VectorField3D::getMaximumNumberOfArrowsPerDrawcall() const
 void VectorField3D::loadModel()
 {
     ModelLoader::SingleMeshData mesh = ModelLoader::LoadSingleMeshFile(VECTOR_FIELD_3D_ARROW_MODEL_PATH);
+
+    // Rotate to face +x axis
+    QQuaternion rotation = QQuaternion::fromAxisAndAngle(QVector3D(0.0f,1.0f,0.0f), -90.0f);
+    for(QVector3D& vec : mesh.Vertices)
+        vec = rotation * vec;
+
     m_VertexBuffer.create();
     m_VertexBuffer.bind();
     m_VertexBuffer.allocate(mesh.Vertices.data(), mesh.Vertices.size() * sizeof(QVector3D));
@@ -99,7 +105,7 @@ void VectorField3D::AddArrow(QVector3D start, QVector3D end, QVector4D color,  f
         StartFrame(m_ViewProjection);
     }
 
-    QQuaternion quat = QQuaternion::fromDirection((end-start).normalized(), {0.0f, 0.0f, 1.0f});
+    QQuaternion quat = QQuaternion::rotationTo(VECTOR_FIELD_3D_ARROW_BASE_DIRECTION, (end-start).normalized());
     QMatrix4x4 mat;
     mat.translate(start);
     mat.rotate(quat);

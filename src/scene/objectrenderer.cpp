@@ -90,7 +90,7 @@ void ObjectRenderer::DrawCable(StraightWireObject* object, QOpenGLFunctions* fun
     m_CableModelData.VertexArray.release();
 }
 
-void ObjectRenderer::DrawScene(QOpenGLContext* context, Scene* scene, const QMatrix4x4& viewProjection)
+void ObjectRenderer::DrawScene(QOpenGLContext* context, Scene* scene, VectorField3D* arrowRenderer, const QMatrix4x4& viewProjection)
 {
     if(QOpenGLContext::currentContext() != context)
         context->makeCurrent(nullptr);
@@ -107,7 +107,11 @@ void ObjectRenderer::DrawScene(QOpenGLContext* context, Scene* scene, const QMat
             break;
 
         case ObjectType::CurrentCarryingSheet:
-            DrawSheet((CurrentCarryingSheet*)object.get(), context->functions(), viewProjection);
+        {
+            CurrentCarryingSheet* sheet = (CurrentCarryingSheet*)object.get();
+            DrawSheet(sheet, context->functions(), viewProjection);
+            arrowRenderer->AddArrow(object->Position + 0.05f * sheet->GetNormalVector(), object->Position + sheet->GetNormalVector(), OBJECT_RENDERER_NORMAL_VECTOR_COLOR, OBJECT_RENDERER_NORMAL_VECTOR_SCALE);
+        }
             break;
 
         default:

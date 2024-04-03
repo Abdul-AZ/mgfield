@@ -109,7 +109,7 @@ void Viewport3D::paintGL()
     m_GLFuncs->glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
     if(m_CurrentScene)
-        m_ObjectRenderer->DrawScene(context(), m_CurrentScene, viewProjection);
+        m_ObjectRenderer->DrawScene(context(), m_CurrentScene, m_SimulationVectorField, viewProjection);
 
     m_GLFuncs->glStencilFunc(GL_ALWAYS, VIEWPORT3D_STENCIL_BUFFER_NO_OBJECT_VALUE, VIEWPORT3D_STENCIL_BUFFER_NO_OBJECT_VALUE);
     

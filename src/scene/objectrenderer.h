@@ -2,6 +2,7 @@
 #define OBJECTRENDERER_H
 
 #include "src/scene.h"
+#include "src/vectorfield3d.h"
 
 #include <QOpenGLShaderProgram>
 #include <QOpenGLBuffer>
@@ -11,13 +12,16 @@
 #include "src/scene/straightwireobject.h"
 #include "src/scene/currentcarryingsheet.h"
 
+#define OBJECT_RENDERER_NORMAL_VECTOR_COLOR QVector4D(0.0f,1.0f,0.0f,1.0f)
+#define OBJECT_RENDERER_NORMAL_VECTOR_SCALE (0.05f)
+
 class ObjectRenderer
 {
 public:
     ObjectRenderer();
     ~ObjectRenderer();
 
-    void DrawScene(QOpenGLContext* context, Scene* scene, const QMatrix4x4& viewProjection);
+    void DrawScene(QOpenGLContext* context, Scene* scene, VectorField3D* arrowRenderer, const QMatrix4x4& viewProjection);
 
 private:
     void InitCableRendering();

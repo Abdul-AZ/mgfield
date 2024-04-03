@@ -7,11 +7,13 @@
 #include <QOpenGLVertexArrayObject>
 #include <QObject>
 
-#define VECTOR_FIELD_3D_ARROW_MODEL_PATH    ":/res/shapes/Arrow3D.glb"
-#define VECTOR_FIELD_3D_UBO_ELEMENT_SIZE    (20 * sizeof(float))
+#define VECTOR_FIELD_3D_ARROW_MODEL_PATH     ":/res/shapes/Arrow3D.glb"
+#define VECTOR_FIELD_3D_ARROW_BASE_DIRECTION QVector3D(1.0f,0.0f,0.0f)
+#define VECTOR_FIELD_3D_UBO_ELEMENT_SIZE     (20 * sizeof(float))
 
 /** Size of uniform buffer if maximum allowed size in device is large enough (hard cap) */
 #define VECTOR_FIELD_3D_UBO_MAX_WANTED_SIZE (8192 * VECTOR_FIELD_3D_UBO_ELEMENT_SIZE)
+
 
 class VectorField3D : public QObject
 {
