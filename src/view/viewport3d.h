@@ -33,8 +33,6 @@ public:
     Viewport3D(QWidget* parent = nullptr);
     virtual ~Viewport3D() {};
 
-    void HookViewportSettings(ViewportSettings* settings);
-
 public slots:
     void cameraModeChanged(CameraControlMode newMode);
     void SceneLoaded(Scene* scene);
@@ -75,7 +73,6 @@ private:
     FreeRoamCameraController   m_FreeRoamCameraController;
     CameraControlMode          m_CameraMode = CameraControlMode::Orbit;
     bool                       m_CapturingMouseDelta = false;
-    ViewportSettings*          m_ViewportSettings = nullptr;
 
     VectorField3D* m_SimulationVectorField;
     Grid3D*        m_Grid;

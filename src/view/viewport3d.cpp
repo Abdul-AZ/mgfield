@@ -8,6 +8,7 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QString>
+#include <QSettings>
 
 #include "thirdparty/eng_format/eng_format.hpp"
 #include "src/sim/mfsimulator.h"
@@ -87,6 +88,8 @@ void Viewport3D::SceneLoaded(Scene* scene)
 
 void Viewport3D::paintGL()
 {
+    QSettings settings;
+
     QMatrix4x4 viewProjection = m_ProjectionMatrix * m_Camera.GetViewMatrix();
     m_SimulationVectorField->StartFrame(viewProjection);
     m_GLFuncs->glClearStencil(VIEWPORT3D_STENCIL_BUFFER_NO_OBJECT_VALUE);
@@ -96,12 +99,7 @@ void Viewport3D::paintGL()
     m_GLFuncs->glEnable(GL_STENCIL_TEST);
 
     m_GLFuncs->glStencilMask(0x00);
-    if(m_ViewportSettings)
-    {
-        if(m_ViewportSettings->getGridEnabled())
-            m_Grid->Draw(viewProjection);
-    }
-    else
+    if(settings.value("ViewportSettings/ShowGrid", true).toBool())
         m_Grid->Draw(viewProjection);
 
     // Enable stencil buffer
@@ -116,11 +114,8 @@ void Viewport3D::paintGL()
     m_SimulationVectorField->AddSimulationResultArrows();
     m_SimulationVectorField->EndFrame();
 
-    if(m_ViewportSettings)
-    {
-        if(m_ViewportSettings->getGradientEnabled())
-            DrawGradient();
-    }
+    if(settings.value("ViewportSettings/ShowGradient", true).toBool())
+        DrawGradient();
 }
 
 void Viewport3D::DrawGradient()
@@ -285,11 +280,4 @@ void Viewport3D::saveFrameAsImage()
     }
     else
         emit exportedImage("Saving cancelled");
-}
-
-void Viewport3D::HookViewportSettings(ViewportSettings* settings)
-{
-    m_ViewportSettings = settings;
-
-    connect(settings, &ViewportSettings::SettingsChanged, this, [this] ()  {repaint(); });
 }

@@ -73,7 +73,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(scene, SIGNAL(ObjectAdded()), ui->ObjectList, SLOT(ObjectsChanged()));
     connect(scene, SIGNAL(ObjectRemoved()), ui->ObjectList, SLOT(ObjectsChanged()));
 
-    ui->viewport3D->HookViewportSettings(ui->ViewportSettingsWidget);
+    connect(ui->ViewportSettingsWidget, &ViewportSettings::SettingsChanged, ui->viewport3D, &Viewport3D::Redraw);
 
     connect(ui->actionSimulationSettings, &QAction::triggered, this, [this]()
     {
@@ -92,7 +92,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->ObjectInspectorInstance, &ObjectInspector::ObjectEdited, ui->viewport3D, &Viewport3D::Redraw);
     connect(ui->ObjectInspectorInstance, &ObjectInspector::ObjectEdited, this, [this] () {
 
-        if(ui->ViewportSettingsWidget->getAutoSimulateEnabled())
+        QSettings settings;
+
+        if(settings.value("ViewportSettings/AutoSimulate", true).toBool())
             MFSimulator::GetInstance()->RequestNewSimulationRun(scene);
     });
 }

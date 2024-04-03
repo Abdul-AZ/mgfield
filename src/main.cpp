@@ -57,6 +57,10 @@ int main(int argc, char *argv[])
 
     QSurfaceFormat::setDefaultFormat(format);
 
+    QCoreApplication::setOrganizationName("MGField");
+    QCoreApplication::setOrganizationDomain("github.com/Abdul-AZ/mgfield");
+    QCoreApplication::setApplicationName("MGField App");
+
     QApplication a(argc, argv);
     QFontIcon::addFont(":/res/foundation-icons.ttf");
 
