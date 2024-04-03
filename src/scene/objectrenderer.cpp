@@ -1,5 +1,7 @@
 #include "objectrenderer.h"
 
+#include <QSettings>
+
 #include "src/modelloader.h"
 
 ObjectRenderer::ObjectRenderer()
@@ -95,6 +97,8 @@ void ObjectRenderer::DrawScene(QOpenGLContext* context, Scene* scene, VectorFiel
     if(QOpenGLContext::currentContext() != context)
         context->makeCurrent(nullptr);
 
+    QSettings settings;
+
     uint8_t stencilBufferValue = 0;
     for (auto& object : scene->Objects)
     {
@@ -110,7 +114,8 @@ void ObjectRenderer::DrawScene(QOpenGLContext* context, Scene* scene, VectorFiel
         {
             CurrentCarryingSheet* sheet = (CurrentCarryingSheet*)object.get();
             DrawSheet(sheet, context->functions(), viewProjection);
-            arrowRenderer->AddArrow(object->Position + 0.05f * sheet->GetNormalVector(), object->Position + sheet->GetNormalVector(), OBJECT_RENDERER_NORMAL_VECTOR_COLOR, OBJECT_RENDERER_NORMAL_VECTOR_SCALE);
+            if(settings.value("ViewportSettings/ShowNormals", true).toBool())
+                arrowRenderer->AddArrow(object->Position + 0.05f * sheet->GetNormalVector(), object->Position + sheet->GetNormalVector(), OBJECT_RENDERER_NORMAL_VECTOR_COLOR, OBJECT_RENDERER_NORMAL_VECTOR_SCALE);
         }
             break;
 
