@@ -5,7 +5,6 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLVertexArrayObject>
-#include "src/sim/mfsimulator.h"
 #include <QObject>
 
 #define VECTOR_FIELD_3D_ARROW_MODEL_PATH    ":/res/shapes/Arrow3D.glb"
@@ -22,16 +21,17 @@ public:
     VectorField3D(QOpenGLFunctions_3_3_Core* funcs);
     virtual ~VectorField3D() {};
 
-    void Draw(QMatrix4x4 viewProjection);
-
-public slots:
-    void updateBuffers();
+    void StartFrame(QMatrix4x4 viewProjection);
+    void EndFrame();
+    void AddArrow(QVector3D start, QVector3D end, QVector4D color,  float scale = 1.0f);
+    void AddSimulationResultArrows();
 
 signals:
     void repaintRequested();
 
 private:
     void loadModel();
+    int32_t getMaximumNumberOfArrowsPerDrawcall() const;
 
 private:
     QOpenGLFunctions_3_3_Core* m_GLFuncs;
@@ -41,8 +41,10 @@ private:
     uint32_t                   m_UniformBuffer;
     QOpenGLShaderProgram       m_Shader;
     int32_t                    m_NumIndecies;
-    MFSimulator*               m_Simulator;
     int32_t                    m_MaxNumArrowsPerDrawcall;
+    QByteArray                 m_UBOData;
+    int32_t                    m_NumberOfArrowsThisFrame;
+    QMatrix4x4                 m_ViewProjection;
 };
 
 #endif // VECTORFIELD3D_H

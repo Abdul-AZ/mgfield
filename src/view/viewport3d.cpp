@@ -10,6 +10,7 @@
 #include <QString>
 
 #include "thirdparty/eng_format/eng_format.hpp"
+#include "src/sim/mfsimulator.h"
 
 Viewport3D::Viewport3D(QWidget* parent) : QOpenGLWidget(parent)
 {
@@ -21,6 +22,8 @@ Viewport3D::Viewport3D(QWidget* parent) : QOpenGLWidget(parent)
     setContextMenuPolicy(Qt::CustomContextMenu);
 
     connect(this, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
+    MFSimulator* simulator = MFSimulator::GetInstance();
+    connect(simulator, &MFSimulator::SimulationFinished, this, &Viewport3D::Redraw);
 }
 
 void Viewport3D::messageLogged(const QOpenGLDebugMessage &debugMessage)
@@ -85,6 +88,7 @@ void Viewport3D::SceneLoaded(Scene* scene)
 void Viewport3D::paintGL()
 {
     QMatrix4x4 viewProjection = m_ProjectionMatrix * m_Camera.GetViewMatrix();
+    m_SimulationVectorField->StartFrame(viewProjection);
     m_GLFuncs->glClearStencil(VIEWPORT3D_STENCIL_BUFFER_NO_OBJECT_VALUE);
     m_GLFuncs->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     m_GLFuncs->glEnable(GL_DEPTH_TEST);
@@ -108,8 +112,9 @@ void Viewport3D::paintGL()
         m_ObjectRenderer->DrawScene(context(), m_CurrentScene, viewProjection);
 
     m_GLFuncs->glStencilFunc(GL_ALWAYS, VIEWPORT3D_STENCIL_BUFFER_NO_OBJECT_VALUE, VIEWPORT3D_STENCIL_BUFFER_NO_OBJECT_VALUE);
-
-    m_SimulationVectorField->Draw(viewProjection);
+    
+    m_SimulationVectorField->AddSimulationResultArrows();
+    m_SimulationVectorField->EndFrame();
 
     if(m_ViewportSettings)
     {

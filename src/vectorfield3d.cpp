@@ -2,15 +2,17 @@
 
 #include <QFile>
 #include "src/modelloader.h"
+#include "src/sim/mfsimulator.h"
 
 VectorField3D::VectorField3D(QOpenGLFunctions_3_3_Core* funcs)
     : m_GLFuncs(funcs),
     m_VertexBuffer(QOpenGLBuffer::VertexBuffer),
     m_IndexBuffer(QOpenGLBuffer::IndexBuffer)
 {
-    GLint maxAllowedSize;
-    glGetIntegerv(GL_MAX_UNIFORM_BLOCK_SIZE, &maxAllowedSize);
-    m_MaxNumArrowsPerDrawcall = std::min(maxAllowedSize, (int32_t)VECTOR_FIELD_3D_UBO_MAX_WANTED_SIZE) / VECTOR_FIELD_3D_UBO_ELEMENT_SIZE;
+    m_MaxNumArrowsPerDrawcall = getMaximumNumberOfArrowsPerDrawcall();
+
+    const uint32_t bufferSize = m_MaxNumArrowsPerDrawcall * VECTOR_FIELD_3D_UBO_ELEMENT_SIZE;
+    m_UBOData.resize(bufferSize);
 
     QFile vshaderSrcFile(":/shaders/VectorField3D.vert");
     vshaderSrcFile.open(QIODeviceBase::ReadOnly);
@@ -41,9 +43,13 @@ VectorField3D::VectorField3D(QOpenGLFunctions_3_3_Core* funcs)
     m_Shader.bind();
     m_Shader.setAttributeBuffer(0, GL_FLOAT, 0, 3, 0);
     m_Shader.enableAttributeArray(0);
+}
 
-    m_Simulator = MFSimulator::GetInstance();
-    connect(m_Simulator, SIGNAL(SimulationFinished()), this, SLOT(updateBuffers()));
+int32_t VectorField3D::getMaximumNumberOfArrowsPerDrawcall() const
+{
+    GLint maxAllowedSize;
+    glGetIntegerv(GL_MAX_UNIFORM_BLOCK_SIZE, &maxAllowedSize);
+    return std::min(maxAllowedSize, (int32_t)VECTOR_FIELD_3D_UBO_MAX_WANTED_SIZE) / VECTOR_FIELD_3D_UBO_ELEMENT_SIZE;
 }
 
 void VectorField3D::loadModel()
@@ -59,66 +65,71 @@ void VectorField3D::loadModel()
     m_NumIndecies = m_IndexBuffer.size() / sizeof(uint16_t);
 }
 
-void VectorField3D::Draw(QMatrix4x4 viewProjection)
+void VectorField3D::StartFrame(QMatrix4x4 viewProjection)
+{
+    m_NumberOfArrowsThisFrame = 0;
+    m_ViewProjection = viewProjection;
+}
+
+void VectorField3D::EndFrame()
 {
     m_Shader.bind();
+    m_GLFuncs->glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBuffer);
+    m_GLFuncs->glBufferData(GL_UNIFORM_BUFFER, m_UBOData.size(), m_UBOData.data(), GL_DYNAMIC_DRAW);
+    m_GLFuncs->glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
     m_VertexArray.bind();
 
-    m_Shader.setUniformValue(m_Shader.uniformLocation("uViewProjection"), viewProjection);
+    m_Shader.setUniformValue(m_Shader.uniformLocation("uViewProjection"), m_ViewProjection);
     uint32_t index = m_GLFuncs->glGetUniformBlockIndex(m_Shader.programId(), "uVectorFieldData");
     m_GLFuncs->glUniformBlockBinding(m_Shader.programId(), index, 2);
     m_GLFuncs->glBindBufferBase(GL_UNIFORM_BUFFER, 2, m_UniformBuffer);
 
-    m_GLFuncs->glDrawElementsInstanced(GL_TRIANGLES, m_NumIndecies, GL_UNSIGNED_SHORT, 0, m_Simulator->SimulationResults.size());
+    m_GLFuncs->glDrawElementsInstanced(GL_TRIANGLES, m_NumIndecies, GL_UNSIGNED_SHORT, 0, m_NumberOfArrowsThisFrame);
 
     m_Shader.release();
     m_VertexArray.release();
 }
 
-void VectorField3D::updateBuffers()
+void VectorField3D::AddArrow(QVector3D start, QVector3D end, QVector4D color,  float scale)
 {
-    if(!m_Simulator->SimulationResultsExist)
+    if(m_NumberOfArrowsThisFrame >= m_MaxNumArrowsPerDrawcall)
     {
-        emit repaintRequested();
-        return;
+        EndFrame();
+        StartFrame(m_ViewProjection);
     }
 
-    const uint32_t bufferSize = m_MaxNumArrowsPerDrawcall * VECTOR_FIELD_3D_UBO_ELEMENT_SIZE;
+    QQuaternion quat = QQuaternion::fromDirection((end-start).normalized(), {0.0f, 0.0f, 1.0f});
+    QMatrix4x4 mat;
+    mat.translate(start);
+    mat.rotate(quat);
+    mat.scale(scale);
+    memcpy(m_UBOData.data() + m_NumberOfArrowsThisFrame * sizeof(float) * 16, mat.data(), sizeof(float) * 16);
 
-    uint8_t* buffer = (uint8_t*)malloc(bufferSize);
+    memcpy(m_UBOData.data() + m_MaxNumArrowsPerDrawcall * sizeof(float) * 16 + m_NumberOfArrowsThisFrame * sizeof(float) * 4, &color, sizeof(float) * 4);
 
-    int i = 0;
-    for (int x = 0; x < m_Simulator->SimulationNumDatapointsX; x++)
-        for (int y = 0; y < m_Simulator->SimulationNumDatapointsY; y++)
-            for (int z = 0; z < m_Simulator->SimulationNumDatapointsZ; z++)
+    m_NumberOfArrowsThisFrame++;
+}
+
+void VectorField3D::AddSimulationResultArrows()
+{
+    MFSimulator* simulator = MFSimulator::GetInstance();
+    if(simulator->SimulationResultsExist == false)
+        return;
+
+    for (int x = 0; x < simulator->SimulationNumDatapointsX; x++)
+        for (int y = 0; y < simulator->SimulationNumDatapointsY; y++)
+            for (int z = 0; z < simulator->SimulationNumDatapointsZ; z++)
             {
-                QVector3D position = m_Simulator->GetPosition(x, y, z);
-                QQuaternion quat = QQuaternion::fromDirection(m_Simulator->GetResult(x, y, z).normalized(), {0.0f, 0.0f, 1.0f});
-                QMatrix4x4 mat;
-                mat.translate(position);
-                mat.rotate(quat);
-                mat.scale(0.5f * std::clamp(m_Simulator->GetResult(x, y, z).length(), 0.01f, 0.2f));
-                memcpy(buffer + i * sizeof(float) * 16, mat.data(), sizeof(float) * 16);
+                QVector3D position = simulator->GetPosition(x, y, z);
+                float scale = 0.5f * std::clamp(simulator->GetResult(x, y, z).length(), 0.01f, 0.2f);
 
-                float colorInterpolation = (m_Simulator->GetResult(x, y, z).length() - m_Simulator->SimulationResultsMinMagnitude) / (m_Simulator->SimulationResultsMaxMagnitude - m_Simulator->SimulationResultsMinMagnitude);
+                float colorInterpolation = (simulator->GetResult(x, y, z).length() - simulator->SimulationResultsMinMagnitude) / (simulator->SimulationResultsMaxMagnitude - simulator->SimulationResultsMinMagnitude);
                 QVector3D colStart = QVector3D(0.0,0.0, 1.0);
                 QVector3D colEnd = QVector3D(1.0, 0.0, 0.0);
                 QVector3D col = (colEnd - colStart) * colorInterpolation + colStart;
                 QVector4D color(col, 1.0f);
 
-                memcpy(buffer + m_MaxNumArrowsPerDrawcall * sizeof(float) * 16 + i * sizeof(float) * 4, &color, sizeof(float) * 4);
-
-                i++;
+                AddArrow(position, position + simulator->GetResult(x,y,z), color, scale);
             }
-
-    m_Shader.bind();
-    m_GLFuncs->glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBuffer);
-    m_GLFuncs->glBufferData(GL_UNIFORM_BUFFER, bufferSize, buffer, GL_DYNAMIC_DRAW);
-    m_GLFuncs->glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
-    m_Shader.release();
-
-    free(buffer);
-
-    emit repaintRequested();
 }
