@@ -1,6 +1,7 @@
 #include "objectitemdelegate.h"
 
 #include "scene/object.h"
+#include <QApplication>
 #include <QPainter>
 #include <QPainterPath>
 
@@ -26,7 +27,7 @@ void ObjectItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
         path.addRect(rect);
         if(m_SelectedObject.get() == object)
         {
-            painter->fillPath(path, Qt::gray);
+            painter->fillPath(path, QApplication::palette().highlight().color());
         }
         else
         {
@@ -35,7 +36,7 @@ void ObjectItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
         QFont font(option.font.family(), -1, QFont::Bold);
         painter->setFont(font);
-        painter->setPen(QPen(Qt::GlobalColor::color0, 2));
+        painter->setPen(QPen(QApplication::palette().text().color(), 2));
         painter->drawText(textLocation, object->Name);
     }
 }
