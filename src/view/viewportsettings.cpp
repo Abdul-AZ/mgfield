@@ -14,6 +14,7 @@ ViewportSettings::ViewportSettings(QWidget *parent)
     ui->ShowGridCheckbox->setCheckState(settings.value("ViewportSettings/ShowGrid", true).toBool() ? Qt::Checked : Qt::Unchecked);
     ui->ShowGradientCheckbox->setCheckState(settings.value("ViewportSettings/ShowGradient", true).toBool() ? Qt::Checked : Qt::Unchecked);
     ui->ShowNormalsCheckbox->setCheckState(settings.value("ViewportSettings/ShowNormals", true).toBool() ? Qt::Checked : Qt::Unchecked);
+    ui->ShowCurrentFlowCheckbox->setCheckState(settings.value("ViewportSettings/ShowCurrentFlow", true).toBool() ? Qt::Checked : Qt::Unchecked);
 
     connect(ui->AutoSimulateCheckbox, &QCheckBox::stateChanged, this, [this](int state)
     {
@@ -43,6 +44,14 @@ ViewportSettings::ViewportSettings(QWidget *parent)
     {
         QSettings settings;
         settings.setValue("ViewportSettings/ShowNormals", (bool)state);
+        emit SettingsChanged();
+    }
+    );
+
+    connect(ui->ShowCurrentFlowCheckbox, &QCheckBox::stateChanged, this, [this](int state)
+    {
+        QSettings settings;
+        settings.setValue("ViewportSettings/ShowCurrentFlow", (bool)state);
         emit SettingsChanged();
     }
     );

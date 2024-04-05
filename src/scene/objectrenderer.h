@@ -12,8 +12,10 @@
 #include "src/scene/straightwireobject.h"
 #include "src/scene/currentcarryingsheet.h"
 
-#define OBJECT_RENDERER_NORMAL_VECTOR_COLOR QVector4D(0.0f,1.0f,0.0f,1.0f)
-#define OBJECT_RENDERER_NORMAL_VECTOR_SCALE (0.05f)
+#define OBJECT_RENDERER_NORMAL_VECTOR_COLOR  QVector4D(0.0f,1.0f,0.0f,1.0f)
+#define OBJECT_RENDERER_NORMAL_VECTOR_SCALE  (0.05f)
+#define OBJECT_RENDERER_CURRENT_VECTOR_COLOR QVector4D(0.0f,1.0f,1.0f,1.0f)
+#define OBJECT_RENDERER_CURRENT_VECTOR_SCALE (0.05f)
 
 class ObjectRenderer
 {

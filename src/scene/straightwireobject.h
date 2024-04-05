@@ -13,6 +13,8 @@ public:
     StraightWireObject();
     ~StraightWireObject() {};
 
+    QVector3D GetCurrentFlowVector() const;
+
     float GetDCCurrent() const { return m_DCCurrent; };
     void  SetDCCurrent(float value) { m_DCCurrent = value; };
 

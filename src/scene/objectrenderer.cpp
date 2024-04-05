@@ -107,7 +107,13 @@ void ObjectRenderer::DrawScene(QOpenGLContext* context, Scene* scene, VectorFiel
         switch (object->Type)
         {
         case ObjectType::StraightWire:
-            DrawCable((StraightWireObject*)object.get(), context->functions(), viewProjection);
+        {
+            StraightWireObject* cable = (StraightWireObject*)object.get();
+            DrawCable(cable, context->functions(), viewProjection);
+
+            if(settings.value("ViewportSettings/ShowCurrentFlow", true).toBool())
+                arrowRenderer->AddArrow(object->Position - 0.25f * cable->GetCurrentFlowVector(), object->Position + cable->GetCurrentFlowVector(), OBJECT_RENDERER_CURRENT_VECTOR_COLOR, OBJECT_RENDERER_CURRENT_VECTOR_SCALE);
+        }
             break;
 
         case ObjectType::CurrentCarryingSheet:
@@ -116,6 +122,9 @@ void ObjectRenderer::DrawScene(QOpenGLContext* context, Scene* scene, VectorFiel
             DrawSheet(sheet, context->functions(), viewProjection);
             if(settings.value("ViewportSettings/ShowNormals", true).toBool())
                 arrowRenderer->AddArrow(object->Position + 0.05f * sheet->GetNormalVector(), object->Position + sheet->GetNormalVector(), OBJECT_RENDERER_NORMAL_VECTOR_COLOR, OBJECT_RENDERER_NORMAL_VECTOR_SCALE);
+
+            if(settings.value("ViewportSettings/ShowCurrentFlow", true).toBool())
+                arrowRenderer->AddArrow(object->Position - 0.25f * sheet->GetCurrentFlowVector(), object->Position + sheet->GetCurrentFlowVector(), OBJECT_RENDERER_CURRENT_VECTOR_COLOR, OBJECT_RENDERER_CURRENT_VECTOR_SCALE);
         }
             break;
 
