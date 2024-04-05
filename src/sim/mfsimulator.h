@@ -24,7 +24,7 @@ public:
     static MFSimulator *GetInstance();
     void ClearResults();
 
-    inline size_t   GetResultsElementIndex(int32_t x, int32_t y, int32_t z);
+    size_t   GetResultsElementIndex(int32_t x, int32_t y, int32_t z);
     const QVector3D GetResult(int32_t x, int32_t y, int32_t z);
     const QVector3D GetPosition(int32_t x, int32_t y, int32_t z);
 
