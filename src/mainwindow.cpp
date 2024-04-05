@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include "src/view/viewport3d.h"
 #include "src/view/simulationsettingsdialog.h"
+#include "src/sim/simulationresultsexporter.h"
 #include "src/view/addobjectdialog.h"
 #include "src/sim/mfsimulator.h"
 
@@ -97,6 +98,12 @@ MainWindow::MainWindow(QWidget *parent)
         if(settings.value("ViewportSettings/AutoSimulate", true).toBool())
             MFSimulator::GetInstance()->RequestNewSimulationRun(scene);
     });
+
+    auto exportOptions = SimulationResultsExporter::GetExportOptions();
+    for (auto& option : exportOptions)
+    {
+        ui->menuSimulationExportResults->addAction(option.Header, option.Func);
+    }
 }
 
 MainWindow::~MainWindow()

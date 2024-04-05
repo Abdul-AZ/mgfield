@@ -25,6 +25,7 @@ SOURCES += \
     src/scene/objectrenderer.cpp \
     src/scene/permanentmagnet.cpp \
     src/scene/straightwireobject.cpp \
+    src/sim/simulationresultsexporter.cpp \
     src/view/addobjectdialog.cpp \
     src/view/modifieddoublespinbox.cpp \
     src/view/objectinspector.cpp \
@@ -52,6 +53,7 @@ HEADERS += \
     src/scene/objectrenderer.h \
     src/scene/permanentmagnet.h \
     src/scene/straightwireobject.h \
+    src/sim/simulationresultsexporter.h \
     src/view/addobjectdialog.h \
     src/view/modifieddoublespinbox.h \
     src/view/objectinspector.h \

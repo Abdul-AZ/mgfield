@@ -94,8 +94,14 @@
     <property name="title">
      <string>Simulation</string>
     </property>
+    <widget class="QMenu" name="menuSimulationExportResults">
+     <property name="title">
+      <string>Export Results</string>
+     </property>
+    </widget>
     <addaction name="actionSimulationSettings"/>
     <addaction name="actionSimulationClearResults"/>
+    <addaction name="menuSimulationExportResults"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSimulation"/>
