@@ -37,12 +37,12 @@ void Viewport3D::messageLogged(const QOpenGLDebugMessage &debugMessage)
 
 void Viewport3D::initializeGL()
 {
-    if (context()->format().majorVersion() < 4)
+    if (context()->format().majorVersion() < 3)
     {
-        if ( context()->format().minorVersion() < 6)
+        if ( context()->format().minorVersion() < 3)
         {
             QMessageBox msgBox;
-            msgBox.setText("ERROR: OpenGL 4.6 is not supported by this system.");
+            msgBox.setText("ERROR: OpenGL 3.3 is not supported by this system.");
             msgBox.setDefaultButton(QMessageBox::Ok);
             msgBox.exec();
 
