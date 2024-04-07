@@ -1,6 +1,9 @@
 name: Build Test on different OSs
 
-on: push
+on: 
+  push:
+    branches:
+      - master
 
 jobs:
   build-macos:
