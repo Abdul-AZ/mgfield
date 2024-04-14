@@ -4,10 +4,6 @@ cmake_minimum_required(VERSION 3.16)
 set(CMAKE_CXX_STANDARD 17)
 project(mgfield VERSION 1.0 LANGUAGES CXX)
 
-if(MSVC)
-    target_compile_options(mgfield PUBLIC "/Zc:__cplusplus")
-endif()
-
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(CMAKE_AUTOMOC ON)
@@ -55,6 +51,10 @@ qt_add_executable(mgfield WIN32 MACOSX_BUNDLE
     thirdparty/tinygltf/stb_image_write.h
     thirdparty/tinygltf/tiny_gltf.cpp thirdparty/tinygltf/tiny_gltf.h
 )
+
+if(MSVC)
+    target_compile_options(mgfield PUBLIC "/Zc:__cplusplus")
+endif()
 
 add_subdirectory(thirdparty/QFontIcon)
 

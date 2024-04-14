@@ -4,10 +4,6 @@ cmake_minimum_required(VERSION 3.16)
 set(CMAKE_CXX_STANDARD 17)
 project(QFontIcon VERSION 1.0 LANGUAGES CXX)
 
-if(MSVC)
-    target_compile_options(QFontIcon PUBLIC "/Zc:__cplusplus")
-endif()
-
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(CMAKE_AUTOMOC ON)
@@ -24,6 +20,11 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Gui)
 qt_add_library(QFontIcon
     qfonticon.cpp qfonticon.h
 )
+
+if(MSVC)
+    target_compile_options(QFontIcon PUBLIC "/Zc:__cplusplus")
+endif()
+
 target_include_directories(QFontIcon PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
