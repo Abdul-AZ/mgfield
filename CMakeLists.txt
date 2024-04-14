@@ -52,10 +52,6 @@ qt_add_executable(mgfield WIN32 MACOSX_BUNDLE
     thirdparty/tinygltf/tiny_gltf.cpp thirdparty/tinygltf/tiny_gltf.h
 )
 
-if(MSVC)
-    target_compile_options(mgfield PUBLIC "/Zc:__cplusplus")
-endif()
-
 add_subdirectory(thirdparty/QFontIcon)
 
 target_link_libraries(mgfield PUBLIC

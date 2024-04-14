@@ -80,7 +80,7 @@ jobs:
     - name: Generate sources
       run: |
         mkdir build
-        cmake -B ./build -S .
+        cmake -G "MinGW Makefiles" -B ./build -S .
       shell: pwsh
 
     - name: Build project

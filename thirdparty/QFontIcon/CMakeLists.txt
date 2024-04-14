@@ -21,11 +21,6 @@ qt_add_library(QFontIcon
     qfonticon.cpp qfonticon.h
 )
 
-if(MSVC)
-    target_compile_options(QFontIcon PUBLIC "/Zc:__cplusplus")
-    target_compile_options(QFontIcon PUBLIC "/permissive-")
-endif()
-
 target_include_directories(QFontIcon PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
