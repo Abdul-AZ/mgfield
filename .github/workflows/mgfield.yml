@@ -1,9 +1,6 @@
 name: Build Test on different OSs
 
-on: 
-  push:
-    branches:
-      - master
+on: push
 
 jobs:
   build-macos:
@@ -22,15 +19,16 @@ jobs:
         target: 'desktop'
         arch: 'clang_64'
 
-    - name: Verify Qt Installation
+    - name: Generate sources
       run: |
-        qmake --version
+        mkdir build
+        cmake -B ./build -S .
       shell: bash
 
-    - name: Build the project
+    - name: Build project
       run: |
-        qmake mgfield.pro
-        make
+        cd build
+        cmake --build
       shell: bash
 
   build-ubuntu:
@@ -50,15 +48,16 @@ jobs:
         install-deps: 'true'
         arch: 'gcc_64'
 
-    - name: Verify Qt Installation
+    - name: Generate sources
       run: |
-        qmake6 --version
+        mkdir build
+        cmake -B ./build -S .
       shell: bash
 
-    - name: Build the project
+    - name: Build project
       run: |
-        qmake6 mgfield.pro
-        make
+        cd build
+        cmake --build
       shell: bash
 
   build-windows:
@@ -78,13 +77,14 @@ jobs:
         install-deps: 'true'
         arch: 'win64_mingw'
 
-    - name: Verify Qt Installation
+    - name: Generate sources
       run: |
-        qmake --version
+        mkdir build
+        cmake -B ./build -S .
       shell: pwsh
 
-    - name: Build the project
+    - name: Build project
       run: |
-        qmake mgfield.pro
-        make
+        cd build
+        cmake --build
       shell: pwsh
