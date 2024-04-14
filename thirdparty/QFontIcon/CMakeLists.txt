@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 project(QFontIcon VERSION 1.0 LANGUAGES CXX)
 
 if(MSVC)
-    target_compile_options(qt_cmake PUBLIC "/Zc:__cplusplus")
+    target_compile_options(QFontIcon PUBLIC "/Zc:__cplusplus")
 endif()
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)

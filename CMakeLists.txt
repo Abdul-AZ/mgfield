@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 project(mgfield VERSION 1.0 LANGUAGES CXX)
 
 if(MSVC)
-    target_compile_options(qt_cmake PUBLIC "/Zc:__cplusplus")
+    target_compile_options(mgfield PUBLIC "/Zc:__cplusplus")
 endif()
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
