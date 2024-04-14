@@ -40,7 +40,7 @@
  * Note: micro, �, may not work everywhere, so you can define a glyph yourself:
  */
 #ifndef ENG_FORMAT_MICRO_GLYPH
-# define ENG_FORMAT_MICRO_GLYPH "�"
+# define ENG_FORMAT_MICRO_GLYPH "u"
 #endif
 
 /*
