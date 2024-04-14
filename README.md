@@ -1,15 +1,19 @@
 # MGFIELD
-MgField is a desktop application to visualize magnetic fields of various objects. This application is mostly made for educational purposes to build intuition for people getting into electricity and magnetism. The application is developed in C++ with the help of the [Qt](https://www.qt.io/) framework.
+MgField is a desktop application used to visualize magnetic fields of various objects. This application is mostly made for educational purposes to build intuition for people getting into electricity and magnetism. The application is developed in C++ with the help of the [Qt](https://www.qt.io/) framework.
 
 # Building
-- Install Qt version 6.6.1
+### Requirements
+- Qt version 6.6.1 or newer
+- CMake
 ### Using Qt Creator 
 - Open ```mgfield.pro```
 - Configure environment to 6.6.1 (use MinGW on windows)
 - Build and run (F5)
 ### Manual Building 
-- ```qmake mgfield.pro```
-- ```make```
+- ```mkdir build```
+- ```cmake -B ./build -S .```
+- ```cd build```
+- ```cmake --build .```
 
 # Contributing
 All contributions are welcome including feature requests.
