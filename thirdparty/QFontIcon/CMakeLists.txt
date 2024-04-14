@@ -23,6 +23,7 @@ qt_add_library(QFontIcon
 
 if(MSVC)
     target_compile_options(QFontIcon PUBLIC "/Zc:__cplusplus")
+    target_compile_options(QFontIcon PUBLIC "/permissive-")
 endif()
 
 target_include_directories(QFontIcon PUBLIC
