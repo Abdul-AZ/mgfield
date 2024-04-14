@@ -1,6 +1,10 @@
 name: Build Test on different OSs
 
-on: push
+on:
+  push:
+    branches:
+    - '**' # Every branch
+    - '!gh-pages' # Excluding website
 
 jobs:
   build-macos:
