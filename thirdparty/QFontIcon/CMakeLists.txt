@@ -13,7 +13,7 @@ endif()
 
 set(INSTALL_EXAMPLEDIR "${INSTALL_EXAMPLESDIR}")
 
-find_package(QT NAMES Qt5 Qt6 REQUIRED COMPONENTS Core)
+find_package(QT NAMES Qt6 REQUIRED COMPONENTS Core)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Gui)
 
 qt_add_library(QFontIcon
