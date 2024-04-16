@@ -1,0 +1,38 @@
+name: MacOS build workflow
+
+on:
+  push:
+    branches:
+    - '**'        # Every branch
+    - '!gh-pages' # Excluding website
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v3
+      with:
+        aqtversion: '==3.1.*'
+        version: '6.6.1'
+        host: 'mac'
+        target: 'desktop'
+        arch: 'clang_64'
+
+    - name: Generate sources
+      run: |
+        mkdir build
+        cmake -B ./build -S .
+      shell: bash
+
+    - name: Build project
+      run: |
+        cd build
+        cmake --build .
+      shell: bash
