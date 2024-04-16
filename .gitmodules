@@ -1,0 +1,4 @@
+[submodule "reactphysics3d"]
+	path = thirdparty/reactphysics3d
+	url = https://github.com/DanielChappuis/reactphysics3d
+	branch = master
