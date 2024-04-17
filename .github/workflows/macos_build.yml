@@ -6,6 +6,10 @@ on:
     - '**'        # Every branch
     - '!gh-pages' # Excluding website
 
+env:
+  CC: gcc-12
+  CXX: g++-12
+
 jobs:
   build-macos:
     runs-on: macos-latest
@@ -28,7 +32,7 @@ jobs:
     - name: Generate sources
       run: |
         mkdir build
-        cmake -B ./build -S .
+        cmake -G "Unix Makefiles" -B ./build -S .
       shell: bash
 
     - name: Build project
