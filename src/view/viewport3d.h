@@ -16,7 +16,6 @@
 #include "src/scene/objectrenderer.h"
 #include "viewportsettings.h"
 
-#define VIEWPORT3D_STENCIL_BUFFER_NO_OBJECT_VALUE (0xFF)
 #define VIEWPORT3D_INITIAL_CAMERA_POSITION        (QVector3D{ 4.0f, 1.0f, 1.5f })
 
 enum class CameraControlMode

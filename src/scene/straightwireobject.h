@@ -3,15 +3,19 @@
 
 #include <QMatrix4x4>
 #include "src/scene/object.h"
+#include <reactphysics3d/reactphysics3d.h>
 
 #define STRAIGHT_WIRE_OBJECT_MODEL_BASE_SCALE (0.1f)
-#define STRAIGHT_WIRE_OBJECT_BASE_ROTATION    QVector3D(1.0f,0.0f,0.0f)
+#define STRAIGHT_WIRE_OBJECT_BASE_ROTATION    QVector3D(-1.0f,0.0f,0.0f)
 
 class StraightWireObject : public Object
 {
 public:
-    StraightWireObject();
+    StraightWireObject(reactphysics3d::PhysicsCommon* physicsCommon, reactphysics3d::PhysicsWorld* world);
     ~StraightWireObject() {};
+
+    virtual bool Raycast(const reactphysics3d::Ray& ray) const override;
+    virtual void UpdateColliders() override;
 
     QVector3D GetCurrentFlowVector() const;
 
@@ -26,6 +30,11 @@ private:
 
     float                      m_DCCurrent = 1.0f;
     bool                       m_IsInfiniteLength = true;
+
+    reactphysics3d::PhysicsCommon* m_PhysicsCommon;
+    reactphysics3d::PhysicsWorld* m_PhysicsWorld;
+    reactphysics3d::CapsuleShape* m_Shape;
+    reactphysics3d::RigidBody* m_Body;
 };
 
 #endif // STRAIGHTWIREOBJECT_H

@@ -13,6 +13,8 @@
 #include "thirdparty/eng_format/eng_format.hpp"
 #include "src/sim/mfsimulator.h"
 
+#include <reactphysics3d/reactphysics3d.h>
+
 Viewport3D::Viewport3D(QWidget* parent) : QOpenGLWidget(parent)
 {
     setFocusPolicy(Qt::ClickFocus);
@@ -63,7 +65,6 @@ void Viewport3D::initializeGL()
 #endif
     m_GLFuncs->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     m_GLFuncs->glEnable(GL_DEPTH_TEST);
-    m_GLFuncs->glEnable(GL_STENCIL_TEST);
     m_GLFuncs->glEnable(GL_BLEND);
     m_GLFuncs->glClearColor(0.1, 0.1, 0.1, 1.0);
 
@@ -92,25 +93,16 @@ void Viewport3D::paintGL()
 
     QMatrix4x4 viewProjection = m_ProjectionMatrix * m_Camera.GetViewMatrix();
     m_SimulationVectorField->StartFrame(viewProjection);
-    m_GLFuncs->glClearStencil(VIEWPORT3D_STENCIL_BUFFER_NO_OBJECT_VALUE);
-    m_GLFuncs->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    m_GLFuncs->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     m_GLFuncs->glEnable(GL_DEPTH_TEST);
     m_GLFuncs->glEnable(GL_BLEND);
-    m_GLFuncs->glEnable(GL_STENCIL_TEST);
 
-    m_GLFuncs->glStencilMask(0x00);
     if(settings.value("ViewportSettings/ShowGrid", true).toBool())
         m_Grid->Draw(viewProjection);
-
-    // Enable stencil buffer
-    m_GLFuncs->glStencilMask(0xFF);
-    m_GLFuncs->glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
     if(m_CurrentScene)
         m_ObjectRenderer->DrawScene(context(), m_CurrentScene, m_SimulationVectorField, viewProjection);
 
-    m_GLFuncs->glStencilFunc(GL_ALWAYS, VIEWPORT3D_STENCIL_BUFFER_NO_OBJECT_VALUE, VIEWPORT3D_STENCIL_BUFFER_NO_OBJECT_VALUE);
-    
     m_SimulationVectorField->AddSimulationResultArrows();
     m_SimulationVectorField->EndFrame();
 
@@ -196,17 +188,36 @@ void Viewport3D::mousePressEvent(QMouseEvent* event)
 
         makeCurrent();
 
-        uint8_t value = 0;
+        auto invVP = (m_ProjectionMatrix * m_Camera.GetViewMatrix()).inverted();
+        QVector4D startScreenCoord((event->pos().x() - width() / 2) * 2.0 / width(),  (height() / 2 -event->pos().y()) * 2.0 / height(), 0.0f, 1.0f);
+        QVector4D endScreenCoord((event->pos().x() - width() / 2) * 2.0 / width(),  (height() / 2 -event->pos().y()) * 2.0 / height(), 1.0f, 1.0f);
 
-        m_GLFuncs->glReadPixels(event->pos().x(), height() - event->pos().y(), 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_BYTE, &value);
+        QVector4D startWorldPos = invVP * startScreenCoord;
+        startWorldPos = startWorldPos / startWorldPos.w();
 
-        if(value == VIEWPORT3D_STENCIL_BUFFER_NO_OBJECT_VALUE)
+        QVector4D endWorldPos = invVP * endScreenCoord;
+        endWorldPos = endWorldPos / endWorldPos.w();
+
+        reactphysics3d::Vector3 start = {startWorldPos.x(), startWorldPos.y(), startWorldPos.z()};
+        reactphysics3d::Vector3 end = {endWorldPos.x(), endWorldPos.y(), endWorldPos.z()};
+
+        reactphysics3d::Ray ray(start, end);
+
+        bool hitObject = false;
+        for(auto& obj : m_CurrentScene->Objects)
+        {
+            if(obj->Raycast(ray))
+            {
+                emit ObjectSelected(obj);
+                hitObject = true;
+                break;
+            }
+        }
+
+        if(hitObject == false)
         {
             emit ObjectSelected(nullptr);
-        }
-        else
-        {
-            emit ObjectSelected(m_CurrentScene->Objects[value]);
+
         }
     }
 }

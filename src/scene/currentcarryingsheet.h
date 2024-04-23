@@ -3,10 +3,16 @@
 
 #include "object.h"
 
+#include <reactphysics3d/reactphysics3d.h>
+
 class CurrentCarryingSheet : public Object
 {
 public:
-    CurrentCarryingSheet();
+    CurrentCarryingSheet(reactphysics3d::PhysicsCommon* physicsCommon, reactphysics3d::PhysicsWorld* world);
+    virtual ~CurrentCarryingSheet();
+
+    virtual bool Raycast(const reactphysics3d::Ray& ray) const override;
+    virtual void UpdateColliders() override;
 
     QVector3D GetNormalVector() const;
     QVector3D GetCurrentFlowVector() const;
@@ -23,6 +29,11 @@ private:
     float m_Width = 1.0f;
     float m_Length = 1.0f;
     float m_Br = 1.0f;
+
+    reactphysics3d::PhysicsCommon* m_PhysicsCommon;
+    reactphysics3d::PhysicsWorld* m_PhysicsWorld;
+    reactphysics3d::BoxShape* m_Shape;
+    reactphysics3d::RigidBody* m_Body;
 };
 
 #endif // CURRENTCARRYINGSHEET_H

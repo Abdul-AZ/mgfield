@@ -8,7 +8,10 @@
 
 #include "view/addobjectdialog.h"
 
-Scene::Scene() {}
+Scene::Scene()
+{
+    physicsWorld = physicsCommon.createPhysicsWorld();
+}
 
 void Scene::AddObjectUsingDialog()
 {
@@ -22,11 +25,11 @@ void Scene::AddObjectUsingDialog()
     switch (type)
     {
     case ObjectType::StraightWire:
-        Objects.append(std::make_shared<StraightWireObject>());
+        Objects.append(std::make_shared<StraightWireObject>(&physicsCommon, physicsWorld));
         break;
 
     case ObjectType::CurrentCarryingSheet:
-        Objects.append(std::make_shared<CurrentCarryingSheet>());
+        Objects.append(std::make_shared<CurrentCarryingSheet>(&physicsCommon, physicsWorld));
         break;
 
     case ObjectType::PermanentMagnet:
@@ -40,6 +43,11 @@ void Scene::AddObjectUsingDialog()
     }
 
     emit ObjectAdded();
+}
+
+void Scene::ObjectEdited(std::shared_ptr<Object> object)
+{
+    object->UpdateColliders();
 }
 
 void Scene::RemoveObject(int32_t index)

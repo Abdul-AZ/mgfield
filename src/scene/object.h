@@ -3,6 +3,7 @@
 
 #include <QVector3D>
 #include <QQuaternion>
+#include <reactphysics3d/reactphysics3d.h>
 
 enum class ObjectType
 {
@@ -16,6 +17,9 @@ class Object
 public:
     Object(ObjectType type) : Type(type) {};
     const ObjectType Type;
+
+    virtual bool Raycast(const reactphysics3d::Ray& ray) const { return false; };
+    virtual void UpdateColliders() { };
 
     QString     Name;
     QVector3D   Position;
