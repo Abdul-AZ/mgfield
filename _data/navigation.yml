@@ -1,5 +1,12 @@
 header:
   - title:
+      Home
+    url: /index.html
+
+  - title:
+      Getting Started
+    url: /getting-started.html
+
+  - title:
       Github
     url: https://github.com/Abdul-AZ/mgfield
-
