@@ -13,6 +13,7 @@
 #include "thirdparty/eng_format/eng_format.hpp"
 #include "src/sim/mfsimulator.h"
 
+#include <src/config.h>
 #include <reactphysics3d/reactphysics3d.h>
 
 Viewport3D::Viewport3D(QWidget* parent) : QOpenGLWidget(parent)
@@ -66,6 +67,9 @@ void Viewport3D::initializeGL()
     m_GLFuncs->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     m_GLFuncs->glEnable(GL_DEPTH_TEST);
     m_GLFuncs->glEnable(GL_BLEND);
+#if	CONFIG_MULTISAMPLE_ENABLE
+    m_GLFuncs->glEnable(GL_MULTISAMPLE);
+#endif
     m_GLFuncs->glClearColor(0.1, 0.1, 0.1, 1.0);
 
     m_OrbitCameraController.ClipPositionToOrbit(m_Camera, VIEWPORT3D_INITIAL_CAMERA_POSITION);

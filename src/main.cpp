@@ -4,6 +4,7 @@
 #include <QSurfaceFormat>
 #include "thirdparty/QFontIcon/qfonticon.h"
 
+#include "config.h"
 
 #ifdef QT_DEBUG
 
@@ -50,6 +51,10 @@ int main(int argc, char *argv[])
     format.setDepthBufferSize(24);
     format.setVersion(3, 3);
     format.setProfile(QSurfaceFormat::CoreProfile);
+
+#if CONFIG_MULTISAMPLE_ENABLE
+    format.setSamples(CONFIG_MULTISAMPLE_NUM_SAMPLES);
+#endif
 
 #ifdef QT_DEBUG
     format.setOption(QSurfaceFormat::DebugContext);

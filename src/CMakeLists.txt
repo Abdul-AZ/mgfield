@@ -3,6 +3,7 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/freeroamcameracontroller.cpp src/freeroamcameracontroller.h
     ${CMAKE_CURRENT_SOURCE_DIR}/grid3d.cpp src/grid3d.h
     ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/config.h
     ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.cpp src/mainwindow.h src/mainwindow.ui
     ${CMAKE_CURRENT_SOURCE_DIR}/modelloader.cpp src/modelloader.h
     ${CMAKE_CURRENT_SOURCE_DIR}/objectitemdelegate.cpp src/objectitemdelegate.h
