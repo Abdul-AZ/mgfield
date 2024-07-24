@@ -24,6 +24,7 @@ public slots:
     void updateCameraLocationStatus(QVector3D newPos);
     void showExportedImageStatus(QString path);
     void showAboutWindow();
+    void showGettingStartedPage();
 
 private:
     Ui::MainWindow *ui;

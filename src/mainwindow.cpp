@@ -3,6 +3,7 @@
 
 #include <QMessageBox>
 #include <QPushButton>
+#include <QDesktopServices>
 #include "src/view/viewport3d.h"
 #include "src/view/simulationsettingsdialog.h"
 #include "src/sim/simulationresultsexporter.h"
@@ -41,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent)
         MFSimulator::GetInstance()->RequestNewSimulationRun(scene);
     });
 
+    connect(ui->actionGettingStarted, SIGNAL(triggered()), this, SLOT(showGettingStartedPage()));
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(showAboutWindow()));
 
     // Connect add and remove buttons
@@ -148,4 +150,10 @@ void MainWindow::showAboutWindow()
     dialog.setText("Author: Abdulrahman Al Zeidi");
 
     dialog.exec();
+}
+
+void MainWindow::showGettingStartedPage()
+{
+    QUrl url("https://mgfield.app/getting-started");
+    QDesktopServices::openUrl(url);
 }

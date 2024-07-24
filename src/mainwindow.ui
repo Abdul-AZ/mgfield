@@ -75,7 +75,7 @@
      <x>0</x>
      <y>0</y>
      <width>1045</width>
-     <height>22</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -88,6 +88,7 @@
     <property name="title">
      <string>Help</string>
     </property>
+    <addaction name="actionGettingStarted"/>
     <addaction name="actionAbout"/>
    </widget>
    <widget class="QMenu" name="menuSimulation">
@@ -462,6 +463,11 @@ Removes currently selected object</string>
   <action name="actionSimulationClearResults">
    <property name="text">
     <string>Clear Results</string>
+   </property>
+  </action>
+  <action name="actionGettingStarted">
+   <property name="text">
+    <string>Getting Started</string>
    </property>
   </action>
  </widget>
