@@ -122,6 +122,17 @@ void Viewport3D::DrawGradient()
     QPoint topLeft(20, 80);
     QPoint bottomRight(50, height() - 80);
 
+    // Draw background as a rounded rectangle
+    QRect background = QRect(topLeft + QPoint(-10,-10), bottomRight + QPoint(50,10));
+    QPainterPath path;
+    path.addRoundedRect(background, 10, 10);
+    QPen pen(Qt::black, 1);
+    painter.setPen(pen);
+    painter.fillPath(path, QApplication::palette().base().color());
+    painter.drawPath(path);
+
+    // Draw text displaying minimum and maximum values for the gradient
+    painter.setPen(QApplication::palette().text().color());
     painter.drawText(topLeft + QPoint(35, fontMetrics().capHeight()), "MAX");
     std::string maxValue = to_engineering_string(SIM_CONSTANT_VACUUM_MAGNETIC_PERMEABILITY * MFSimulator::GetInstance()->SimulationResultsMaxMagnitude, 3, eng_prefixed, "T");
     painter.drawText(topLeft + QPoint(35, fontMetrics().capHeight() * 2 + 3), QString::fromStdString(maxValue));
@@ -129,12 +140,9 @@ void Viewport3D::DrawGradient()
     std::string minValue = to_engineering_string(SIM_CONSTANT_VACUUM_MAGNETIC_PERMEABILITY * MFSimulator::GetInstance()->SimulationResultsMinMagnitude, 3, eng_prefixed, "T");
     painter.drawText(bottomRight + QPoint(5, -fontMetrics().capHeight() - 3), QString::fromStdString(minValue));
 
-    // Set border size
-    QPen pen(Qt::black, 2);
+    // Draw gradient in a rectangle
     painter.setPen(pen);
-
     QLinearGradient m_gradient(topLeft, bottomRight);
-
     m_gradient.setColorAt(0.0, Qt::red);
     m_gradient.setColorAt(1.0, Qt::blue);
     painter.fillRect(QRect(topLeft, bottomRight), m_gradient);
