@@ -128,7 +128,11 @@ void VectorField3D::AddSimulationResultArrows()
             for (int z = 0; z < simulator->SimulationNumDatapointsZ; z++)
             {
                 QVector3D position = simulator->GetPosition(x, y, z);
-                float scale = 0.5f * std::clamp(simulator->GetResult(x, y, z).length(), 0.01f, 0.2f);
+                float scale = 0.5f * std::clamp(simulator->GetResult(x, y, z).length(), 0.0f, 0.2f);
+
+                // Do not draw very small arrows
+                if (scale < std::numeric_limits<float>::epsilon())
+                    continue;
 
                 float colorInterpolation = (simulator->GetResult(x, y, z).length() - simulator->SimulationResultsMinMagnitude) / (simulator->SimulationResultsMaxMagnitude - simulator->SimulationResultsMinMagnitude);
                 QVector3D colStart = QVector3D(0.0,0.0, 1.0);
