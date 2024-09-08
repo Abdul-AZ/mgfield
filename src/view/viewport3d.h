@@ -58,8 +58,10 @@ private:
     virtual void mouseReleaseEvent (QMouseEvent* event) override;
     virtual void mouseMoveEvent(QMouseEvent* event) override;
     virtual void wheelEvent(QWheelEvent* event) override;
+    virtual bool event(QEvent* event) override;
 
     void DrawGradient();
+    std::shared_ptr<Object> GetHoveredObject();
 
 private:
     Scene*                     m_CurrentScene = nullptr;

@@ -9,12 +9,14 @@
 #include <QPainterPath>
 #include <QString>
 #include <QSettings>
+#include <QToolTip>
 
 #include "thirdparty/eng_format/eng_format.hpp"
 #include "src/sim/mfsimulator.h"
 
 #include <src/config.h>
 #include <reactphysics3d/reactphysics3d.h>
+#include <magic_enum.hpp>
 
 Viewport3D::Viewport3D(QWidget* parent) : QOpenGLWidget(parent)
 {
@@ -200,38 +202,40 @@ void Viewport3D::mousePressEvent(QMouseEvent* event)
 
         makeCurrent();
 
-        auto invVP = (m_ProjectionMatrix * m_Camera.GetViewMatrix()).inverted();
-        QVector4D startScreenCoord((event->pos().x() - width() / 2) * 2.0 / width(),  (height() / 2 -event->pos().y()) * 2.0 / height(), 0.0f, 1.0f);
-        QVector4D endScreenCoord((event->pos().x() - width() / 2) * 2.0 / width(),  (height() / 2 -event->pos().y()) * 2.0 / height(), 1.0f, 1.0f);
+        auto obj = GetHoveredObject();
+        emit ObjectSelected(obj);
+    }
+}
 
-        QVector4D startWorldPos = invVP * startScreenCoord;
-        startWorldPos = startWorldPos / startWorldPos.w();
+std::shared_ptr<Object> Viewport3D::GetHoveredObject()
+{
+    auto pos = QCursor::pos();
+    pos = mapFromGlobal(pos);
 
-        QVector4D endWorldPos = invVP * endScreenCoord;
-        endWorldPos = endWorldPos / endWorldPos.w();
+    auto invVP = (m_ProjectionMatrix * m_Camera.GetViewMatrix()).inverted();
+    QVector4D startScreenCoord((pos.x() - width() / 2) * 2.0 / width(),  (height() / 2 -pos.y()) * 2.0 / height(), 0.0f, 1.0f);
+    QVector4D endScreenCoord((pos.x() - width() / 2) * 2.0 / width(),  (height() / 2 -pos.y()) * 2.0 / height(), 1.0f, 1.0f);
 
-        reactphysics3d::Vector3 start = {startWorldPos.x(), startWorldPos.y(), startWorldPos.z()};
-        reactphysics3d::Vector3 end = {endWorldPos.x(), endWorldPos.y(), endWorldPos.z()};
+    QVector4D startWorldPos = invVP * startScreenCoord;
+    startWorldPos = startWorldPos / startWorldPos.w();
 
-        reactphysics3d::Ray ray(start, end);
+    QVector4D endWorldPos = invVP * endScreenCoord;
+    endWorldPos = endWorldPos / endWorldPos.w();
 
-        bool hitObject = false;
-        for(auto& obj : m_CurrentScene->Objects)
+    reactphysics3d::Vector3 start = {startWorldPos.x(), startWorldPos.y(), startWorldPos.z()};
+    reactphysics3d::Vector3 end = {endWorldPos.x(), endWorldPos.y(), endWorldPos.z()};
+
+    reactphysics3d::Ray ray(start, end);
+
+    bool hitObject = false;
+    for(auto& obj : m_CurrentScene->Objects)
+    {
+        if(obj->Raycast(ray))
         {
-            if(obj->Raycast(ray))
-            {
-                emit ObjectSelected(obj);
-                hitObject = true;
-                break;
-            }
-        }
-
-        if(hitObject == false)
-        {
-            emit ObjectSelected(nullptr);
-
+            return obj;
         }
     }
+    return nullptr;
 }
 
 void Viewport3D::mouseReleaseEvent(QMouseEvent* event)
@@ -269,6 +273,32 @@ void Viewport3D::wheelEvent(QWheelEvent* event)
         repaint();
         emit cameraMoved(m_Camera.Position);
     }
+}
+
+bool Viewport3D::event(QEvent* event)
+{
+    if (event->type() == QEvent::ToolTip) {
+
+        QHelpEvent *helpEvent = static_cast<QHelpEvent *>(event);
+
+        auto obj = GetHoveredObject();
+
+        if(obj)
+        {
+            QString str;
+            QDebug(&str) << "Name: " << obj->Name << "\n";
+            QDebug(&str) << magic_enum::enum_name(obj->Type) << "\n";
+            QDebug(&str) << "Position: " << obj->Position;
+
+            QToolTip::showText(helpEvent->globalPos(), str);
+        }
+        else
+            QToolTip::showText(helpEvent->globalPos(), "No Object");
+
+        return true;
+    }
+
+    return QWidget::event(event);
 }
 
 void Viewport3D::Redraw()

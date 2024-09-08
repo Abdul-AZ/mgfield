@@ -10,6 +10,8 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/tinygltf/stb_image_write.h
     ${CMAKE_CURRENT_SOURCE_DIR}/tinygltf/tiny_gltf.cpp thirdparty/tinygltf/tiny_gltf.h
 
+    ${CMAKE_CURRENT_SOURCE_DIR}/magic_enum/magic_enum.hpp
+
     PARENT_SCOPE
 )
 
@@ -22,5 +24,6 @@ set(LIBS
 
 set(INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}/reactphysics3d/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/magic_enum/
     PARENT_SCOPE
 )
