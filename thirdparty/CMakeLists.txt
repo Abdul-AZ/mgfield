@@ -12,6 +12,9 @@ set(SOURCES
 
     ${CMAKE_CURRENT_SOURCE_DIR}/magic_enum/magic_enum.hpp
 
+    ${CMAKE_CURRENT_SOURCE_DIR}/libheatmap/heatmap.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/libheatmap/heatmap.c
+
     PARENT_SCOPE
 )
 
@@ -23,6 +26,7 @@ set(LIBS
 )
 
 set(INCLUDE_DIRS
+    ${CMAKE_CURRENT_SOURCE_DIR}/
     ${CMAKE_CURRENT_SOURCE_DIR}/reactphysics3d/include
     ${CMAKE_CURRENT_SOURCE_DIR}/magic_enum/
     PARENT_SCOPE
