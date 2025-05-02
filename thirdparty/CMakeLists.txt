@@ -1,6 +1,7 @@
 add_subdirectory(QFontIcon)
 add_subdirectory(reactphysics3d)
 
+message(STATUS ${SOURCES})
 set(SOURCES
     ${SOURCES}
     ${CMAKE_CURRENT_SOURCE_DIR}/eng_format/eng_format.cpp thirdparty/eng_format/eng_format.hpp
@@ -12,11 +13,9 @@ set(SOURCES
 
     ${CMAKE_CURRENT_SOURCE_DIR}/magic_enum/magic_enum.hpp
 
-    ${CMAKE_CURRENT_SOURCE_DIR}/libheatmap/heatmap.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/libheatmap/heatmap.c
-
     PARENT_SCOPE
 )
+
 
 set(LIBS
     ${LIBS}
@@ -31,3 +30,12 @@ set(INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}/magic_enum/
     PARENT_SCOPE
 )
+
+# Testing a new method of organizing sources
+
+add_library(libheatmap STATIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/libheatmap/heatmap.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/libheatmap/heatmap.hpp
+)
+
+target_link_libraries(mgfield PRIVATE libheatmap)

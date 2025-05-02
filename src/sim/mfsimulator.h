@@ -28,6 +28,17 @@ public:
     const QVector3D GetResult(int32_t x, int32_t y, int32_t z);
     const QVector3D GetPosition(int32_t x, int32_t y, int32_t z);
 
+    const float GetBoundryMinX() const;
+    const float GetBoundryMaxX() const;
+    const float GetBoundryMinY() const;
+    const float GetBoundryMaxY() const;
+    const float GetBoundryMinZ() const;
+    const float GetBoundryMaxZ() const;
+
+    const float GetBoundrySizeX() const;
+    const float GetBoundrySizeY() const;
+    const float GetBoundrySizeZ() const;
+
 public slots:
     void RequestNewSimulationRun(Scene* scene);
 

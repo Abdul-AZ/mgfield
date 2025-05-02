@@ -23,10 +23,10 @@
    <bool>true</bool>
   </property>
   <property name="tabShape">
-   <enum>QTabWidget::Triangular</enum>
+   <enum>QTabWidget::TabShape::Triangular</enum>
   </property>
   <property name="dockOptions">
-   <set>QMainWindow::AllowNestedDocks</set>
+   <set>QMainWindow::DockOption::AllowNestedDocks</set>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="sizePolicy">
@@ -75,7 +75,7 @@
      <x>0</x>
      <y>0</y>
      <width>1045</width>
-     <height>26</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -97,15 +97,22 @@
     </property>
     <widget class="QMenu" name="menuSimulationExportResults">
      <property name="title">
-      <string>Export Results</string>
+      <string>&amp;Export Results</string>
      </property>
     </widget>
     <addaction name="actionSimulationSettings"/>
     <addaction name="actionSimulationClearResults"/>
     <addaction name="menuSimulationExportResults"/>
    </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionGenerateFieldStrengthHeatmap"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSimulation"/>
+   <addaction name="menuTools"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
@@ -117,13 +124,13 @@
   </widget>
   <widget class="QDockWidget" name="ObjectListDock">
    <property name="features">
-    <set>QDockWidget::DockWidgetClosable|QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+    <set>QDockWidget::DockWidgetFeature::DockWidgetClosable|QDockWidget::DockWidgetFeature::DockWidgetFloatable|QDockWidget::DockWidgetFeature::DockWidgetMovable</set>
    </property>
    <property name="allowedAreas">
-    <set>Qt::AllDockWidgetAreas</set>
+    <set>Qt::DockWidgetArea::AllDockWidgetAreas</set>
    </property>
    <property name="windowTitle">
-    <string>Object List</string>
+    <string>Ob&amp;ject List</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -154,7 +161,7 @@
      <item row="0" column="0">
       <widget class="ObjectListView" name="ObjectList">
        <property name="horizontalScrollBarPolicy">
-        <enum>Qt::ScrollBarAlwaysOff</enum>
+        <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
        </property>
       </widget>
      </item>
@@ -189,7 +196,7 @@
       <number>3</number>
      </property>
      <property name="sizeConstraint">
-      <enum>QLayout::SetMinAndMaxSize</enum>
+      <enum>QLayout::SizeConstraint::SetMinAndMaxSize</enum>
      </property>
      <property name="leftMargin">
       <number>3</number>
@@ -247,7 +254,7 @@ Opens new window for creating an object</string>
         <bool>false</bool>
        </property>
        <property name="arrowType">
-        <enum>Qt::NoArrow</enum>
+        <enum>Qt::ArrowType::NoArrow</enum>
        </property>
       </widget>
      </item>
@@ -281,10 +288,10 @@ Removes currently selected object</string>
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeType">
-        <enum>QSizePolicy::Expanding</enum>
+        <enum>QSizePolicy::Policy::Expanding</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -340,7 +347,7 @@ Removes currently selected object</string>
      <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -438,7 +445,7 @@ Removes currently selected object</string>
         <string/>
        </property>
        <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
        </property>
       </widget>
      </item>
@@ -447,27 +454,32 @@ Removes currently selected object</string>
   </widget>
   <action name="actionExit">
    <property name="text">
-    <string>Exit</string>
+    <string>&amp;Exit</string>
    </property>
   </action>
   <action name="actionAbout">
    <property name="text">
-    <string>About</string>
+    <string>&amp;About</string>
    </property>
   </action>
   <action name="actionSimulationSettings">
    <property name="text">
-    <string>Settings</string>
+    <string>&amp;Settings</string>
    </property>
   </action>
   <action name="actionSimulationClearResults">
    <property name="text">
-    <string>Clear Results</string>
+    <string>&amp;Clear Results</string>
    </property>
   </action>
   <action name="actionGettingStarted">
    <property name="text">
-    <string>Getting Started</string>
+    <string>&amp;Getting Started</string>
+   </property>
+  </action>
+  <action name="actionGenerateFieldStrengthHeatmap">
+   <property name="text">
+    <string>&amp;Generate Field Strength Heat-map</string>
    </property>
   </action>
  </widget>

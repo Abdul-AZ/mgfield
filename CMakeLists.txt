@@ -22,12 +22,16 @@ find_package(Qt${QT_VERSION_MAJOR} OPTIONAL_COMPONENTS OpenGL OpenGLWidgets Widg
 set(SOURCES "")
 set(LIBS "")
 set(INCLUDE_DIRS "")
-add_subdirectory(thirdparty)
-add_subdirectory(src)
 
 qt_add_executable(mgfield WIN32 MACOSX_BUNDLE
-    ${SOURCES}
 )
+
+add_subdirectory(src)
+add_subdirectory(thirdparty)
+
+target_sources(mgfield PUBLIC ${SOURCES})
+
+
 target_include_directories(mgfield PRIVATE thirdparty ${INCLUDE_DIRS})
 
 target_link_libraries(mgfield PUBLIC
@@ -36,6 +40,7 @@ target_link_libraries(mgfield PUBLIC
     Qt::OpenGL
     Qt::OpenGLWidgets
     Qt::Widgets
+    libheatmap
     ${LIBS}
 )
 

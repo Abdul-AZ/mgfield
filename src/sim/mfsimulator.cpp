@@ -85,6 +85,20 @@ const QVector3D MFSimulator::GetPosition(int32_t x, int32_t y, int32_t z)
     return SimulationDatapointsSpacing * QVector3D(x - SimulationNumDatapointsX / 2, y - SimulationNumDatapointsY / 2, z - SimulationNumDatapointsZ / 2);
 }
 
+//TODO add ability to offset simulation location
+const float MFSimulator::GetBoundryMinX() const { return -SimulationDatapointsSpacing * (float)SimulationNumDatapointsX / 2; }
+const float MFSimulator::GetBoundryMaxX() const { return +SimulationDatapointsSpacing * (float)SimulationNumDatapointsX / 2; }
+
+const float MFSimulator::GetBoundryMinY() const { return -SimulationDatapointsSpacing * (float)SimulationNumDatapointsY / 2; }
+const float MFSimulator::GetBoundryMaxY() const { return +SimulationDatapointsSpacing * (float)SimulationNumDatapointsY / 2; }
+
+const float MFSimulator::GetBoundryMinZ() const { return -SimulationDatapointsSpacing * (float)SimulationNumDatapointsZ / 2; }
+const float MFSimulator::GetBoundryMaxZ() const { return +SimulationDatapointsSpacing * (float)SimulationNumDatapointsZ / 2; }
+
+const float MFSimulator::GetBoundrySizeX() const { return SimulationDatapointsSpacing * SimulationNumDatapointsX; };
+const float MFSimulator::GetBoundrySizeY() const { return SimulationDatapointsSpacing * SimulationNumDatapointsY; };
+const float MFSimulator::GetBoundrySizeZ() const { return SimulationDatapointsSpacing * SimulationNumDatapointsZ; };
+
 static QVector3D CalculateContributionFromInfiniteCable(const QVector3D& point, const StraightWireObject& cable)
 {
     // Assuming cable is infinite in length

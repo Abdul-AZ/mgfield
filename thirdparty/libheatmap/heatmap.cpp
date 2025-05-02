@@ -22,7 +22,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "heatmap.h"
+#include "heatmap.hpp"
 
 #include <stdlib.h> /* malloc, calloc, free */
 #include <string.h> /* memcpy, memset */

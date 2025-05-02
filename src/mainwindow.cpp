@@ -8,6 +8,7 @@
 #include "src/view/simulationsettingsdialog.h"
 #include "src/sim/simulationresultsexporter.h"
 #include "src/view/addobjectdialog.h"
+#include "src/view/heatmapgeneratorwindow.h"
 #include "src/sim/mfsimulator.h"
 
 #include <qfonticon.h>
@@ -81,6 +82,13 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionSimulationSettings, &QAction::triggered, this, [this]()
     {
         SimulationSettingsDialog dialog(this);
+
+        dialog.exec();
+    });
+
+    connect(ui->actionGenerateFieldStrengthHeatmap, &QAction::triggered, this, [this]()
+    {
+        HeatmapGeneratorWindow dialog(this);
 
         dialog.exec();
     });

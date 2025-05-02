@@ -26,5 +26,7 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/view/simulationsettingsdialog.cpp src/view/simulationsettingsdialog.h src/view/simulationsettingsdialog.ui
     ${CMAKE_CURRENT_SOURCE_DIR}/view/viewport3d.cpp src/view/viewport3d.h
     ${CMAKE_CURRENT_SOURCE_DIR}/view/viewportsettings.cpp src/view/viewportsettings.h src/view/viewportsettings.ui
+    ${CMAKE_CURRENT_SOURCE_DIR}/view/viewportsettings.cpp src/view/viewportsettings.h src/view/viewportsettings.ui
+    src/view/heatmapgeneratorwindow.h src/view/heatmapgeneratorwindow.cpp src/view/heatmapgeneratorwindow.ui
     PARENT_SCOPE
 )
