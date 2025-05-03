@@ -2,3 +2,6 @@
 	path = thirdparty/reactphysics3d
 	url = https://github.com/DanielChappuis/reactphysics3d
 	branch = master
+[submodule "GitHash"]
+	path = thirdparty/GitHash
+	url = https://github.com/Svalorzen/GitHash

@@ -33,9 +33,14 @@ set(INCLUDE_DIRS
 
 # Testing a new method of organizing sources
 
+# Link libheatmap
 add_library(libheatmap STATIC
     ${CMAKE_CURRENT_SOURCE_DIR}/libheatmap/heatmap.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/libheatmap/heatmap.hpp
 )
-
 target_link_libraries(mgfield PRIVATE libheatmap)
+
+# Link githash
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/GitHash/)
+target_link_libraries(mgfield PRIVATE "${GITHASH_LIBRARIES}")
+

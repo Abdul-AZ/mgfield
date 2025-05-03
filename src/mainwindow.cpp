@@ -12,6 +12,7 @@
 #include "src/sim/mfsimulator.h"
 
 #include <qfonticon.h>
+#include <thirdparty/GitHash/include/GitHash.hpp>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -21,6 +22,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     setWindowIcon(QIcon(":/res/icon_256px.png"));
     UseIconFont();
+
+#ifndef NDEBUG
+    AddBuildInfoToTitle();
+#endif
 
     scene = new Scene;
 
@@ -164,4 +169,13 @@ void MainWindow::showGettingStartedPage()
 {
     QUrl url("https://mgfield.app/getting-started");
     QDesktopServices::openUrl(url);
+}
+
+/*! \brief Adds latest commit git hash to the title for traceability purposes
+ */
+void MainWindow::AddBuildInfoToTitle()
+{
+    auto title = windowTitle();
+    title += " | Debug | Hash: " + QString(GitHash::shortSha1).toUpper();
+    setWindowTitle(title);
 }

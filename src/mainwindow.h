@@ -19,6 +19,7 @@ public:
 
 private:
     void UseIconFont();
+    void AddBuildInfoToTitle();
 
 public slots:
     void updateCameraLocationStatus(QVector3D newPos);
