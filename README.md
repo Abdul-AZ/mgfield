@@ -5,9 +5,9 @@ MgField is a desktop application used to visualize magnetic fields of various ob
 # Building
 ### Requirements
 - Qt version 6.6.1 or newer
-- CMake
+- CMake version 3.25.3 or newer
 ### Using Qt Creator 
-- Open ```mgfield.pro```
+- Open ```CMakeLists.txt```
 - Configure environment to 6.6.1 (use MinGW on windows)
 - Build and run (F5)
 ### Manual Building 
